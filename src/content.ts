@@ -1,24 +1,18 @@
-interface SteamAppUrlData {
-    appId: string | null,
-    appName: string | null
-}
+import fetchGameData from "./api/ggDealsApi"
+import parseSteamPageUrl from "./util/steamAppIdParser"
 
-function parseSteamPageUrl(): SteamAppUrlData {
-    const pattern = /store\.steampowered\.com\/app\/(?<appId>\d+)\/(?<appName>[\w-]+)/
-    const match = window.location.href.match(pattern)
-    const appId = match?.groups?.appId || null
-    const appName = match?.groups?.appName || null
-
-    return {appId, appName}
-}
-
-if (window.location.href.includes('store.steampowered.com/app/')) {
+async function handleContentProcesing():Promise<void> {
     const {appId, appName} = parseSteamPageUrl()
-    const apiKey = import.meta.env.VITE_GG_API_KEY
+    const apiKey = import.meta.env.VITE_GG_API_KEY //temp env variable implementation
 
-    if(appId && apiKey) setupContent(appId, apiKey)
+    if(appId && apiKey) {
+        const response = await fetchGameData(appId, apiKey)
+        console.log(response)
+    }
 }
 
-async function setupContent(appId: string, apiKey:string): Promise<void> {
-    const result = await fetch(`https://api.gg.deals/v1/prices/by-steam-app-id/?ids=${appId}&key=${apiKey}&region=ca`)
+
+// Entry Point
+if (window.location.href.includes('store.steampowered.com/app/')) {
+    handleContentProcesing()
 }
