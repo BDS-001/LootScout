@@ -75,18 +75,43 @@ async function initializeContentScript(): Promise<void> {
 	const { appId } = parseSteamPageUrl();
 	if (!appId) return;
 
-	const apiKey = import.meta.env.VITE_GG_API_KEY; //temp env variable implementation
-	const response: GameDataApiResponse = await browser.runtime.sendMessage({
-		action: 'getAppData',
-		appId,
-		apiKey,
-		region: 'ca',
-	});
-	console.log(response);
+	// Test data from example.json
+	const testResponse: GameDataApiResponse = {
+		success: true,
+		data: {
+			'2290180': {
+				title: 'Riders Republic',
+				url: 'https://gg.deals/game/riders-republic/',
+				prices: {
+					currentRetail: '4.99',
+					currentKeyshops: '10.40',
+					historicalRetail: '4.99',
+					historicalKeyshops: '10.40',
+					currency: 'CAD',
+				},
+			},
+		},
+	};
 
-	if (response.success) {
-		createDealBladeContent(response, appId);
+	// Use test data with actual appId or fallback to test appId
+	const testAppId = '2290180';
+
+	if (false) {
+		const apiKey = import.meta.env.VITE_GG_API_KEY; //temp env variable implementation
+		const response: GameDataApiResponse = await browser.runtime.sendMessage({
+			action: 'getAppData',
+			appId,
+			apiKey,
+			region: 'ca',
+		});
+		console.log(response);
+
+		if (response.success) {
+			//createDealBladeContent(response, appId);
+		}
 	}
+
+	createDealBladeContent(testResponse, testAppId);
 }
 
 // Entry Point
