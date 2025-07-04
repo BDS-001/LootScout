@@ -14,12 +14,11 @@ function parseSteamPageUrl(): SteamAppUrlData {
 
 if (window.location.href.includes('store.steampowered.com/app/')) {
     const {appId, appName} = parseSteamPageUrl()
-  
-    if (appId) {
-        console.log(appId)
-    }
+    const apiKey = import.meta.env.VITE_GG_API_KEY
 
-    if (appName) {
-        console.log(appName)
-    }
+    if(appId && apiKey) setupContent(appId, apiKey)
+}
+
+async function setupContent(appId: string, apiKey:string): Promise<void> {
+    const result = await fetch(`https://api.gg.deals/v1/prices/by-steam-app-id/?ids=${appId}&key=${apiKey}&region=ca`)
 }
