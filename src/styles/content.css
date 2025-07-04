@@ -1,0 +1,25 @@
+.deal_blade {
+	padding: 16px;
+	padding-bottom: 26px;
+	/* Transparent base color */
+	background-color: transparent;
+
+	/* Left-to-right fade from 20% opaque black to 50% opaque black */
+	background-image: linear-gradient(to right, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%);
+
+	/* Position and sizing: starts at top-left, auto-scales, repeats if needed */
+	background-position: 0% 0%;
+	background-size: auto;
+	background-repeat: repeat;
+
+	/* Clip and origin keep the gradient within the padding box up to the border edge */
+	background-origin: padding-box;
+	background-clip: border-box;
+}
+
+.price-grid {
+	display: grid;
+	grid-template-columns: max-content max-content;
+	gap: 8px 16px;
+	color: white;
+}
