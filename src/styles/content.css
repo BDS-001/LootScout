@@ -17,6 +17,10 @@
 	background-clip: border-box;
 }
 
+.content-wrapper {
+	position: relative;
+}
+
 .price-grid {
 	display: grid;
 	grid-template-columns: max-content max-content;
@@ -32,6 +36,9 @@
 }
 
 .deal_blade a {
+	position: absolute;
+	top: 0;
+	right: 0;
 	min-height: 17px;
 	padding-top: 4px;
 	padding-left: 8px;

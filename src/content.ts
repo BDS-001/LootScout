@@ -16,6 +16,9 @@ function createDealBladeContent(): void {
 	const contentDiv = document.createElement('div');
 	contentDiv.className = 'deal_blade';
 
+	const wrapper = document.createElement('div');
+	wrapper.className = 'content-wrapper';
+
 	const priceGrid = document.createElement('div');
 	priceGrid.className = 'price-grid';
 
@@ -38,8 +41,9 @@ function createDealBladeContent(): void {
 	detailsLink.href = '#';
 	detailsLink.innerText = 'View pricing details (gg.deals)';
 
-	contentDiv.appendChild(priceGrid);
-	contentDiv.appendChild(detailsLink);
+	wrapper.appendChild(priceGrid);
+	wrapper.appendChild(detailsLink);
+	contentDiv.appendChild(wrapper);
 
 	const ref: Node | null = packageGroup?.nextSibling ?? null;
 	purchaseSection?.insertBefore(contentDiv, ref);
