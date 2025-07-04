@@ -1,1 +1,1 @@
-# Deal-Blade
+# LootScout

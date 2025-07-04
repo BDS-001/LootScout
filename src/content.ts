@@ -9,7 +9,7 @@ function injectCSS(): void {
 	document.head.appendChild(style);
 }
 
-function createDealBladeContent(
+function createLootScoutContent(
 	response: { success: true; data: Record<string, GameInfo | null> },
 	appId: string
 ): void {
@@ -17,7 +17,7 @@ function createDealBladeContent(
 	const packageGroup = purchaseSection?.querySelector('.package_group');
 
 	const contentDiv = document.createElement('div');
-	contentDiv.className = 'deal_blade';
+	contentDiv.className = 'loot_scout';
 
 	// Get game data using appId as key
 	const gameData = response.data[appId];
@@ -29,8 +29,8 @@ function createDealBladeContent(
 	titleContainer.className = 'title_container';
 
 	const title = document.createElement('h3');
-	title.className = 'deal_blade_title';
-	title.innerText = `Deal Blade | ${gameData.title}`;
+	title.className = 'loot_scout_title';
+	title.innerText = `LootScout | ${gameData.title}`;
 
 	const detailsLink = document.createElement('a');
 	detailsLink.href = gameData.url;
@@ -107,11 +107,11 @@ async function initializeContentScript(): Promise<void> {
 		console.log(response);
 
 		if (response.success) {
-			//createDealBladeContent(response, appId);
+			//createLootScoutContent(response, appId);
 		}
 	}
 
-	createDealBladeContent(testResponse, testAppId);
+	createLootScoutContent(testResponse, testAppId);
 }
 
 // Entry Point
