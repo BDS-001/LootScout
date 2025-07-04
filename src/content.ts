@@ -1,14 +1,17 @@
-import fetchGameData from './api/ggDealsApi';
+import browser from 'webextension-polyfill';
 import parseSteamPageUrl from './util/steamAppIdParser';
+import { GameDataApiResponse } from './shared/types';
 
 async function handleContentProcesing(): Promise<void> {
-	const { appId, appName } = parseSteamPageUrl();
+	const { appId } = parseSteamPageUrl();
 	const apiKey = import.meta.env.VITE_GG_API_KEY; //temp env variable implementation
-
-	if (appId && apiKey) {
-		const response = await fetchGameData(appId, apiKey);
-		console.log(response);
-	}
+	const response: GameDataApiResponse = await browser.runtime.sendMessage({
+		action: 'getAppData',
+		appId,
+		apiKey,
+		region: 'ca',
+	});
+	console.log(response);
 }
 
 // Entry Point

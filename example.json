@@ -1,0 +1,16 @@
+{
+	"success": true,
+	"data": {
+		"2290180": {
+			"title": "Riders Republic",
+			"url": "https://gg.deals/game/riders-republic/",
+			"prices": {
+				"currentRetail": "4.99",
+				"currentKeyshops": "10.40",
+				"historicalRetail": "4.99",
+				"historicalKeyshops": "10.40",
+				"currency": "CAD"
+			}
+		}
+	}
+}

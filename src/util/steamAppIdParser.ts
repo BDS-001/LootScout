@@ -1,7 +1,4 @@
-interface SteamAppUrlData {
-	appId: string | null;
-	appName: string | null;
-}
+import { SteamAppUrlData } from '../shared/types';
 
 export default function parseSteamPageUrl(): SteamAppUrlData {
 	const pattern = /store\.steampowered\.com\/app\/(?<appId>\d+)\/(?<appName>[\w-]+)/;

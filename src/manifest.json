@@ -10,6 +10,7 @@
 	"action": {
 		"default_popup": "src/popup.html"
 	},
+
 	"background": {
 		"service_worker": "src/background.ts",
 		"scripts": ["src/background.ts"]
@@ -22,7 +23,7 @@
 		}
 	],
 	"permissions": ["activeTab"],
-	"host_permissions": ["*://store.steampowered.com/*"],
+	"host_permissions": ["*://store.steampowered.com/*", "https://api.gg.deals/*"],
 	"content_security_policy": {
 		"extension_pages": "script-src 'self'; object-src 'self'"
 	}

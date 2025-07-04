@@ -1,36 +1,13 @@
-interface GameInfo {
-	title: string;
-	url: string;
-	prices: {
-		currentRetail: string;
-		currentKeyshops: string;
-		historicalRetail: string;
-		historicalKeyshops: string;
-		currency: string;
-	};
-}
+import { GameDataApiResponse } from '../shared/types';
 
-interface ApiErrorData {
-	name: string;
-	message: string;
-	code: number;
-	status: number;
-}
-
-type GameDataApiResponse =
-	| { success: true; data: Record<string, GameInfo | null> }
-	| { success: false; data: ApiErrorData; error?: unknown };
-
-export default async function fetchGameData(
-	appId: string,
-	apiKey: string
-): Promise<GameDataApiResponse> {
+export default async function fetchGameData(apiUrl: string): Promise<GameDataApiResponse> {
 	try {
-		const result = await fetch(
-			`https://api.gg.deals/v1/prices/by-steam-app-id/?ids=${appId}&key=${apiKey}&region=ca`
-		);
+		console.log(apiUrl);
+		const result = await fetch(apiUrl);
+		console.log('fetch result', result);
 		return result.json();
 	} catch (error) {
+		console.log('error', error);
 		return {
 			success: false,
 			data: {
