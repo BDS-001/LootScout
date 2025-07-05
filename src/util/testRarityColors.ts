@@ -1,5 +1,5 @@
 export default function generateRarityTestDiv() {
-    // Test rarity elements
+	// Test rarity elements
 	const rarityTestDiv = document.createElement('div');
 	rarityTestDiv.style.marginTop = '10px';
 
@@ -25,5 +25,5 @@ export default function generateRarityTestDiv() {
 		rarityTestDiv.appendChild(testElement);
 	});
 
-    return rarityTestDiv
+	return rarityTestDiv;
 }
