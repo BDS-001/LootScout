@@ -1,0 +1,145 @@
+/* RPG Rarity Colors for Steam Extension */
+:root {
+	/* Common - Light gray */
+	--rarity-common: #9da5b4;
+
+	/* Uncommon - Green */
+	--rarity-uncommon: #4caf50;
+
+	/* Rare - Blue */
+	--rarity-rare: #2196f3;
+
+	/* Epic - Purple */
+	--rarity-epic: #9c27b0;
+
+	/* Legendary - Orange */
+	--rarity-legendary: #ff9800;
+
+	/* Mythic - Teal */
+	--rarity-mythic: #00ced1;
+
+	/* Exotic - Red */
+	--rarity-exotic: #dc143c;
+
+	/* Iridescent - Multi-color gradient */
+	--rarity-iridescent: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57, #ff9ff3);
+	--rarity-iridescent-solid: #ff6b6b; /* Fallback solid color */
+}
+
+/* Usage classes */
+.rarity-common {
+	color: var(--rarity-common);
+}
+
+.rarity-uncommon {
+	color: var(--rarity-uncommon);
+}
+
+.rarity-rare {
+	color: var(--rarity-rare);
+}
+
+.rarity-epic {
+	color: var(--rarity-epic);
+}
+
+.rarity-legendary {
+	color: var(--rarity-legendary);
+}
+
+.rarity-mythic {
+	color: var(--rarity-mythic);
+}
+
+.rarity-exotic {
+	color: var(--rarity-exotic);
+	text-shadow: 0 0 10px var(--rarity-exotic);
+}
+
+.rarity-iridescent {
+	background: var(--rarity-iridescent);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	animation: iridescent-shimmer 3s ease-in-out infinite alternate;
+}
+
+/* Iridescent shimmer animation */
+@keyframes iridescent-shimmer {
+	0% {
+		filter: hue-rotate(0deg);
+	}
+	100% {
+		filter: hue-rotate(360deg);
+	}
+}
+
+/* Background variants */
+.rarity-common-bg {
+	background-color: var(--rarity-common);
+}
+
+.rarity-uncommon-bg {
+	background-color: var(--rarity-uncommon);
+}
+
+.rarity-rare-bg {
+	background-color: var(--rarity-rare);
+}
+
+.rarity-epic-bg {
+	background-color: var(--rarity-epic);
+}
+
+.rarity-legendary-bg {
+	background-color: var(--rarity-legendary);
+}
+
+.rarity-mythic-bg {
+	background-color: var(--rarity-mythic);
+}
+
+.rarity-exotic-bg {
+	background-color: var(--rarity-exotic);
+}
+
+.rarity-iridescent-bg {
+	background: var(--rarity-iridescent);
+	animation: iridescent-shimmer 3s ease-in-out infinite alternate;
+}
+
+/* Border variants */
+.rarity-common-border {
+	border: 2px solid var(--rarity-common);
+}
+
+.rarity-uncommon-border {
+	border: 2px solid var(--rarity-uncommon);
+}
+
+.rarity-rare-border {
+	border: 2px solid var(--rarity-rare);
+}
+
+.rarity-epic-border {
+	border: 2px solid var(--rarity-epic);
+}
+
+.rarity-legendary-border {
+	border: 2px solid var(--rarity-legendary);
+}
+
+.rarity-mythic-border {
+	border: 2px solid var(--rarity-mythic);
+}
+
+.rarity-exotic-border {
+	border: 2px solid var(--rarity-exotic);
+	box-shadow: 0 0 10px var(--rarity-exotic);
+}
+
+.rarity-iridescent-border {
+	border: 2px solid;
+	border-image: var(--rarity-iridescent) 1;
+	animation: iridescent-shimmer 3s ease-in-out infinite alternate;
+}

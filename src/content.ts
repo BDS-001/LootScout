@@ -1,12 +1,18 @@
 import browser from 'webextension-polyfill';
 import parseSteamPageUrl from './util/steamAppIdParser';
+import generateRarityTestDiv from './util/testRarityColors';
 import { GameDataApiResponse, GameInfo } from './shared/types';
 import contentCss from './styles/content.css?inline';
+import raritiesCss from './styles/rarities.css?inline';
 
 function injectCSS(): void {
 	const style = document.createElement('style');
 	style.textContent = contentCss;
 	document.head.appendChild(style);
+
+	const raritiesStyle = document.createElement('style');
+	raritiesStyle.textContent = raritiesCss;
+	document.head.appendChild(raritiesStyle);
 }
 
 function createLootScoutContent(
@@ -63,6 +69,7 @@ function createLootScoutContent(
 
 	contentDiv.appendChild(titleContainer);
 	contentDiv.appendChild(priceGrid);
+	contentDiv.appendChild(generateRarityTestDiv());
 	contentDiv.appendChild(poweredBy);
 
 	const ref: Node | null = packageGroup?.nextSibling ?? null;
