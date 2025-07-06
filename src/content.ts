@@ -17,7 +17,6 @@ function injectCSS(): void {
 	document.head.appendChild(raritiesStyle);
 }
 
-
 async function initializeContentScript(): Promise<void> {
 	injectCSS();
 
