@@ -1,6 +1,7 @@
 import browser from 'webextension-polyfill';
 import parseSteamPageUrl from './util/steamAppIdParser';
 import generateRarityTestDiv from './util/testRarityColors';
+import getGameBasePrice from './util/getGameBasePrice';
 import { GameDataApiResponse, GameInfo } from './shared/types';
 import contentCss from './styles/content.css?inline';
 import raritiesCss from './styles/rarities.css?inline';
@@ -69,7 +70,7 @@ function createLootScoutContent(
 
 	contentDiv.appendChild(titleContainer);
 	contentDiv.appendChild(priceGrid);
-	contentDiv.appendChild(generateRarityTestDiv());
+	//contentDiv.appendChild(generateRarityTestDiv());
 	contentDiv.appendChild(poweredBy);
 
 	const ref: Node | null = packageGroup?.nextSibling ?? null;
@@ -81,6 +82,9 @@ async function initializeContentScript(): Promise<void> {
 
 	const { appId } = parseSteamPageUrl();
 	if (!appId) return;
+
+	// Log the game base price before setting up HTML injection
+	getGameBasePrice();
 
 	// Test data from example.json
 	const testResponse: GameDataApiResponse = {
