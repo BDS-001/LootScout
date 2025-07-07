@@ -1,40 +1,82 @@
 {
-	"success": true,
-	"data": {
-		"appId": "3527290",
-		"ggDealsData": {
-			"success": true,
-			"data": {
-				"3527290": {
-					"title": "PEAK",
-					"url": "https://gg.deals/game/peak-1/",
-					"prices": {
-						"currentRetail": "10.49",
-						"currentKeyshops": "11.74",
-						"historicalRetail": "6.50",
-						"historicalKeyshops": "7.77",
-						"currency": "CAD"
-					}
-				}
-			}
-		},
-		"steamStoreData": {
-			"success": true,
-			"data": {
-				"3527290": {
-					"success": true,
-					"data": {
-						"price_overview": {
-							"currency": "CAD",
-							"initial": 1049,
-							"final": 1049,
-							"discount_percent": 0,
-							"initial_formatted": "",
-							"final_formatted": "CDN$ 10.49"
-						}
-					}
-				}
-			}
-		}
-	}
+  "example 1": {
+    "success": true,
+    "data": {
+      "appId": "3527290",
+      "ggDealsData": {
+        "success": true,
+        "data": {
+          "3527290": {
+            "title": "PEAK",
+            "url": "https://gg.deals/game/peak-1/",
+            "prices": {
+              "currentRetail": "10.49",
+              "currentKeyshops": "11.74",
+              "historicalRetail": "6.50",
+              "historicalKeyshops": "7.77",
+              "currency": "CAD"
+            }
+          }
+        }
+      },
+      "steamStoreData": {
+        "success": true,
+        "data": {
+          "3527290": {
+            "success": true,
+            "data": {
+              "price_overview": {
+                "currency": "CAD",
+                "initial": 1049,
+                "final": 1049,
+                "discount_percent": 0,
+                "initial_formatted": "",
+                "final_formatted": "CDN$ 10.49"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "example 2": {
+    "success": true,
+    "data": {
+      "appId": "582660",
+      "ggDealsData": {
+        "success": true,
+        "data": {
+          "582660": {
+            "title": "Black Desert",
+            "url": "https://gg.deals/game/black-desert-online/",
+            "prices": {
+              "currentRetail": "0.00",
+              "currentKeyshops": "4.03",
+              "historicalRetail": "0.00",
+              "historicalKeyshops": "1.13",
+              "currency": "CAD"
+            }
+          }
+        }
+      },
+      "steamStoreData": {
+        "success": true,
+        "data": {
+          "582660": {
+            "success": true,
+            "data": {
+              "price_overview": {
+                "currency": "CAD",
+                "initial": 1299,
+                "final": 1299,
+                "discount_percent": 100,
+                "initial_formatted": "CDN$ 12.99",
+                "final_formatted": "Free"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
