@@ -10,6 +10,7 @@ export default async function fetchSteamStoreData(
 	const url = new URL(STEAM_STORE_BASE_URL);
 	url.searchParams.set('appids', appId);
 	url.searchParams.set('cc', region);
+	url.searchParams.set('filters', 'price_overview');
 
 	try {
 		const result = await fetch(url.toString());

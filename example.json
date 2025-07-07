@@ -1,15 +1,39 @@
 {
 	"success": true,
 	"data": {
-		"2290180": {
-			"title": "Riders Republic",
-			"url": "https://gg.deals/game/riders-republic/",
-			"prices": {
-				"currentRetail": "4.99",
-				"currentKeyshops": "10.40",
-				"historicalRetail": "4.99",
-				"historicalKeyshops": "10.40",
-				"currency": "CAD"
+		"appId": "3527290",
+		"ggDealsData": {
+			"success": true,
+			"data": {
+				"3527290": {
+					"title": "PEAK",
+					"url": "https://gg.deals/game/peak-1/",
+					"prices": {
+						"currentRetail": "10.49",
+						"currentKeyshops": "11.74",
+						"historicalRetail": "6.50",
+						"historicalKeyshops": "7.77",
+						"currency": "CAD"
+					}
+				}
+			}
+		},
+		"steamStoreData": {
+			"success": true,
+			"data": {
+				"3527290": {
+					"success": true,
+					"data": {
+						"price_overview": {
+							"currency": "CAD",
+							"initial": 1049,
+							"final": 1049,
+							"discount_percent": 0,
+							"initial_formatted": "",
+							"final_formatted": "CDN$ 10.49"
+						}
+					}
+				}
 			}
 		}
 	}
