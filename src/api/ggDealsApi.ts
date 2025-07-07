@@ -1,13 +1,28 @@
-import { GameDataApiResponse } from '../shared/types';
+import { GgDealsApiParams, GgDealsApiResponse } from '../shared/types';
 
-export default async function fetchGameData(apiUrl: string): Promise<GameDataApiResponse> {
+const GG_DEALS_BASE_URL = 'https://api.gg.deals/v1/prices/by-steam-app-id/';
+
+export default async function fetchGgDealsData(
+	params: GgDealsApiParams
+): Promise<GgDealsApiResponse> {
+	const { appId, apiKey, region } = params;
+
+	const url = `${GG_DEALS_BASE_URL}?ids=${appId}&key=${apiKey}&region=${region}`;
+
 	try {
-		console.log(apiUrl);
-		const result = await fetch(apiUrl);
-		console.log('fetch result', result);
-		return result.json();
+		console.log('Fetching GG Deals data:', url);
+		const result = await fetch(url);
+
+		if (!result.ok) {
+			throw new Error(`HTTP ${result.status}: ${result.statusText}`);
+		}
+
+		const data = await result.json();
+		console.log('GG Deals API result:', data);
+
+		return data;
 	} catch (error) {
-		console.log('error', error);
+		console.error('GG Deals API error:', error);
 		return {
 			success: false,
 			data: {
@@ -16,6 +31,7 @@ export default async function fetchGameData(apiUrl: string): Promise<GameDataApi
 				code: 0,
 				status: 0,
 			},
+			error,
 		};
 	}
 }

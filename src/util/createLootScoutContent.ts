@@ -1,18 +1,33 @@
-import { GameDataApiResponse, GameInfo } from '../shared/types';
+import { GgDealsApiResponse } from '../shared/types';
 
-export default function createLootScoutContent(
-	response: { success: true; data: Record<string, GameInfo | null> },
-	appId: string
-): void {
+export default function createLootScoutContent(response: GgDealsApiResponse, appId: string): void {
 	const purchaseSection = document.getElementById('game_area_purchase');
-	const packageGroup = purchaseSection?.querySelector('.package_group');
+	if (!purchaseSection) {
+		console.error('Purchase section not found on Steam page');
+		return;
+	}
+
+	const packageGroup = purchaseSection.querySelector('.package_group');
+	if (!packageGroup) {
+		console.error('Package group not found in purchase section');
+		return;
+	}
 
 	const contentDiv = document.createElement('div');
 	contentDiv.className = 'loot_scout';
 
+	// Check if response is successful
+	if (!response.success) {
+		console.error('API response was not successful:', response.data);
+		return;
+	}
+
 	// Get game data using appId as key
 	const gameData = response.data[appId];
-	if (!gameData) return;
+	if (!gameData) {
+		console.error('Game data not found for appId:', appId);
+		return;
+	}
 
 	const prices = gameData.prices;
 
@@ -57,6 +72,6 @@ export default function createLootScoutContent(
 	//contentDiv.appendChild(generateRarityTestDiv());
 	contentDiv.appendChild(poweredBy);
 
-	const ref: Node | null = packageGroup?.nextSibling ?? null;
-	purchaseSection?.insertBefore(contentDiv, ref);
+	const ref: Node | null = packageGroup.nextSibling ?? null;
+	purchaseSection.insertBefore(contentDiv, ref);
 }
