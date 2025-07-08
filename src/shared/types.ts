@@ -39,6 +39,10 @@ export type GgDealsApiResponse =
 	| { success: true; data: Record<string, GgDealsGameData | null> }
 	| { success: false; data: ApiErrorData; error?: unknown };
 
+export type NormalizedGgDealsApiResponse =
+	| { success: true; data: GgDealsGameData | null }
+	| { success: false; data: ApiErrorData; error?: unknown };
+
 export type GameDataApiResponse =
 	| { success: true; data: Record<string, GameInfo | null> }
 	| { success: false; data: ApiErrorData; error?: unknown };
@@ -103,6 +107,10 @@ export type SteamApiResponse =
 	| { success: true; data: Record<string, SteamAppData> }
 	| { success: false; data: ApiErrorData; error?: unknown };
 
+export type NormalizedSteamApiResponse =
+	| { success: true; data: SteamAppData | null }
+	| { success: false; data: ApiErrorData; error?: unknown };
+
 export interface CombinedGameDataParams {
 	appId: string;
 	apiKey: string;
@@ -115,6 +123,16 @@ export interface CombinedGameData {
 	steamStoreData: SteamApiResponse;
 }
 
+export interface NormalizedCombinedGameData {
+	appId: string;
+	ggDealsData: NormalizedGgDealsApiResponse;
+	steamStoreData: NormalizedSteamApiResponse;
+}
+
 export type CombinedGameDataResponse =
 	| { success: true; data: CombinedGameData }
+	| { success: false; data: ApiErrorData; error?: unknown };
+
+export type NormalizedCombinedGameDataResponse =
+	| { success: true; data: NormalizedCombinedGameData }
 	| { success: false; data: ApiErrorData; error?: unknown };
