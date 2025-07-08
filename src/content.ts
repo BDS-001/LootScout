@@ -1,18 +1,25 @@
 import browser from 'webextension-polyfill';
 import parseSteamPageUrl from './parsers/steamAppIdParser';
-import createLootScoutContent from './components/createLootScoutContent';
+import createLootScoutContent, {
+	createLootScoutContentRightCol,
+} from './components/createLootScoutContent';
 import { NormalizedCombinedGameDataResponse } from './shared/types';
 import contentCss from './styles/content.css?inline';
 import raritiesCss from './styles/rarities.css?inline';
+import rightcolCss from './styles/rightcol.css?inline';
 
 function injectCSS(): void {
-	const style = document.createElement('style');
-	style.textContent = contentCss;
-	document.head.appendChild(style);
+	// const style = document.createElement('style');
+	// style.textContent = contentCss;
+	// document.head.appendChild(style);
 
 	const raritiesStyle = document.createElement('style');
 	raritiesStyle.textContent = raritiesCss;
 	document.head.appendChild(raritiesStyle);
+
+	const rightcolStyle = document.createElement('style');
+	rightcolStyle.textContent = rightcolCss;
+	document.head.appendChild(rightcolStyle);
 }
 
 async function initializeContentScript(): Promise<void> {
@@ -39,7 +46,7 @@ async function initializeContentScript(): Promise<void> {
 		console.log('LootScout API Response:', response);
 
 		if (response.success && response.data.ggDealsData.success) {
-			createLootScoutContent(response.data);
+			createLootScoutContentRightCol(response.data);
 		} else {
 			console.error('LootScout: Failed to fetch game data:', {
 				responseSuccess: response.success,

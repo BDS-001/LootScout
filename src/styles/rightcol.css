@@ -1,0 +1,110 @@
+/* Right column content styles for Steam sidebar */
+.deal_section {
+	margin-bottom: 16px;
+	padding: 8px;
+	background-color: rgba(0, 0, 0, 0.2);
+	border-radius: 3px;
+}
+
+.deal_header {
+	color: #8f98a0;
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	margin-bottom: 4px;
+}
+
+.deal_price {
+	color: #ffffff;
+	font-size: 16px;
+	font-weight: 600;
+	margin-bottom: 2px;
+}
+
+.raw_discount {
+	color: #5ba32b;
+	font-size: 12px;
+	font-weight: 500;
+}
+
+.deal_discount {
+	color: #5ba32b;
+	font-size: 12px;
+	font-weight: 600;
+	margin-bottom: 4px;
+}
+
+.deal_comparison {
+	margin-bottom: 6px;
+}
+
+.deal_rarity {
+	text-align: right;
+}
+
+.steam_equal {
+	color: #8f98a0;
+	font-size: 11px;
+	font-style: italic;
+}
+
+.steam_save {
+	color: #5ba32b;
+	font-size: 11px;
+	font-weight: 600;
+}
+
+.loot_scout_footer {
+	position: relative;
+	text-align: center;
+	margin-top: 8px;
+	padding-bottom: 20px;
+}
+
+.powered_by {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	color: #8f98a0;
+	font-size: 11px;
+	font-weight: 300;
+	text-align: left;
+	margin: 0;
+}
+
+.powered_by a {
+	color: #8f98a0;
+	text-decoration: none;
+	font-size: 11px;
+	font-weight: 300;
+	position: absolute;
+	background: none;
+	border: none;
+	padding: 0;
+	margin: 0;
+	display: inline;
+}
+
+.powered_by a:hover {
+	color: #ffffff;
+	text-decoration: underline;
+	background: none;
+}
+
+.steam_match {
+	color: #4c6b22;
+	font-weight: 600;
+	background-color: rgba(76, 107, 34, 0.2);
+	padding: 1px 4px;
+	border-radius: 2px;
+	font-size: 10px;
+	margin-left: 4px;
+}
+
+.rarity {
+	font-weight: 600;
+	padding: 1px 4px;
+	border-radius: 2px;
+	font-size: 10px;
+	margin-left: 4px;
+}
