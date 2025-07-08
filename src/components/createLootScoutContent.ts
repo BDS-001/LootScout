@@ -20,9 +20,12 @@ export default function createLootScoutContent(combinedData: NormalizedCombinedG
 
 	// Get data (much cleaner with normalized structure)
 	const gameData = ggDealsData.data;
-	const steamPrice = steamStoreData.success && steamStoreData.data?.success
-		? steamStoreData.data.data?.price_overview?.initial || steamStoreData.data.data?.price_overview?.final || 0
-		: 0;
+	const steamPrice =
+		steamStoreData.success && steamStoreData.data?.success
+			? steamStoreData.data.data?.price_overview?.initial ||
+				steamStoreData.data.data?.price_overview?.final ||
+				0
+			: 0;
 
 	// Calculate discounts
 	const currentDiscount = calculateDiscount(steamPrice, gameData.prices.currentRetail);

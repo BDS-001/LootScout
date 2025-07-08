@@ -1,10 +1,17 @@
 import browser from 'webextension-polyfill';
 import fetchCombinedGameData from './api/combinedGameData';
-import { CombinedGameDataParams, CombinedGameDataResponse, NormalizedCombinedGameDataResponse } from './shared/types';
+import {
+	CombinedGameDataParams,
+	CombinedGameDataResponse,
+	NormalizedCombinedGameDataResponse,
+} from './shared/types';
 
 console.log('Hello from the background!');
 
-function normalizeResponse(response: CombinedGameDataResponse, appId: string): NormalizedCombinedGameDataResponse {
+function normalizeResponse(
+	response: CombinedGameDataResponse,
+	appId: string
+): NormalizedCombinedGameDataResponse {
 	if (!response.success) {
 		return response;
 	}
@@ -13,13 +20,13 @@ function normalizeResponse(response: CombinedGameDataResponse, appId: string): N
 		success: true,
 		data: {
 			appId: response.data.appId,
-			ggDealsData: response.data.ggDealsData.success 
+			ggDealsData: response.data.ggDealsData.success
 				? { success: true, data: response.data.ggDealsData.data[appId] || null }
 				: response.data.ggDealsData,
 			steamStoreData: response.data.steamStoreData.success
 				? { success: true, data: response.data.steamStoreData.data[appId] || null }
-				: response.data.steamStoreData
-		}
+				: response.data.steamStoreData,
+		},
 	};
 }
 
