@@ -2,10 +2,10 @@ export interface GameInfo {
 	title: string;
 	url: string;
 	prices: {
-		currentRetail: string;
-		currentKeyshops: string;
-		historicalRetail: string;
-		historicalKeyshops: string;
+		currentRetail: number;
+		currentKeyshops: number;
+		historicalRetail: number;
+		historicalKeyshops: number;
 		currency: string;
 	};
 }
@@ -27,10 +27,10 @@ export interface GgDealsGameData {
 	title: string;
 	url: string;
 	prices: {
-		currentRetail: string;
-		currentKeyshops: string;
-		historicalRetail: string;
-		historicalKeyshops: string;
+		currentRetail: number;
+		currentKeyshops: number;
+		historicalRetail: number;
+		historicalKeyshops: number;
 		currency: string;
 	};
 }

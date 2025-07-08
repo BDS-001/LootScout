@@ -20,6 +20,26 @@ export default async function fetchGgDealsData(
 		const data = await result.json();
 		console.log('GG Deals API result:', data);
 
+		if (data.success && data.data) {
+			Object.keys(data.data).forEach((appId) => {
+				const gameData = data.data[appId];
+				if (gameData && gameData.prices) {
+					gameData.prices.currentRetail = Math.round(
+						parseFloat(gameData.prices.currentRetail) * 100
+					);
+					gameData.prices.currentKeyshops = Math.round(
+						parseFloat(gameData.prices.currentKeyshops) * 100
+					);
+					gameData.prices.historicalRetail = Math.round(
+						parseFloat(gameData.prices.historicalRetail) * 100
+					);
+					gameData.prices.historicalKeyshops = Math.round(
+						parseFloat(gameData.prices.historicalKeyshops) * 100
+					);
+				}
+			});
+		}
+
 		return data;
 	} catch (error) {
 		console.error('GG Deals API error:', error);

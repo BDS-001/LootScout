@@ -51,12 +51,12 @@ export default function createLootScoutContent(response: GgDealsApiResponse, app
 	const currentLabel = document.createElement('span');
 	currentLabel.innerText = 'Current Best:';
 	const currentPrice = document.createElement('span');
-	currentPrice.innerText = `${prices.currentRetail} ${prices.currency}`;
+	currentPrice.innerText = `${(prices.currentRetail / 100).toFixed(2)} ${prices.currency}`;
 
 	const historicalLabel = document.createElement('span');
 	historicalLabel.innerText = 'Historical Low:';
 	const historicalPrice = document.createElement('span');
-	historicalPrice.innerText = `${prices.historicalRetail} ${prices.currency}`;
+	historicalPrice.innerText = `${(prices.historicalRetail / 100).toFixed(2)} ${prices.currency}`;
 
 	priceGrid.appendChild(currentLabel);
 	priceGrid.appendChild(currentPrice);
