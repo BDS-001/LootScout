@@ -42,6 +42,11 @@
 	text-align: right;
 }
 
+.deal_button {
+	text-align: left;
+	margin-top: 8px;
+}
+
 .steam_equal {
 	color: #8f98a0;
 	font-size: 11px;

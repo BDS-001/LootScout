@@ -1,10 +1,7 @@
 import browser from 'webextension-polyfill';
 import parseSteamPageUrl from './parsers/steamAppIdParser';
-import createLootScoutContent, {
-	createLootScoutContentRightCol,
-} from './components/createLootScoutContent';
+import { createLootScoutContentRightCol } from './components/createLootScoutContent';
 import { NormalizedCombinedGameDataResponse } from './shared/types';
-import contentCss from './styles/content.css?inline';
 import raritiesCss from './styles/rarities.css?inline';
 import rightcolCss from './styles/rightcol.css?inline';
 
