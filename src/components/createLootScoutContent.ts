@@ -1,6 +1,7 @@
 import { NormalizedCombinedGameData, SteamPriceOverview } from '../shared/types';
 import { calculatePriceComparison, formatPrice } from '../utils/priceCalculations';
 import { createRarityComponent } from './RarityComponent';
+import { getHltbUrl } from '../helpers/hltb';
 
 function getSteamPrice(priceOverview: SteamPriceOverview | undefined): number {
 	if (!priceOverview) {
@@ -103,12 +104,12 @@ export function createLootScoutContentRightCol(combinedData: NormalizedCombinedG
 		<div class="deal_section">
 			<div class="deal_header">Current Best Deal</div>
 			<div class="deal_price">${formatPrice(gameData.prices.currentRetail, gameData.prices.currency)} <span class="raw_discount">(${priceComparison.currentRawDiscount}% off)</span></div>
-			<div class="deal_discount">${priceComparison.currentDiscount}% off Steam</div>
+			<div class="deal_discount"><span class="highlight_green">${priceComparison.currentDiscount}%</span> off Steam</div>
 			<div class="deal_comparison">
 				${
 					priceComparison.steamEqualsCurrent
 						? '<span class="steam_equal">Equal to Steam</span>'
-						: `<span class="steam_save">Save extra ${Math.abs(priceComparison.currentSavings).toFixed(2)} ${gameData.prices.currency}</span>`
+						: `<span class="deal_text">Save extra <span class="highlight_green">${Math.abs(priceComparison.currentSavings).toFixed(2)} ${gameData.prices.currency}</span></span>`
 				}
 			</div>
 			<div class="deal_button">
@@ -120,18 +121,27 @@ export function createLootScoutContentRightCol(combinedData: NormalizedCombinedG
 		<div class="deal_section">
 			<div class="deal_header">Historical Low</div>
 			<div class="deal_price">${formatPrice(gameData.prices.historicalRetail, gameData.prices.currency)} <span class="raw_discount">(${priceComparison.historicalRawDiscount}% off)</span></div>
-			<div class="deal_discount">${priceComparison.historicalDiscount}% off Steam</div>
+			<div class="deal_discount"><span class="highlight_green">${priceComparison.historicalDiscount}%</span> off Steam</div>
 			<div class="deal_comparison">
 				${
 					priceComparison.steamEqualsHistorical
 						? '<span class="steam_equal">Equal to Steam</span>'
-						: `<span class="steam_save">Save extra ${Math.abs(priceComparison.historicalSavings).toFixed(2)} ${gameData.prices.currency}</span>`
+						: `<span class="deal_text">Save extra <span class="highlight_green">${Math.abs(priceComparison.historicalSavings).toFixed(2)} ${gameData.prices.currency}</span></span>`
 				}
 			</div>
 			<div class="deal_button">
 				<a href="${gameData.url}" target="_blank" class="btnv6_blue_hoverfade btn_medium"><span>View Deals</span></a>
 			</div>
 			${createRarityComponent(priceComparison.historicalRawDiscount, true)}
+		</div>
+		
+		<div class="deal_section">
+			<div class="deal_header">Additional Resources</div>
+			<div class="additional_resources">
+				<a href="${getHltbUrl(gameData.title)}" target="_blank" class="linkbar">
+					<span>How Long to Beat</span>
+				</a>
+			</div>
 		</div>
 		
 		<div class="loot_scout_footer">

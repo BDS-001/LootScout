@@ -29,7 +29,6 @@
 }
 
 .deal_discount {
-	color: var(--color-steam-green);
 	font-size: var(--font-size-base);
 	font-weight: var(--font-weight-semibold);
 	margin-bottom: var(--spacing-sm);
@@ -51,7 +50,6 @@
 }
 
 .steam_save {
-	color: var(--color-steam-green);
 	font-size: var(--font-size-sm);
 	font-weight: var(--font-weight-semibold);
 }
@@ -126,4 +124,20 @@
 	padding: 1px var(--spacing-sm);
 	border-radius: var(--radius-sm);
 	font-size: var(--font-size-xs);
+}
+
+.additional_resources {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-sm);
+}
+
+.highlight_green {
+	color: var(--color-steam-green);
+	font-weight: var(--font-weight-semibold);
+}
+
+.deal_text {
+	font-size: var(--font-size-sm);
+	font-weight: var(--font-weight-semibold);
 }

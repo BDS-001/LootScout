@@ -1,6 +1,8 @@
 .deal_rarity {
 	display: inline-block;
 	vertical-align: middle;
+	margin: 0;
+	padding: 0;
 }
 
 .deal_rarity_corner {
