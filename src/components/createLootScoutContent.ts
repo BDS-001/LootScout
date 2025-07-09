@@ -18,13 +18,25 @@ function getSteamOriginalPrice(priceOverview: SteamPriceOverview | undefined): n
 	return priceOverview.initial || priceOverview.final || 0;
 }
 
-function getSteamDealStatus(steamEqualsCurrent: boolean, steamEqualsHistorical: boolean): string {
-	if (steamEqualsCurrent) {
-		return 'Steam is offering the current best deal';
-	} else if (steamEqualsHistorical) {
-		return 'Steam is offering the historical low';
+function getSteamDealStatus(
+	steamEqualsCurrent: boolean,
+	steamEqualsHistorical: boolean
+): { text: string; className: string } {
+	if (steamEqualsHistorical) {
+		return {
+			text: 'Steam is offering the historical low',
+			className: 'steam_historical_low',
+		};
+	} else if (steamEqualsCurrent) {
+		return {
+			text: 'Steam is offering the current best deal',
+			className: 'steam_current_best',
+		};
 	} else {
-		return 'Better deal available somewhere else';
+		return {
+			text: 'Better deal available somewhere else',
+			className: 'steam_better_elsewhere',
+		};
 	}
 }
 
@@ -84,7 +96,7 @@ export function createLootScoutContentRightCol(combinedData: NormalizedCombinedG
 			<div class="deal_header">Steam Current Discount Rating</div>
 			<div class="deal_comparison">
 				${createRarityComponent(steamDiscountPercentage, false)}
-				<span class="steam_save">${steamDealStatus}</span>
+				<span class="${steamDealStatus.className}">${steamDealStatus.text}</span>
 			</div>
 		</div>
 		
