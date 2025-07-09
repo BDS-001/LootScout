@@ -5,15 +5,15 @@
 
 .deal_rarity_corner {
 	position: absolute;
-	top: 8px;
-	right: 8px;
+	top: var(--spacing-base);
+	right: var(--spacing-base);
 }
 
-.deal_rarity .rarity {
+.deal_rarity .rarity-badge {
 	padding: 3px 6px;
-	border-radius: 4px;
-	font-size: 11px;
-	font-weight: 600;
+	border-radius: var(--radius-lg);
+	font-size: var(--font-size-sm);
+	font-weight: var(--font-weight-semibold);
 	cursor: pointer;
 }
 
@@ -21,29 +21,29 @@
 	visibility: hidden;
 	opacity: 0;
 	position: fixed;
-	background: rgba(0, 0, 0, 0.9);
-	color: white;
-	padding: 8px 12px;
-	border-radius: 4px;
-	font-size: 12px;
+	background: var(--bg-overlay-dark);
+	color: var(--color-white);
+	padding: var(--spacing-base) var(--spacing-lg);
+	border-radius: var(--radius-lg);
+	font-size: var(--font-size-base);
 	white-space: nowrap;
-	z-index: 10000;
+	z-index: var(--z-tooltip);
 	transition:
-		opacity 0.3s,
-		visibility 0.3s;
+		opacity var(--transition-fast),
+		visibility var(--transition-fast);
 	min-width: 350px;
 	text-align: left;
 	pointer-events: none;
 }
 
 .tooltip-header {
-	font-weight: bold;
-	margin-bottom: 4px;
-	border-bottom: 1px solid #444;
-	padding-bottom: 4px;
+	font-weight: var(--font-weight-bold);
+	margin-bottom: var(--spacing-sm);
+	border-bottom: var(--border-separator);
+	padding-bottom: var(--spacing-sm);
 }
 
 .tooltip-item {
-	margin: 2px 0;
+	margin: var(--spacing-xs) 0;
 	line-height: 1.3;
 }

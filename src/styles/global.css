@@ -1,0 +1,96 @@
+/* Global CSS Variables and Utility Classes */
+:root {
+	/* Typography */
+	--font-size-xs: 10px;
+	--font-size-sm: 11px;
+	--font-size-base: 12px;
+	--font-size-lg: 16px;
+	--font-size-xl: 18px;
+
+	--font-weight-normal: 300;
+	--font-weight-medium: 500;
+	--font-weight-semibold: 600;
+	--font-weight-bold: bold;
+
+	/* Colors - Steam Theme */
+	--color-white: #ffffff;
+	--color-steam-gray: #8f98a0;
+	--color-steam-green: #a3d006;
+	--color-steam-orange: #ff9800;
+	--color-steam-red: #f44336;
+	--color-steam-dark-green: #4c6b22;
+	--color-steam-bg: rgb(36, 36, 36);
+
+	/* Backgrounds */
+	--bg-overlay-light: rgba(0, 0, 0, 0.2);
+	--bg-overlay-dark: rgba(0, 0, 0, 0.9);
+	--bg-code: #ffffff24;
+	--bg-steam-match: rgba(76, 107, 34, 0.2);
+
+	/* Spacing */
+	--spacing-xs: 2px;
+	--spacing-sm: 4px;
+	--spacing-base: 8px;
+	--spacing-lg: 16px;
+
+	/* Border Radius */
+	--radius-sm: 2px;
+	--radius-base: 3px;
+	--radius-lg: 4px;
+
+	/* Borders */
+	--border-width: 2px;
+	--border-separator: 1px solid #444;
+
+	/* Z-index */
+	--z-tooltip: 10000;
+
+	/* Transitions */
+	--transition-fast: 0.3s;
+}
+
+/* Common Component Styles */
+.badge {
+	padding: 1px var(--spacing-sm);
+	border-radius: var(--radius-sm);
+	font-size: var(--font-size-xs);
+	font-weight: var(--font-weight-semibold);
+	display: inline-block;
+}
+
+.badge-success {
+	color: var(--color-steam-dark-green);
+	background-color: var(--bg-steam-match);
+}
+
+.tooltip-base {
+	position: fixed;
+	background: var(--bg-overlay-dark);
+	color: var(--color-white);
+	padding: var(--spacing-base) var(--spacing-lg);
+	border-radius: var(--radius-lg);
+	font-size: var(--font-size-base);
+	z-index: var(--z-tooltip);
+	transition:
+		opacity var(--transition-fast),
+		visibility var(--transition-fast);
+	pointer-events: none;
+}
+
+.button-link {
+	color: var(--color-steam-gray);
+	text-decoration: none;
+	font-size: var(--font-size-sm);
+	font-weight: var(--font-weight-normal);
+	background: none;
+	border: none;
+	padding: 0;
+	margin: 0;
+	display: inline;
+}
+
+.button-link:hover {
+	color: var(--color-white);
+	text-decoration: underline;
+	background: none;
+}

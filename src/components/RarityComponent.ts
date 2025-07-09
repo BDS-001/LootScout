@@ -26,7 +26,7 @@ function hideTooltip(tooltip: HTMLElement) {
 }
 
 function attachTooltipEvents(componentId: string) {
-	const rarityElement = document.querySelector(`#${componentId} .rarity`) as HTMLElement;
+	const rarityElement = document.querySelector(`#${componentId} .rarity-badge`) as HTMLElement;
 	const tooltip = document.querySelector(`#${componentId} .rarity-tooltip`) as HTMLElement;
 
 	if (!rarityElement || !tooltip) return;
@@ -64,7 +64,7 @@ export function createRarityComponent(
 	setTimeout(() => attachTooltipEvents(componentId), 100);
 
 	return `<div class="deal_rarity ${positionClass}" id="${componentId}">
-    <span class="rarity rarity-${rarityClass} rarity-${rarityClass}-bg" data-tooltip="true">${rarity}</span>
+    <span class="rarity-badge rarity-${rarityClass} rarity-${rarityClass}-bg" data-tooltip="true">${rarity}</span>
     <div class="rarity-tooltip">
       <div class="tooltip-header">Rarity Chart:</div>
       ${generateTooltipContent()}

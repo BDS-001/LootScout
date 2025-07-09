@@ -109,36 +109,36 @@
 
 /* Border variants */
 .rarity-common-border {
-	border: 2px solid var(--rarity-common);
+	border: var(--border-width) solid var(--rarity-common);
 }
 
 .rarity-uncommon-border {
-	border: 2px solid var(--rarity-uncommon);
+	border: var(--border-width) solid var(--rarity-uncommon);
 }
 
 .rarity-rare-border {
-	border: 2px solid var(--rarity-rare);
+	border: var(--border-width) solid var(--rarity-rare);
 }
 
 .rarity-epic-border {
-	border: 2px solid var(--rarity-epic);
+	border: var(--border-width) solid var(--rarity-epic);
 }
 
 .rarity-legendary-border {
-	border: 2px solid var(--rarity-legendary);
+	border: var(--border-width) solid var(--rarity-legendary);
 }
 
 .rarity-mythic-border {
-	border: 2px solid var(--rarity-mythic);
+	border: var(--border-width) solid var(--rarity-mythic);
 }
 
 .rarity-exotic-border {
-	border: 2px solid var(--rarity-exotic);
+	border: var(--border-width) solid var(--rarity-exotic);
 	box-shadow: 0 0 10px var(--rarity-exotic);
 }
 
 .rarity-iridescent-border {
-	border: 2px solid;
+	border: var(--border-width) solid;
 	border-image: var(--rarity-iridescent) 1;
 	animation: iridescent-shimmer 3s ease-in-out infinite alternate;
 }

@@ -1,11 +1,13 @@
+import globalCss from '../styles/global.css?inline';
 import raritiesCss from '../styles/rarities.css?inline';
 import rightcolCss from '../styles/rightcol.css?inline';
 import rarityTooltipCss from '../styles/rarity-tooltip.css?inline';
 
 export default function injectCSS(): void {
-	// const style = document.createElement('style');
-	// style.textContent = contentCss;
-	// document.head.appendChild(style);
+	// Inject global CSS first to ensure variables are available
+	const globalStyle = document.createElement('style');
+	globalStyle.textContent = globalCss;
+	document.head.appendChild(globalStyle);
 
 	const raritiesStyle = document.createElement('style');
 	raritiesStyle.textContent = raritiesCss;
