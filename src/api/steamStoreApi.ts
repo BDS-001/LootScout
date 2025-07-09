@@ -1,4 +1,14 @@
-import { SteamApiParams, SteamApiResponse } from '../shared/types';
+import { SteamApiParams, SteamApiResponse, SteamPriceOverview } from '../shared/types';
+
+function normalizeSteamPriceOverview(priceOverview: SteamPriceOverview): SteamPriceOverview {
+	const normalized = { ...priceOverview };
+
+	if (normalized.discount_percent === 100) {
+		normalized.final = 0;
+	}
+
+	return normalized;
+}
 
 const STEAM_STORE_BASE_URL = 'https://store.steampowered.com/api/appdetails';
 
@@ -21,6 +31,12 @@ export default async function fetchSteamStoreData(
 
 		const data = await result.json();
 		console.log('Steam Store API result:', data);
+
+		if (data[appId]?.data?.price_overview) {
+			data[appId].data.price_overview = normalizeSteamPriceOverview(
+				data[appId].data.price_overview
+			);
+		}
 
 		return {
 			success: true,
