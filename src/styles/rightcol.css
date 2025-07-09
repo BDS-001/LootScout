@@ -4,6 +4,7 @@
 	padding: 8px;
 	background-color: rgba(0, 0, 0, 0.2);
 	border-radius: 3px;
+	position: relative;
 }
 
 .deal_header {
@@ -36,10 +37,6 @@
 
 .deal_comparison {
 	margin-bottom: 6px;
-}
-
-.deal_rarity {
-	text-align: right;
 }
 
 .deal_button {

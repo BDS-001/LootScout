@@ -74,38 +74,37 @@
 	}
 }
 
-/* Background variants */
+/* Background variants - darker versions for badges */
 .rarity-common-bg {
-	background-color: var(--rarity-common);
+	background-color: #2a2f3a;
 }
 
 .rarity-uncommon-bg {
-	background-color: var(--rarity-uncommon);
+	background-color: #1a3020;
 }
 
 .rarity-rare-bg {
-	background-color: var(--rarity-rare);
+	background-color: #0f2a4a;
 }
 
 .rarity-epic-bg {
-	background-color: var(--rarity-epic);
+	background-color: #2a0f3a;
 }
 
 .rarity-legendary-bg {
-	background-color: var(--rarity-legendary);
+	background-color: #663300;
 }
 
 .rarity-mythic-bg {
-	background-color: var(--rarity-mythic);
+	background-color: #003a3a;
 }
 
 .rarity-exotic-bg {
-	background-color: var(--rarity-exotic);
+	background-color: #4a0000;
 }
 
 .rarity-iridescent-bg {
-	background: var(--rarity-iridescent);
-	animation: iridescent-shimmer 3s ease-in-out infinite alternate;
+	background-color: #6a1a3a;
 }
 
 /* Border variants */

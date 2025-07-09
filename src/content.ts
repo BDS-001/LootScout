@@ -2,22 +2,7 @@ import browser from 'webextension-polyfill';
 import parseSteamPageUrl from './parsers/steamAppIdParser';
 import { createLootScoutContentRightCol } from './components/createLootScoutContent';
 import { NormalizedCombinedGameDataResponse } from './shared/types';
-import raritiesCss from './styles/rarities.css?inline';
-import rightcolCss from './styles/rightcol.css?inline';
-
-function injectCSS(): void {
-	// const style = document.createElement('style');
-	// style.textContent = contentCss;
-	// document.head.appendChild(style);
-
-	const raritiesStyle = document.createElement('style');
-	raritiesStyle.textContent = raritiesCss;
-	document.head.appendChild(raritiesStyle);
-
-	const rightcolStyle = document.createElement('style');
-	rightcolStyle.textContent = rightcolCss;
-	document.head.appendChild(rightcolStyle);
-}
+import injectCSS from './utils/injectCSS';
 
 async function initializeContentScript(): Promise<void> {
 	injectCSS();

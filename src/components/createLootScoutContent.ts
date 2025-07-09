@@ -1,5 +1,6 @@
 import { NormalizedCombinedGameData, SteamPriceOverview } from '../shared/types';
-import { calculatePriceComparison, formatPrice } from '../util/priceCalculations';
+import { calculatePriceComparison, formatPrice } from '../utils/priceCalculations';
+import { createRarityComponent } from './RarityComponent';
 
 function getSteamPrice(priceOverview: SteamPriceOverview | undefined): number {
 	if (!priceOverview) {
@@ -72,9 +73,7 @@ export function createLootScoutContentRightCol(combinedData: NormalizedCombinedG
 			<div class="deal_button">
 				<a href="${gameData.url}" target="_blank" class="btnv6_blue_hoverfade btn_medium"><span>View Deals</span></a>
 			</div>
-			<div class="deal_rarity">
-				<span class="rarity rarity-exotic">Exotic</span>
-			</div>
+			${createRarityComponent(priceComparison.currentRawDiscount)}
 		</div>
 		
 		<div class="deal_section">
@@ -91,9 +90,7 @@ export function createLootScoutContentRightCol(combinedData: NormalizedCombinedG
 			<div class="deal_button">
 				<a href="${gameData.url}" target="_blank" class="btnv6_blue_hoverfade btn_medium"><span>View Deals</span></a>
 			</div>
-			<div class="deal_rarity">
-				<span class="rarity rarity-exotic">Exotic</span>
-			</div>
+			${createRarityComponent(priceComparison.historicalRawDiscount)}
 		</div>
 		
 		<div class="loot_scout_footer">
