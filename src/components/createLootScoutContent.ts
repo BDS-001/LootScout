@@ -86,12 +86,11 @@ export function createLootScoutContentRightCol(combinedData: NormalizedCombinedG
 	);
 
 	const headerDiv = document.createElement('div');
-	headerDiv.className = 'block responsive_apppage_details_right heading responsive_hidden';
+	headerDiv.className = 'block responsive_apppage_details_right heading';
 	headerDiv.textContent = `LootScout | ${gameData.title}`;
 
 	const contentDiv = document.createElement('div');
-	contentDiv.className =
-		'block responsive_apppage_details_right recommendation_noinfo responsive_hidden';
+	contentDiv.className = 'block responsive_apppage_details_right recommendation_noinfo';
 	contentDiv.innerHTML = `
 		<div class="deal_section">
 			<div class="deal_header">Steam Current Discount Rating</div>
