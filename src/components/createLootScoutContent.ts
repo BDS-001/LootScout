@@ -18,6 +18,16 @@ function getSteamOriginalPrice(priceOverview: SteamPriceOverview | undefined): n
 	return priceOverview.initial || priceOverview.final || 0;
 }
 
+function getSteamDealStatus(steamEqualsCurrent: boolean, steamEqualsHistorical: boolean): string {
+	if (steamEqualsCurrent) {
+		return 'Steam is offering the current best deal';
+	} else if (steamEqualsHistorical) {
+		return 'Steam is offering the historical low';
+	} else {
+		return 'Better deal available somewhere else';
+	}
+}
+
 // Function to inject content into .rightcol
 export function createLootScoutContentRightCol(combinedData: NormalizedCombinedGameData): void {
 	const { ggDealsData, steamStoreData } = combinedData;
@@ -51,6 +61,17 @@ export function createLootScoutContentRightCol(combinedData: NormalizedCombinedG
 		gameData.prices.historicalRetail
 	);
 
+	const steamDiscountPercentage =
+		steamStoreData.success &&
+		steamStoreData.data?.success &&
+		steamStoreData.data.data?.price_overview
+			? steamStoreData.data.data.price_overview.discount_percent
+			: 0;
+	const steamDealStatus = getSteamDealStatus(
+		priceComparison.steamEqualsCurrent,
+		priceComparison.steamEqualsHistorical
+	);
+
 	const headerDiv = document.createElement('div');
 	headerDiv.className = 'block responsive_apppage_details_right heading responsive_hidden';
 	headerDiv.textContent = `LootScout | ${gameData.title}`;
@@ -59,6 +80,14 @@ export function createLootScoutContentRightCol(combinedData: NormalizedCombinedG
 	contentDiv.className =
 		'block responsive_apppage_details_right recommendation_noinfo responsive_hidden';
 	contentDiv.innerHTML = `
+		<div class="deal_section">
+			<div class="deal_header">Steam Current Discount Rating</div>
+			<div class="deal_comparison">
+				${createRarityComponent(steamDiscountPercentage, false)}
+				<span class="steam_save">${steamDealStatus}</span>
+			</div>
+		</div>
+		
 		<div class="deal_section">
 			<div class="deal_header">Current Best Deal</div>
 			<div class="deal_price">${formatPrice(gameData.prices.currentRetail, gameData.prices.currency)} <span class="raw_discount">(${priceComparison.currentRawDiscount}% off)</span></div>
@@ -73,7 +102,7 @@ export function createLootScoutContentRightCol(combinedData: NormalizedCombinedG
 			<div class="deal_button">
 				<a href="${gameData.url}" target="_blank" class="btnv6_blue_hoverfade btn_medium"><span>View Deals</span></a>
 			</div>
-			${createRarityComponent(priceComparison.currentRawDiscount)}
+			${createRarityComponent(priceComparison.currentRawDiscount, true)}
 		</div>
 		
 		<div class="deal_section">
@@ -90,7 +119,7 @@ export function createLootScoutContentRightCol(combinedData: NormalizedCombinedG
 			<div class="deal_button">
 				<a href="${gameData.url}" target="_blank" class="btnv6_blue_hoverfade btn_medium"><span>View Deals</span></a>
 			</div>
-			${createRarityComponent(priceComparison.historicalRawDiscount)}
+			${createRarityComponent(priceComparison.historicalRawDiscount, true)}
 		</div>
 		
 		<div class="loot_scout_footer">

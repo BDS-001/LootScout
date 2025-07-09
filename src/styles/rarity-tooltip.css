@@ -1,8 +1,12 @@
 .deal_rarity {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.deal_rarity_corner {
 	position: absolute;
 	top: 8px;
 	right: 8px;
-	display: inline-block;
 }
 
 .deal_rarity .rarity {

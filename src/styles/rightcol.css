@@ -23,13 +23,13 @@
 }
 
 .raw_discount {
-	color: #5ba32b;
+	color: #a3d006;
 	font-size: 12px;
 	font-weight: 500;
 }
 
 .deal_discount {
-	color: #5ba32b;
+	color: #a3d006;
 	font-size: 12px;
 	font-weight: 600;
 	margin-bottom: 4px;
@@ -51,7 +51,7 @@
 }
 
 .steam_save {
-	color: #5ba32b;
+	color: #a3d006;
 	font-size: 11px;
 	font-weight: 600;
 }

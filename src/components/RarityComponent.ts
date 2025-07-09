@@ -52,14 +52,18 @@ function generateTooltipContent(): string {
 	).join('');
 }
 
-export function createRarityComponent(percentage: number): string {
+export function createRarityComponent(
+	percentage: number,
+	useCornerPosition: boolean = true
+): string {
 	const rarity = getRarity(percentage);
 	const rarityClass = rarity.toLowerCase();
 	const componentId = `rarity-${Math.random().toString(36).substring(2, 9)}`;
+	const positionClass = useCornerPosition ? 'deal_rarity_corner' : '';
 
 	setTimeout(() => attachTooltipEvents(componentId), 100);
 
-	return `<div class="deal_rarity" id="${componentId}">
+	return `<div class="deal_rarity ${positionClass}" id="${componentId}">
     <span class="rarity rarity-${rarityClass} rarity-${rarityClass}-bg" data-tooltip="true">${rarity}</span>
     <div class="rarity-tooltip">
       <div class="tooltip-header">Rarity Chart:</div>
