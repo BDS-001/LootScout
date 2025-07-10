@@ -1,9 +1,10 @@
 import { GameData } from '../shared/types';
 import { formatPrice } from '../utils/priceCalculations';
 import { createRarityComponent } from './RarityComponent';
+import regionMap from '../constants/regionMap';
 
 // Function to inject content into .rightcol
-export function createLootScoutContentRightCol(gameData: GameData): void {
+export function createLootScoutContentRightCol(gameData: GameData, countryCode: string): void {
 	const rightCol = document.querySelector('.rightcol.game_meta_data');
 	if (!rightCol) {
 		console.error('LootScout: .rightcol.game_meta_data element not found on Steam page');
@@ -13,6 +14,11 @@ export function createLootScoutContentRightCol(gameData: GameData): void {
 	// get the precompiled data
 	const { lootScout } = gameData;
 
+	const countryInfo = regionMap[countryCode as keyof typeof regionMap];
+	const countryDisplay = countryInfo
+		? `${countryInfo.name} (${countryInfo.currency})`
+		: countryCode.toUpperCase();
+
 	const headerDiv = document.createElement('div');
 	headerDiv.className = 'block responsive_apppage_details_right heading';
 	headerDiv.textContent = `LootScout | ${gameData.title}`;
@@ -21,14 +27,16 @@ export function createLootScoutContentRightCol(gameData: GameData): void {
 	contentDiv.className = 'block responsive_apppage_details_right recommendation_noinfo';
 	contentDiv.innerHTML = `
 		<div class="deal_section">
+			<div class="deal_header">Region: ${countryDisplay}</div>
+		</div>
+		
+		<div class="deal_section">
 			<div class="deal_header">Steam Current Discount Rating</div>
-			<div class="deal_rating">
-				<span class="rating_label">Rating:</span>
-				${createRarityComponent(gameData.steam.discount_percent, false)}
-			</div>
+			<div class="deal_price">${formatPrice(gameData.steam.final, gameData.steam.currency)} <span class="raw_discount">(${gameData.steam.discount_percent}% off)</span></div>
 			<div class="deal_status">
 				<span class="${lootScout.steam.status.className}">${lootScout.steam.status.text}</span>
 			</div>
+			${createRarityComponent(gameData.steam.discount_percent, true)}
 		</div>
 		
 		<div class="deal_section">

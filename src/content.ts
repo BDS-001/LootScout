@@ -18,6 +18,9 @@ async function initializeContentScript(): Promise<void> {
 	}
 
 	try {
+		const countryStorage = await browser.storage.local.get('countryCode');
+		const currentCountry = countryStorage.countryCode || 'us';
+
 		const response: GameDataResponse = await browser.runtime.sendMessage({
 			action: 'getAppData',
 			appId,
@@ -27,7 +30,7 @@ async function initializeContentScript(): Promise<void> {
 		console.log('LootScout API Response:', response);
 
 		if (response.success) {
-			createLootScoutContentRightCol(response);
+			createLootScoutContentRightCol(response, currentCountry);
 		} else {
 			console.error('LootScout: Failed to fetch game data:', {
 				responseSuccess: response.success,

@@ -15,8 +15,14 @@ async function initializeCountryCode(): Promise<void> {
 		});
 
 		const countryCode = parseSteamCountryCode(cookie?.value);
-		await browser.storage.local.set({ countryCode });
-		console.log('Saved country code:', countryCode);
+
+		if (countryCode in regionMap) {
+			await browser.storage.local.set({ countryCode });
+			console.log('Saved country code:', countryCode);
+		} else {
+			console.log('Invalid country code, using default');
+			await browser.storage.local.set({ countryCode: 'us' });
+		}
 	} catch (error) {
 		console.log('Could not detect Steam country, using default:', error);
 		await browser.storage.local.set({ countryCode: 'us' });
@@ -32,11 +38,27 @@ browser.runtime.onInstalled.addListener(async (details) => {
 });
 
 browser.runtime.onMessage.addListener(async (msg, _sender, sendResponse) => {
-	if (msg.action === 'getAppData') {
+	if (msg.action === 'updateCountryCode') {
+		try {
+			const countryCode = msg.countryCode;
+
+			if (countryCode in regionMap) {
+				await browser.storage.local.set({ countryCode });
+				console.log('Updated country code:', countryCode);
+				return { success: true };
+			} else {
+				console.log('Invalid country code provided:', countryCode);
+				return { success: false, error: 'Invalid country code' };
+			}
+		} catch (error) {
+			console.error('Error updating country code:', error);
+			return { success: false, error: error };
+		}
+	} else if (msg.action === 'getAppData') {
 		const regionStorage = await browser.storage.local.get('countryCode');
 		console.log(regionStorage);
 
-		const region = 'ca';
+		const region = regionStorage.countryCode || 'us';
 
 		const params: CombinedGameDataParams = {
 			appId: msg.appId,
