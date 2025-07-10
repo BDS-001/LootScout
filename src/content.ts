@@ -1,7 +1,7 @@
 import browser from 'webextension-polyfill';
 import parseSteamPageUrl from './parsers/steamAppIdParser';
 import { createLootScoutContentRightCol } from './components/createLootScoutContent';
-import { NormalizedCombinedGameDataResponse } from './shared/types';
+import { GameDataResponse } from './shared/types';
 import injectCSS from './utils/injectCSS';
 
 async function initializeContentScript(): Promise<void> {
@@ -18,7 +18,7 @@ async function initializeContentScript(): Promise<void> {
 	}
 
 	try {
-		const response: NormalizedCombinedGameDataResponse = await browser.runtime.sendMessage({
+		const response: GameDataResponse = await browser.runtime.sendMessage({
 			action: 'getAppData',
 			appId,
 			apiKey,
@@ -27,13 +27,12 @@ async function initializeContentScript(): Promise<void> {
 
 		console.log('LootScout API Response:', response);
 
-		if (response.success && response.data.ggDealsData.success) {
-			createLootScoutContentRightCol(response.data);
+		if (response.success) {
+			createLootScoutContentRightCol(response);
 		} else {
 			console.error('LootScout: Failed to fetch game data:', {
 				responseSuccess: response.success,
-				ggDealsSuccess: response.success ? response.data.ggDealsData.success : 'N/A',
-				error: response.success ? response.data.ggDealsData.data : response.data,
+				error: response.data,
 			});
 		}
 	} catch (error) {

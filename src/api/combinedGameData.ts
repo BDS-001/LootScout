@@ -18,7 +18,7 @@ export default async function fetchCombinedGameData(
 			success: true,
 			data: {
 				appId,
-				ggDealsData,
+				dealData: ggDealsData,
 				steamStoreData,
 			},
 		};

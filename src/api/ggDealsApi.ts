@@ -27,14 +27,8 @@ export default async function fetchGgDealsData(
 					gameData.prices.currentRetail = Math.round(
 						parseFloat(gameData.prices.currentRetail) * 100
 					);
-					gameData.prices.currentKeyshops = Math.round(
-						parseFloat(gameData.prices.currentKeyshops) * 100
-					);
 					gameData.prices.historicalRetail = Math.round(
 						parseFloat(gameData.prices.historicalRetail) * 100
-					);
-					gameData.prices.historicalKeyshops = Math.round(
-						parseFloat(gameData.prices.historicalKeyshops) * 100
 					);
 				}
 			});

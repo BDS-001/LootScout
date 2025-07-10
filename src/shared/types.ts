@@ -1,63 +1,12 @@
-export interface GameInfo {
-	title: string;
-	url: string;
-	prices: {
-		currentRetail: number;
-		currentKeyshops: number;
-		historicalRetail: number;
-		historicalKeyshops: number;
-		currency: string;
-	};
-}
-
-export interface ApiErrorData {
+// API Error Structure
+export interface ApiError {
 	name: string;
 	message: string;
 	code: number;
 	status: number;
 }
 
-export interface GgDealsApiParams {
-	appId: string;
-	apiKey: string;
-	region: RegionCode;
-}
-
-export interface GgDealsGameData {
-	title: string;
-	url: string;
-	prices: {
-		currentRetail: number;
-		currentKeyshops: number;
-		historicalRetail: number;
-		historicalKeyshops: number;
-		currency: string;
-	};
-}
-
-export type GgDealsApiResponse =
-	| { success: true; data: Record<string, GgDealsGameData | null> }
-	| { success: false; data: ApiErrorData; error?: unknown };
-
-export type NormalizedGgDealsApiResponse =
-	| { success: true; data: GgDealsGameData | null }
-	| { success: false; data: ApiErrorData; error?: unknown };
-
-export type GameDataApiResponse =
-	| { success: true; data: Record<string, GameInfo | null> }
-	| { success: false; data: ApiErrorData; error?: unknown };
-
-export interface SteamAppUrlData {
-	appId: string | null;
-	appName: string | null;
-}
-
-export interface RegionInfo {
-	name: string;
-	currency: string;
-	symbol: string;
-}
-
+// Region Types
 export type RegionCode =
 	| 'au'
 	| 'be'
@@ -79,11 +28,37 @@ export type RegionCode =
 	| 'se'
 	| 'us';
 
+export interface RegionInfo {
+	name: string;
+	currency: string;
+	symbol: string;
+}
+
+// Steam App Parser
+export interface SteamAppUrlData {
+	appId: string | null;
+	appName: string | null;
+}
+
+// API Parameters
+export interface GgDealsApiParams {
+	appId: string;
+	apiKey: string;
+	region: RegionCode;
+}
+
 export interface SteamApiParams {
 	appId: string;
 	region: RegionCode;
 }
 
+export interface CombinedGameDataParams {
+	appId: string;
+	apiKey: string;
+	region: RegionCode;
+}
+
+// Steam Types
 export interface SteamPriceOverview {
 	currency: string;
 	initial: number;
@@ -103,36 +78,90 @@ export interface SteamAppData {
 	};
 }
 
+// GG.deals Game Data
+export interface GgDealsGameData {
+	title: string;
+	url: string;
+	prices: {
+		currentRetail: number;
+		currentKeyshops: number;
+		historicalRetail: number;
+		historicalKeyshops: number;
+		currency: string;
+	};
+}
+
+// API Response Types
+export type GgDealsApiResponse =
+	| { success: true; data: Record<string, GgDealsGameData | null> }
+	| { success: false; data: ApiError; error?: unknown };
+
 export type SteamApiResponse =
 	| { success: true; data: Record<string, SteamAppData> }
-	| { success: false; data: ApiErrorData; error?: unknown };
-
-export type NormalizedSteamApiResponse =
-	| { success: true; data: SteamAppData | null }
-	| { success: false; data: ApiErrorData; error?: unknown };
-
-export interface CombinedGameDataParams {
-	appId: string;
-	apiKey: string;
-	region: RegionCode;
-}
+	| { success: false; data: ApiError; error?: unknown };
 
 export interface CombinedGameData {
 	appId: string;
-	ggDealsData: GgDealsApiResponse;
+	dealData: GgDealsApiResponse;
 	steamStoreData: SteamApiResponse;
-}
-
-export interface NormalizedCombinedGameData {
-	appId: string;
-	ggDealsData: NormalizedGgDealsApiResponse;
-	steamStoreData: NormalizedSteamApiResponse;
 }
 
 export type CombinedGameDataResponse =
 	| { success: true; data: CombinedGameData }
-	| { success: false; data: ApiErrorData; error?: unknown };
+	| { success: false; data: ApiError; error?: unknown };
 
-export type NormalizedCombinedGameDataResponse =
-	| { success: true; data: NormalizedCombinedGameData }
-	| { success: false; data: ApiErrorData; error?: unknown };
+// Final Simplified Response (what the content script uses)
+export interface GameData {
+	success: true;
+	title: string;
+	appId: string;
+	deal: {
+		currentBest: number;
+		historicalBest: number;
+		currency: string;
+		url: string;
+	};
+	steam: {
+		currency: string;
+		initial: number;
+		final: number;
+		discount_percent: number;
+	};
+	lootScout: {
+		steam: {
+			status: {
+				text: string;
+				className: string;
+			};
+			rarity: {
+				name: string;
+				className: string;
+			};
+		};
+		currentBest: {
+			rawDiscount: number;
+			discount: number;
+			savings: number;
+			rarity: {
+				name: string;
+				className: string;
+			};
+			isEqualToSteam: boolean;
+		};
+		historicalBest: {
+			rawDiscount: number;
+			discount: number;
+			savings: number;
+			rarity: {
+				name: string;
+				className: string;
+			};
+			isEqualToSteam: boolean;
+		};
+		hltb: {
+			url: string;
+		};
+	};
+}
+
+export type GameDataResponse = GameData | { success: false; data: ApiError; error?: unknown };
