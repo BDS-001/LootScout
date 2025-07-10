@@ -22,7 +22,7 @@
 			"run_at": "document_idle"
 		}
 	],
-	"permissions": ["activeTab"],
+	"permissions": ["activeTab", "storage", "cookies"],
 	"host_permissions": ["*://store.steampowered.com/*", "https://api.gg.deals/*"],
 	"content_security_policy": {
 		"extension_pages": "script-src 'self'; object-src 'self'"

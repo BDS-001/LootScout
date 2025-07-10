@@ -1,18 +1,21 @@
-/**
- * Parse Steam cookies to get user's country code
- * TODO: Implement function to extract country code from Steam cookies
- *
- * Steam stores user location in cookies like:
- * - steamCountry: Contains country code (e.g., "US", "CA", "GB")
- * - Steam_Language: Contains language preference
- *
- * @returns {string} Country code from Steam cookies or default fallback
- */
-export default function getSteamCountryCode(): string {
-	// TODO: Implementation needed
-	// 1. Parse document.cookie for steamCountry
-	// 2. Extract country code from cookie value
-	// 3. Return country code or fallback to 'us'
+import regionMap from '../constants/regionMap';
+import { RegionCode } from '../shared/types';
 
-	return 'us'; // Default fallback
+export function parseSteamCountryCode(cookieValue: string | null | undefined): RegionCode {
+	if (!cookieValue) {
+		return 'us';
+	}
+
+	const countryCode = cookieValue.split('%7C')[0].toLowerCase();
+
+	if (countryCode in regionMap) {
+		return countryCode as RegionCode;
+	}
+
+	return 'us';
+}
+
+export default function getSteamCountryCode(): RegionCode {
+	const match = document.cookie.match(/(?:^|;\s*)steamCountry=([^;]*)/);
+	return parseSteamCountryCode(match?.[1]);
 }

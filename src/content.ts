@@ -22,7 +22,6 @@ async function initializeContentScript(): Promise<void> {
 			action: 'getAppData',
 			appId,
 			apiKey,
-			region: 'ca',
 		});
 
 		console.log('LootScout API Response:', response);
