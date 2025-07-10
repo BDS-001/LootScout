@@ -20,7 +20,7 @@ function getSteamDealStatus(
 		};
 	} else {
 		return {
-			text: 'Better deal available somewhere else',
+			text: 'Better deal available',
 			className: 'steam_better_elsewhere',
 		};
 	}

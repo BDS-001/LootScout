@@ -22,8 +22,11 @@ export function createLootScoutContentRightCol(gameData: GameData): void {
 	contentDiv.innerHTML = `
 		<div class="deal_section">
 			<div class="deal_header">Steam Current Discount Rating</div>
-			<div class="deal_comparison">
+			<div class="deal_rating">
+				<span class="rating_label">Rating:</span>
 				${createRarityComponent(gameData.steam.discount_percent, false)}
+			</div>
+			<div class="deal_status">
 				<span class="${lootScout.steam.status.className}">${lootScout.steam.status.text}</span>
 			</div>
 		</div>
@@ -72,7 +75,7 @@ export function createLootScoutContentRightCol(gameData: GameData): void {
 		</div>
 		
 		<div class="loot_scout_footer">
-			<span class="powered_by">Powered by <a href="https://gg.deals/" target="_blank">GG.deals</a></span>
+			<span class="powered_by">Powered by&nbsp;<a href="https://gg.deals/" target="_blank">GG.deals</a></span>
 		</div>
 	`;
 

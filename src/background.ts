@@ -1,7 +1,7 @@
 import browser from 'webextension-polyfill';
 import fetchCombinedGameData from './api/combinedGameData';
 import { normalizeResponse } from './helpers/formatResponse';
-import { CombinedGameDataParams, GameDataResponse } from './shared/types';
+import { CombinedGameDataParams } from './shared/types';
 
 console.log('Hello from the background!');
 
