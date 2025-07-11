@@ -52,11 +52,24 @@ export interface SteamApiParams {
 	region: RegionCode;
 }
 
-export interface CombinedGameDataParams {
-	appId: string;
+// ISP-compliant interfaces
+export interface ApiCredentials {
 	apiKey: string;
+}
+
+export interface GameIdentifier {
+	appId: string;
+}
+
+export interface LocalizationParams {
 	region: RegionCode;
 }
+
+// Composed interface for backward compatibility
+export interface CombinedGameDataParams
+	extends ApiCredentials,
+		GameIdentifier,
+		LocalizationParams {}
 
 // Steam Types
 export interface SteamPriceOverview {
@@ -110,11 +123,24 @@ export type CombinedGameDataResponse =
 	| { success: true; data: CombinedGameData }
 	| { success: false; data: ApiError; error?: unknown };
 
-// Final Simplified Response (what the content script uses)
-export interface GameData {
+// ISP-compliant GameData interfaces
+export interface GameBasicInfo {
 	success: true;
 	title: string;
 	appId: string;
+}
+
+export interface RarityInfo {
+	name: string;
+	className: string;
+}
+
+export interface DealStatus {
+	text: string;
+	className: string;
+}
+
+export interface GamePricing {
 	deal: {
 		currentBest: number;
 		historicalBest: number;
@@ -127,35 +153,26 @@ export interface GameData {
 		final: number;
 		discount_percent: number;
 	};
+}
+
+export interface GameAnalytics {
 	lootScout: {
 		steam: {
-			status: {
-				text: string;
-				className: string;
-			};
-			rarity: {
-				name: string;
-				className: string;
-			};
+			status: DealStatus;
+			rarity: RarityInfo;
 		};
 		currentBest: {
 			rawDiscount: number;
 			discount: number;
 			savings: number;
-			rarity: {
-				name: string;
-				className: string;
-			};
+			rarity: RarityInfo;
 			isEqualToSteam: boolean;
 		};
 		historicalBest: {
 			rawDiscount: number;
 			discount: number;
 			savings: number;
-			rarity: {
-				name: string;
-				className: string;
-			};
+			rarity: RarityInfo;
 			isEqualToSteam: boolean;
 		};
 		hltb: {
@@ -163,5 +180,8 @@ export interface GameData {
 		};
 	};
 }
+
+// Composed interface for backward compatibility
+export interface GameData extends GameBasicInfo, GamePricing, GameAnalytics {}
 
 export type GameDataResponse = GameData | { success: false; data: ApiError; error?: unknown };
