@@ -1,5 +1,5 @@
-import regionMap from '../constants/regionMap';
 import { RegionCode } from '../shared/types';
+import { isValidCountryCode } from '../services/countryService';
 
 export function parseSteamCountryCode(cookieValue: string | null | undefined): RegionCode {
 	if (!cookieValue) {
@@ -8,8 +8,8 @@ export function parseSteamCountryCode(cookieValue: string | null | undefined): R
 
 	const countryCode = cookieValue.split('%7C')[0].toLowerCase();
 
-	if (countryCode in regionMap) {
-		return countryCode as RegionCode;
+	if (isValidCountryCode(countryCode)) {
+		return countryCode;
 	}
 
 	return 'us';

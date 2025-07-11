@@ -1,4 +1,5 @@
 import { GgDealsApiParams, GgDealsApiResponse } from '../shared/types';
+import { handleApiError } from '../utils/apiErrorHandler';
 
 const GG_DEALS_BASE_URL = 'https://api.gg.deals/v1/prices/by-steam-app-id/';
 
@@ -36,16 +37,6 @@ export default async function fetchGgDealsData(
 
 		return data;
 	} catch (error) {
-		console.error('GG Deals API error:', error);
-		return {
-			success: false,
-			data: {
-				name: 'Network Error',
-				message: 'Error fetching data from GG Deals',
-				code: 0,
-				status: 0,
-			},
-			error,
-		};
+		return handleApiError(error, 'GG Deals');
 	}
 }

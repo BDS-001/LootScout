@@ -5,7 +5,7 @@ import { CombinedGameDataParams } from './shared/types';
 import { parseSteamCountryCode } from './parsers/steamLanguageParser';
 import { setStorageItem, getStorageItem } from './services/storageService';
 import { isValidCountryCode, loadCountryCode, updateCountryCode } from './services/countryService';
-import { loadApiKey } from './api/apiKeyService';
+import { getApiKeyWithFallback } from './api/apiKeyService';
 
 console.log('Hello from the background!');
 
@@ -53,7 +53,7 @@ browser.runtime.onMessage.addListener(async (msg, _sender, sendResponse) => {
 		const region = await loadCountryCode();
 		console.log('Using region:', region);
 
-		const apiKey = (await loadApiKey()) || import.meta.env.VITE_GG_API_KEY;
+		const apiKey = await getApiKeyWithFallback();
 
 		if (!apiKey) {
 			console.error(

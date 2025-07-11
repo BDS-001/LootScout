@@ -1,6 +1,7 @@
 import fetchGgDealsData from './ggDealsApi';
 import fetchSteamStoreData from './steamStoreApi';
 import { CombinedGameDataParams, CombinedGameDataResponse } from '../shared/types';
+import { handleApiError } from '../utils/apiErrorHandler';
 
 export default async function fetchCombinedGameData(
 	params: CombinedGameDataParams
@@ -23,16 +24,6 @@ export default async function fetchCombinedGameData(
 			},
 		};
 	} catch (error) {
-		console.error('Combined game data fetch error:', error);
-		return {
-			success: false,
-			data: {
-				name: 'Network Error',
-				message: 'Error fetching combined game data',
-				code: 0,
-				status: 0,
-			},
-			error,
-		};
+		return handleApiError(error, 'Combined Game Data');
 	}
 }

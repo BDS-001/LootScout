@@ -1,4 +1,5 @@
 import { SteamApiParams, SteamApiResponse, SteamPriceOverview } from '../shared/types';
+import { handleApiError } from '../utils/apiErrorHandler';
 
 function normalizeSteamPriceOverview(priceOverview: SteamPriceOverview): SteamPriceOverview {
 	const normalized = { ...priceOverview };
@@ -43,16 +44,6 @@ export default async function fetchSteamStoreData(
 			data,
 		};
 	} catch (error) {
-		console.error('Steam Store API error:', error);
-		return {
-			success: false,
-			data: {
-				name: 'Network Error',
-				message: 'Error fetching data from Steam Store',
-				code: 0,
-				status: 0,
-			},
-			error,
-		};
+		return handleApiError(error, 'Steam Store');
 	}
 }

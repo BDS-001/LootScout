@@ -4,7 +4,7 @@ import { createLootScoutContentRightCol } from './components/createLootScoutCont
 import { GameDataResponse } from './shared/types';
 import injectCSS from './utils/injectCSS';
 import { loadCountryCode } from './services/countryService';
-import { loadApiKey } from './api/apiKeyService';
+import { getApiKeyWithFallback } from './api/apiKeyService';
 
 async function initializeContentScript(): Promise<void> {
 	injectCSS();
@@ -12,7 +12,7 @@ async function initializeContentScript(): Promise<void> {
 	const { appId } = parseSteamPageUrl();
 	if (!appId) return;
 
-	const apiKey = (await loadApiKey()) || import.meta.env.VITE_GG_API_KEY;
+	const apiKey = await getApiKeyWithFallback();
 
 	if (!apiKey) {
 		console.error(

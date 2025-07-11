@@ -51,3 +51,8 @@ export const validateAndSaveApiKey = async (apiKey: string): Promise<ApiKeyTestR
 
 	return testResult;
 };
+
+export const getApiKeyWithFallback = async (): Promise<string | undefined> => {
+	const apiKey = await loadApiKey();
+	return apiKey || import.meta.env.VITE_GG_API_KEY;
+};

@@ -14,7 +14,7 @@ export const loadCountryCode = async (): Promise<RegionCode> => {
 };
 
 export const updateCountryCode = async (countryCode: string): Promise<void> => {
-	if (!(countryCode in regionMap)) {
+	if (!isValidCountryCode(countryCode)) {
 		throw new Error(`Invalid country code: ${countryCode}`);
 	}
 
