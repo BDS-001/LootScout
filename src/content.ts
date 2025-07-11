@@ -3,6 +3,8 @@ import parseSteamPageUrl from './parsers/steamAppIdParser';
 import { createLootScoutContentRightCol } from './components/createLootScoutContent';
 import { GameDataResponse } from './shared/types';
 import injectCSS from './utils/injectCSS';
+import { loadCountryCode } from './services/countryService';
+import { loadApiKey } from './api/apiKeyService';
 
 async function initializeContentScript(): Promise<void> {
 	injectCSS();
@@ -10,16 +12,17 @@ async function initializeContentScript(): Promise<void> {
 	const { appId } = parseSteamPageUrl();
 	if (!appId) return;
 
-	const apiKey = import.meta.env.VITE_GG_API_KEY;
+	const apiKey = (await loadApiKey()) || import.meta.env.VITE_GG_API_KEY;
 
 	if (!apiKey) {
-		console.error('LootScout: API key not found. Please check environment configuration.');
+		console.error(
+			'LootScout: API key not found. Please check environment configuration or configure your API key in the extension popup.'
+		);
 		return;
 	}
 
 	try {
-		const countryStorage = await browser.storage.local.get('countryCode');
-		const currentCountry = countryStorage.countryCode || 'us';
+		const currentCountry = await loadCountryCode();
 
 		const response: GameDataResponse = await browser.runtime.sendMessage({
 			action: 'getAppData',

@@ -3,7 +3,9 @@ import fetchCombinedGameData from './api/combinedGameData';
 import { normalizeResponse } from './helpers/formatResponse';
 import { CombinedGameDataParams } from './shared/types';
 import { parseSteamCountryCode } from './parsers/steamLanguageParser';
-import regionMap from './constants/regionMap';
+import { setStorageItem, getStorageItem } from './services/storageService';
+import { isValidCountryCode, loadCountryCode, updateCountryCode } from './services/countryService';
+import { loadApiKey } from './api/apiKeyService';
 
 console.log('Hello from the background!');
 
@@ -16,16 +18,16 @@ async function initializeCountryCode(): Promise<void> {
 
 		const countryCode = parseSteamCountryCode(cookie?.value);
 
-		if (countryCode in regionMap) {
-			await browser.storage.local.set({ countryCode });
+		if (isValidCountryCode(countryCode)) {
+			await setStorageItem('countryCode', countryCode);
 			console.log('Saved country code:', countryCode);
 		} else {
 			console.log('Invalid country code, using default');
-			await browser.storage.local.set({ countryCode: 'us' });
+			await setStorageItem('countryCode', 'us');
 		}
 	} catch (error) {
 		console.log('Could not detect Steam country, using default:', error);
-		await browser.storage.local.set({ countryCode: 'us' });
+		await setStorageItem('countryCode', 'us');
 	}
 }
 
@@ -40,29 +42,29 @@ browser.runtime.onInstalled.addListener(async (details) => {
 browser.runtime.onMessage.addListener(async (msg, _sender, sendResponse) => {
 	if (msg.action === 'updateCountryCode') {
 		try {
-			const countryCode = msg.countryCode;
-
-			if (countryCode in regionMap) {
-				await browser.storage.local.set({ countryCode });
-				console.log('Updated country code:', countryCode);
-				return { success: true };
-			} else {
-				console.log('Invalid country code provided:', countryCode);
-				return { success: false, error: 'Invalid country code' };
-			}
+			await updateCountryCode(msg.countryCode);
+			console.log('Updated country code:', msg.countryCode);
+			return { success: true };
 		} catch (error) {
 			console.error('Error updating country code:', error);
 			return { success: false, error: error };
 		}
 	} else if (msg.action === 'getAppData') {
-		const regionStorage = await browser.storage.local.get('countryCode');
-		console.log(regionStorage);
+		const region = await loadCountryCode();
+		console.log('Using region:', region);
 
-		const region = regionStorage.countryCode || 'us';
+		const apiKey = (await loadApiKey()) || import.meta.env.VITE_GG_API_KEY;
+
+		if (!apiKey) {
+			console.error(
+				'LootScout: API key not found. Please check environment configuration or configure your API key in the extension popup.'
+			);
+			return { success: false, data: 'API key not found' };
+		}
 
 		const params: CombinedGameDataParams = {
 			appId: msg.appId,
-			apiKey: msg.apiKey,
+			apiKey,
 			region,
 		};
 
@@ -76,8 +78,5 @@ browser.runtime.onMessage.addListener(async (msg, _sender, sendResponse) => {
 			console.error('Error fetching combined game data:', error);
 			return { success: false, data: error };
 		}
-
-		// return true to indicate we’ll call sendResponse asynchronously
-		return true;
 	}
 });

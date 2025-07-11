@@ -1,23 +1,30 @@
 import './Popup.css';
 import { useState, useEffect } from 'react';
-import browser from 'webextension-polyfill';
 import regionMap from '../constants/regionMap';
+import { loadApiKey, validateAndSaveApiKey } from '../api/apiKeyService';
+import { loadCountryCode, updateCountryCode } from '../services/countryService';
 
 export default function () {
 	const [selectedCountry, setSelectedCountry] = useState<string>('us');
+	const [apiKey, setApiKey] = useState<string>('');
+	const [testStatus, setTestStatus] = useState<string>('');
+	const [isTestingKey, setIsTestingKey] = useState<boolean>(false);
 
 	useEffect(() => {
-		const loadCurrentCountry = async () => {
+		const loadSettings = async () => {
 			try {
-				const result = await browser.storage.local.get('countryCode');
-				if (result.countryCode) {
-					setSelectedCountry(result.countryCode);
+				const countryCode = await loadCountryCode();
+				setSelectedCountry(countryCode);
+
+				const savedApiKey = await loadApiKey();
+				if (savedApiKey) {
+					setApiKey(savedApiKey);
 				}
 			} catch (error) {
-				console.error('Error loading country code:', error);
+				console.error('Error loading settings:', error);
 			}
 		};
-		loadCurrentCountry();
+		loadSettings();
 	}, []);
 
 	const handleCountryChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -25,12 +32,23 @@ export default function () {
 		setSelectedCountry(newCountryCode);
 
 		try {
-			await browser.runtime.sendMessage({
-				action: 'updateCountryCode',
-				countryCode: newCountryCode,
-			});
+			await updateCountryCode(newCountryCode);
 		} catch (error) {
 			console.error('Error updating country code:', error);
+		}
+	};
+
+	const testApiKey = async () => {
+		setIsTestingKey(true);
+		setTestStatus('Checking...');
+
+		try {
+			const result = await validateAndSaveApiKey(apiKey);
+			setTestStatus(result.message);
+		} catch (error) {
+			setTestStatus('Failed to verify API key');
+		} finally {
+			setIsTestingKey(false);
 		}
 	};
 
@@ -49,6 +67,24 @@ export default function () {
 						</option>
 					))}
 				</select>
+			</div>
+
+			<div className="api-key-section">
+				<label htmlFor="api-key-input">API Key:</label>
+				<div className="api-key-input-group">
+					<input
+						id="api-key-input"
+						type="password"
+						value={apiKey}
+						onChange={(e) => setApiKey(e.target.value)}
+						placeholder="Enter your GG.deals API key"
+						disabled={isTestingKey}
+					/>
+					<button onClick={testApiKey} disabled={isTestingKey} className="apply-button">
+						Apply
+					</button>
+				</div>
+				{testStatus && <p className="test-status">{testStatus}</p>}
 			</div>
 		</div>
 	);

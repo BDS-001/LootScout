@@ -31,3 +31,74 @@ code {
 	background-color: var(--bg-code);
 	border-radius: var(--radius-sm);
 }
+
+.country-selector,
+.api-key-section {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-sm);
+}
+
+.country-selector label,
+.api-key-section label {
+	color: var(--color-white);
+	font-size: var(--font-size-sm);
+	font-weight: var(--font-weight-medium);
+}
+
+.country-selector select {
+	padding: var(--spacing-sm);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: var(--radius-sm);
+	background-color: rgba(255, 255, 255, 0.1);
+	color: var(--color-white);
+	font-size: var(--font-size-sm);
+}
+
+.api-key-input-group {
+	display: flex;
+	gap: var(--spacing-sm);
+}
+
+.api-key-input-group input {
+	flex: 1;
+	padding: var(--spacing-sm);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: var(--radius-sm);
+	background-color: rgba(255, 255, 255, 0.1);
+	color: var(--color-white);
+	font-size: var(--font-size-sm);
+}
+
+.api-key-input-group input::placeholder {
+	color: rgba(255, 255, 255, 0.5);
+}
+
+.apply-button {
+	padding: var(--spacing-sm) var(--spacing-md);
+	border: none;
+	border-radius: var(--radius-sm);
+	background-color: var(--color-primary);
+	color: var(--color-white);
+	font-size: var(--font-size-sm);
+	font-weight: var(--font-weight-medium);
+	cursor: pointer;
+	transition: opacity 0.2s;
+}
+
+.apply-button:hover:not(:disabled) {
+	opacity: 0.8;
+}
+
+.apply-button:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.test-status {
+	color: var(--color-white);
+	font-size: var(--font-size-xs);
+	opacity: 0.8;
+	margin: 0;
+}
