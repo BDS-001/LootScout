@@ -1,6 +1,6 @@
 import browser from 'webextension-polyfill';
 import parseSteamPageUrl from './parsers/steamAppIdParser';
-import { createLootScoutContentRightCol } from './components/createLootScoutContent';
+import { createLootScoutContentRightCol } from './ui/createLootScoutContent';
 import { GameDataResponse } from './shared/types';
 import injectCSS from './utils/injectCSS';
 import { loadCountryCode } from './services/countryService';
