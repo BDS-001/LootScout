@@ -26,11 +26,16 @@ function getSteamDealStatus(
 	}
 }
 
-export function normalizeResponse(res: CombinedGameDataResponse): GameDataResponse {
+function validateGameData(res: CombinedGameDataResponse): {
+	isValid: boolean;
+	steamAppData?: any;
+	ggDealsData?: any;
+	error?: ApiError;
+} {
 	if (!res.success || !res.data.dealData.success || !res.data.steamStoreData.success) {
 		return {
-			success: false,
-			data: {
+			isValid: false,
+			error: {
 				name: 'Normalization Error',
 				message: 'Failed to normalize response data',
 				code: 0,
@@ -44,8 +49,8 @@ export function normalizeResponse(res: CombinedGameDataResponse): GameDataRespon
 
 	if (!steamAppData?.data?.price_overview || !ggDealsData) {
 		return {
-			success: false,
-			data: {
+			isValid: false,
+			error: {
 				name: 'Data Error',
 				message: 'Required data not found in API responses',
 				code: 0,
@@ -54,15 +59,15 @@ export function normalizeResponse(res: CombinedGameDataResponse): GameDataRespon
 		};
 	}
 
-	const steamPriceOverview = steamAppData.data.price_overview;
+	return { isValid: true, steamAppData, ggDealsData };
+}
 
-	// Calculate all business logic
+function calculatePriceMetrics(steamPriceOverview: any, ggDealsData: any) {
 	const steamPrice = steamPriceOverview.final || 0;
 	const steamOriginalPrice = steamPriceOverview.initial || steamPriceOverview.final || 0;
 	const currentRetail = ggDealsData.prices.currentRetail;
 	const historicalRetail = ggDealsData.prices.historicalRetail;
 
-	// Price comparisons
 	const currentRawDiscount = calculateDiscount(steamOriginalPrice, currentRetail);
 	const historicalRawDiscount = calculateDiscount(steamOriginalPrice, historicalRetail);
 	const currentDiscount = calculateDiscount(steamPrice, currentRetail);
@@ -72,21 +77,50 @@ export function normalizeResponse(res: CombinedGameDataResponse): GameDataRespon
 	const steamEqualsCurrent = steamPrice === currentRetail;
 	const steamEqualsHistorical = steamPrice === historicalRetail;
 
-	// Rarity calculations
-	const steamRarity = getRarity(steamPriceOverview.discount_percent);
-	const currentRarity = getRarity(currentRawDiscount);
-	const historicalRarity = getRarity(historicalRawDiscount);
+	return {
+		steamPrice,
+		steamOriginalPrice,
+		currentRetail,
+		historicalRetail,
+		currentRawDiscount,
+		historicalRawDiscount,
+		currentDiscount,
+		historicalDiscount,
+		currentSavings,
+		historicalSavings,
+		steamEqualsCurrent,
+		steamEqualsHistorical,
+	};
+}
 
-	// Steam deal status
-	const steamStatus = getSteamDealStatus(steamEqualsCurrent, steamEqualsHistorical);
+function calculateRarityMetrics(steamPriceOverview: any, priceMetrics: any) {
+	const steamRarity = getRarity(steamPriceOverview.discount_percent);
+	const currentRarity = getRarity(priceMetrics.currentRawDiscount);
+	const historicalRarity = getRarity(priceMetrics.historicalRawDiscount);
+
+	return { steamRarity, currentRarity, historicalRarity };
+}
+
+function buildGameDataResponse(
+	appId: string,
+	steamAppData: any,
+	ggDealsData: any,
+	priceMetrics: any,
+	rarityMetrics: any
+): GameDataResponse {
+	const steamPriceOverview = steamAppData.data.price_overview;
+	const steamStatus = getSteamDealStatus(
+		priceMetrics.steamEqualsCurrent,
+		priceMetrics.steamEqualsHistorical
+	);
 
 	return {
 		success: true,
 		title: ggDealsData.title,
-		appId: res.data.appId,
+		appId: appId,
 		deal: {
-			currentBest: currentRetail,
-			historicalBest: historicalRetail,
+			currentBest: priceMetrics.currentRetail,
+			historicalBest: priceMetrics.historicalRetail,
 			currency: ggDealsData.prices.currency,
 			url: ggDealsData.url,
 		},
@@ -100,33 +134,55 @@ export function normalizeResponse(res: CombinedGameDataResponse): GameDataRespon
 			steam: {
 				status: steamStatus,
 				rarity: {
-					name: steamRarity,
-					className: steamRarity.toLowerCase(),
+					name: rarityMetrics.steamRarity,
+					className: rarityMetrics.steamRarity.toLowerCase(),
 				},
 			},
 			currentBest: {
-				rawDiscount: currentRawDiscount,
-				discount: currentDiscount,
-				savings: currentSavings,
+				rawDiscount: priceMetrics.currentRawDiscount,
+				discount: priceMetrics.currentDiscount,
+				savings: priceMetrics.currentSavings,
 				rarity: {
-					name: currentRarity,
-					className: currentRarity.toLowerCase(),
+					name: rarityMetrics.currentRarity,
+					className: rarityMetrics.currentRarity.toLowerCase(),
 				},
-				isEqualToSteam: steamEqualsCurrent,
+				isEqualToSteam: priceMetrics.steamEqualsCurrent,
 			},
 			historicalBest: {
-				rawDiscount: historicalRawDiscount,
-				discount: historicalDiscount,
-				savings: historicalSavings,
+				rawDiscount: priceMetrics.historicalRawDiscount,
+				discount: priceMetrics.historicalDiscount,
+				savings: priceMetrics.historicalSavings,
 				rarity: {
-					name: historicalRarity,
-					className: historicalRarity.toLowerCase(),
+					name: rarityMetrics.historicalRarity,
+					className: rarityMetrics.historicalRarity.toLowerCase(),
 				},
-				isEqualToSteam: steamEqualsHistorical,
+				isEqualToSteam: priceMetrics.steamEqualsHistorical,
 			},
 			hltb: {
 				url: getHltbUrl(ggDealsData.title),
 			},
 		},
 	};
+}
+
+export function normalizeResponse(res: CombinedGameDataResponse): GameDataResponse {
+	const validation = validateGameData(res);
+	if (!validation.isValid) {
+		return {
+			success: false,
+			data: validation.error!,
+		};
+	}
+
+	const { steamAppData, ggDealsData } = validation;
+	const priceMetrics = calculatePriceMetrics(steamAppData.data.price_overview, ggDealsData);
+	const rarityMetrics = calculateRarityMetrics(steamAppData.data.price_overview, priceMetrics);
+
+	return buildGameDataResponse(
+		(res.data as any).appId,
+		steamAppData,
+		ggDealsData,
+		priceMetrics,
+		rarityMetrics
+	);
 }
