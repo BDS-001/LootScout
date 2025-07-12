@@ -37,7 +37,6 @@ export const testApiKey = async (apiKey: string): Promise<ApiKeyTestResult> => {
 			return { success: false, message: 'Invalid API key' };
 		}
 	} catch (error) {
-		console.error('API key test failed:', error);
 		return { success: false, message: 'Failed to verify API key' };
 	}
 };
@@ -54,5 +53,5 @@ export const validateAndSaveApiKey = async (apiKey: string): Promise<ApiKeyTestR
 
 export const getApiKeyWithFallback = async (): Promise<string | undefined> => {
 	const apiKey = await loadApiKey();
-	return apiKey || import.meta.env.VITE_GG_API_KEY;
+	return apiKey || undefined;
 };

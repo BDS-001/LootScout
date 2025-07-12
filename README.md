@@ -16,9 +16,10 @@ A Browser extension that enhances your Steam browsing experience by providing re
 LootScout automatically activates when you visit a Steam game page (`store.steampowered.com/app/*`). It:
 
 1. Extracts the Steam App ID from the current page
-2. Fetches pricing data from GG.deals API and Steam Store API
-3. Performs price comparisons and calculations
-4. Displays deal information in Steam's right sidebar
+2. Checks for cached data first (30-minute cache)
+3. Fetches pricing data from GG.deals API (direct or via proxy) and Steam Store API
+4. Performs price comparisons and calculations
+5. Displays deal information in Steam's right sidebar with visual console logs showing data source
 
 ## Deal Rarity System
 
@@ -38,7 +39,8 @@ Deals are categorized using a rarity system based on discount percentages:
 ### Prerequisites
 
 - Node.js and npm installed
-- browser
+- Modern web browser (Chrome, Firefox, Edge, etc.)
+- GG.deals API key (optional, for personal use)
 
 ### Development Setup
 
@@ -55,11 +57,13 @@ Deals are categorized using a rarity system based on discount percentages:
    npm install
    ```
 
-3. Create a `.env` file in the root directory and add your GG.deals API key:
+3. Create a `.env` file in the root directory and add your proxy server URL:
 
+   ```bash
+   cp .env.example .env
    ```
-   VITE_GG_API_KEY=your_api_key_here
-   ```
+
+   Then edit `.env` and update `VITE_PROXY_URL` with your deployed proxy server URL.
 
 4. Build the extension:
 
@@ -67,10 +71,17 @@ Deals are categorized using a rarity system based on discount percentages:
    npm run build
    ```
 
-5. Load the extension in Chrome:
-   - Open Chrome and go to `chrome://extensions/`
+5. Load the extension in your browser:
+   
+   **Chrome:**
+   - Open `chrome://extensions/`
    - Enable "Developer mode"
    - Click "Load unpacked" and select the `dist` folder
+   
+   **Firefox:**
+   - Open `about:debugging`
+   - Click "This Firefox"
+   - Click "Load Temporary Add-on" and select the `manifest.json` in `dist` folder
 
 ### Production Build
 
@@ -87,31 +98,69 @@ LootScout integrates with two main APIs:
 - **GG.deals API**: Provides comprehensive game pricing data across multiple platforms
 - **Steam Store API**: Fetches official Steam pricing and discount information
 
+### API Key Configuration
+
+LootScout offers flexible API key management:
+
+1. **User-Provided API Key**: Users can add their own GG.deals API key through the extension popup for personal use
+2. **Proxy Fallback**: When no personal API key is provided, the extension uses a shared proxy server
+3. **Automatic Detection**: The extension automatically chooses between direct API calls (with user key) or proxy server based on availability
+4. **Data Source Logging**: Console logs show whether data comes from "cache", "direct API", or "proxy server"
+
+### Proxy Server Setup
+
+The included Vercel proxy server (`vercel-proxy/`) allows shared API access:
+
+1. Deploy the proxy to Vercel
+2. Set `GG_DEALS_API_KEY` environment variable on Vercel
+3. Update `VITE_PROXY_URL` in your extension's `.env` file
+4. The proxy validates requests from browser extensions only
+
 ## Project Structure
 
 ```
 src/
 ├── api/                    # API integration modules
+│   ├── apiKeyService.ts    # API key storage and validation
 │   ├── combinedGameData.ts # Combines data from multiple APIs
 │   ├── ggDealsApi.ts      # GG.deals API integration
 │   └── steamStoreApi.ts   # Steam Store API integration
-├── components/            # UI components
-│   ├── RarityComponent.ts # Deal rarity display component
-│   └── createLootScoutContent.ts # Main content injection
+├── background/            # Background script modules
+│   ├── dataCoordinator.ts # Main data fetching coordinator
+│   ├── extensionLifecycle.ts # Extension lifecycle management
+│   └── messageRouter.ts   # Message routing between scripts
 ├── constants/            # Configuration constants
 │   ├── rarityChart.ts    # Rarity system definitions
 │   └── regionMap.ts      # Region/currency mappings
 ├── helpers/              # Utility functions
 │   ├── getRarity.ts      # Rarity calculation logic
 │   └── hltb.ts          # HowLongToBeat integration
+├── pages/                # Extension pages
+│   └── Popup.tsx         # Extension popup component
 ├── parsers/              # Data parsing utilities
 │   ├── steamAppIdParser.ts # Steam App ID extraction
 │   └── steamLanguageParser.ts # Language detection
+├── services/             # Core services
+│   ├── cacheService.ts   # Data caching functionality
+│   ├── countryService.ts # User region detection
+│   └── storageService.ts # Browser storage abstraction
+├── shared/               # Shared types and interfaces
+│   └── types.ts          # TypeScript type definitions
 ├── styles/               # CSS styling
+├── transformers/         # Data transformation utilities
+│   └── formatResponse.ts # API response formatting
+├── ui/                   # UI components
+│   ├── RarityComponent.ts # Deal rarity display component
+│   └── createLootScoutContent.ts # Main content injection
 ├── utils/                # General utilities
 ├── background.ts         # Extension background script
 ├── content.ts           # Content script for Steam pages
 └── manifest.json        # Extension manifest
+
+vercel-proxy/             # Proxy server for shared API access
+├── api/
+│   └── ggdeals-proxy.js  # Vercel serverless function
+└── vercel.json          # Vercel deployment configuration
 ```
 
 ## Scripts
@@ -120,12 +169,22 @@ src/
 - `npm run build` - Build for production
 - `npm run format` - Format code with Prettier
 
+## Architecture
+
+### Core Features
+- **Caching System**: 30-minute data cache using browser storage
+- **Modular Background Scripts**: Separate data coordination, message routing, and lifecycle management
+- **Functional Services**: Clean functional approach for cache, storage, and API key management
+- **Error Handling**: Comprehensive API error handling with fallbacks
+- **Type Safety**: Full TypeScript implementation with shared type definitions
+
 ## Technologies Used
 
 - **TypeScript** - Type-safe JavaScript
 - **React** - UI components (for popup)
 - **Vite** - Build tool and development server
-- **Chrome Extensions API** - Browser extension functionality
+- **Web Extensions API** - Cross-browser extension functionality
+- **Vercel** - Serverless proxy deployment
 - **CSS** - Styling and animations
 
 ## Contributing
