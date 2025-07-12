@@ -203,7 +203,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **GG.deals** - For providing comprehensive game pricing data
 - **Steam** - For the gaming platform this extension enhances
-- **HowLongToBeat** - For game completion time data
 
 ---
 
