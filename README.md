@@ -72,12 +72,12 @@ Deals are categorized using a rarity system based on discount percentages:
    ```
 
 5. Load the extension in your browser:
-   
+
    **Chrome:**
    - Open `chrome://extensions/`
    - Enable "Developer mode"
    - Click "Load unpacked" and select the `dist` folder
-   
+
    **Firefox:**
    - Open `about:debugging`
    - Click "This Firefox"
@@ -172,6 +172,7 @@ vercel-proxy/             # Proxy server for shared API access
 ## Architecture
 
 ### Core Features
+
 - **Caching System**: 30-minute data cache using browser storage
 - **Modular Background Scripts**: Separate data coordination, message routing, and lifecycle management
 - **Functional Services**: Clean functional approach for cache, storage, and API key management

@@ -14,10 +14,7 @@ const useSettings = () => {
 	useEffect(() => {
 		const loadSettings = async () => {
 			try {
-				const [countryCode, savedApiKey] = await Promise.all([
-					loadCountryCode(),
-					loadApiKey()
-				]);
+				const [countryCode, savedApiKey] = await Promise.all([loadCountryCode(), loadApiKey()]);
 				setSelectedCountry(countryCode);
 				if (savedApiKey) setApiKey(savedApiKey);
 			} catch (error) {
@@ -51,13 +48,23 @@ const useApiKeyValidation = (apiKey: string) => {
 	return { testStatus, isTestingKey, testApiKey };
 };
 
-const CountrySelector = ({ selectedCountry, onChange }: {
+const CountrySelector = ({
+	selectedCountry,
+	onChange,
+}: {
 	selectedCountry: string;
 	onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }) => (
 	<div className="setting-item">
-		<label htmlFor="country-select" className="setting-label">Change Country</label>
-		<select id="country-select" value={selectedCountry} onChange={onChange} className="country-select">
+		<label htmlFor="country-select" className="setting-label">
+			Change Country
+		</label>
+		<select
+			id="country-select"
+			value={selectedCountry}
+			onChange={onChange}
+			className="country-select"
+		>
 			{Object.entries(regionMap).map(([code, info]) => (
 				<option key={code} value={code}>
 					{info.name} ({info.currency})
@@ -67,7 +74,13 @@ const CountrySelector = ({ selectedCountry, onChange }: {
 	</div>
 );
 
-const ApiKeySection = ({ apiKey, setApiKey, testStatus, isTestingKey, testApiKey }: {
+const ApiKeySection = ({
+	apiKey,
+	setApiKey,
+	testStatus,
+	isTestingKey,
+	testApiKey,
+}: {
 	apiKey: string;
 	setApiKey: (value: string) => void;
 	testStatus: string;
@@ -75,8 +88,12 @@ const ApiKeySection = ({ apiKey, setApiKey, testStatus, isTestingKey, testApiKey
 	testApiKey: () => void;
 }) => (
 	<div className="setting-item">
-		<label htmlFor="api-key-input" className="setting-label">Add API Key</label>
-		<p className="setting-description">Reduce rate limits by adding your own GG.deals API key (get one at gg.deals/api)</p>
+		<label htmlFor="api-key-input" className="setting-label">
+			Add API Key
+		</label>
+		<p className="setting-description">
+			Reduce rate limits by adding your own GG.deals API key (get one at gg.deals/api)
+		</p>
 		<div className="api-key-input-group">
 			<input
 				id="api-key-input"
@@ -116,13 +133,15 @@ export default function Popup() {
 				<img src="/icon-with-shadow.svg" alt="LootScout" className="popup-icon" />
 				<div className="header-text">
 					<h1 className="popup-title">LootScout</h1>
-					<p className="popup-description">Compares Steam prices with current & historical best deals - rated with 8 rarity levels</p>
+					<p className="popup-description">
+						Compares Steam prices with current & historical best deals - rated with 8 rarity levels
+					</p>
 				</div>
 			</div>
 
 			<div className="settings-section">
 				<CountrySelector selectedCountry={selectedCountry} onChange={handleCountryChange} />
-				<ApiKeySection 
+				<ApiKeySection
 					apiKey={apiKey}
 					setApiKey={setApiKey}
 					testStatus={testStatus}
