@@ -32,8 +32,8 @@ const setCorsHeaders = (res, origin) => {
 	res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 };
 
-const validateParams = (appId, apiKey, region) => {
-	if (!appId || !apiKey || !region) throw new Error('Missing required parameters');
+const validateParams = (appId, region) => {
+	if (!appId || !region) throw new Error('Missing required parameters');
 	if (!/^\d+$/.test(appId)) throw new Error('Invalid appId format');
 	if (!VALID_REGIONS.includes(region.toLowerCase())) throw new Error('Invalid region');
 };
@@ -58,7 +58,7 @@ export default async function handler(req, res) {
 			throw new Error('Server configuration error: Missing API key');
 		}
 
-		validateParams(appId, effectiveApiKey, region);
+		validateParams(appId, region);
 
 		const url = `${GG_DEALS_BASE_URL}?ids=${appId}&key=${effectiveApiKey}&region=${region}`;
 		const response = await fetch(url);
