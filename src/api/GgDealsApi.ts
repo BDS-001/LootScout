@@ -9,12 +9,29 @@ const fetchFromApi = async (appId: string, apiKey: string, region: string) => {
 	return fetch(url);
 };
 
-const fetchFromProxy = async (appId: string, region: string) => {
-	return fetch(dealDataProxy, {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({ appId, region }),
-	});
+const fetchFromProxy = async (appId: string, region: string, retryCount = 0) => {
+	try {
+		const response = await fetch(dealDataProxy, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ appId, region }),
+		});
+
+		if (response.status >= 500 && retryCount < 2) {
+			console.log(`LootScout: Proxy error ${response.status}, retrying... (${retryCount + 1}/2)`);
+			await new Promise((resolve) => setTimeout(resolve, 1000 * (retryCount + 1))); // Progressive delay
+			return fetchFromProxy(appId, region, retryCount + 1);
+		}
+
+		return response;
+	} catch (error) {
+		if (retryCount < 1) {
+			console.log('LootScout: Network error, retrying... (1/1)');
+			await new Promise((resolve) => setTimeout(resolve, 2000));
+			return fetchFromProxy(appId, region, retryCount + 1);
+		}
+		throw error;
+	}
 };
 
 const processResponse = (data: any): GgDealsApiResponse => {
