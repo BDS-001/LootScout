@@ -130,7 +130,7 @@ export default function Popup() {
 	return (
 		<div className="popup-container">
 			<div className="header">
-				<img src="/icon-with-shadow.svg" alt="LootScout" className="popup-icon" />
+				<img src="/icon/lootscout64.png" alt="LootScout" className="popup-icon" />
 				<div className="header-text">
 					<h1 className="popup-title">LootScout</h1>
 					<p className="popup-description">
