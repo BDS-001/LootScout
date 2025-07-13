@@ -9,25 +9,60 @@ const fetchFromApi = async (appId: string, apiKey: string, region: string) => {
 	return fetch(url);
 };
 
-const fetchFromProxy = async (appId: string, region: string, retryCount = 0) => {
-	try {
-		const response = await fetch(dealDataProxy, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ appId, region }),
-		});
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-		if (response.status >= 500 && retryCount < 2) {
-			console.log(`LootScout: Proxy error ${response.status}, retrying... (${retryCount + 1}/2)`);
-			await new Promise((resolve) => setTimeout(resolve, 1000 * (retryCount + 1))); // Progressive delay
+const calculateDelay = (retryCount: number, baseDelay: number) =>
+	baseDelay * Math.pow(2, retryCount);
+
+const isRetryableError = (response: Response) => response.status >= 500 || response.status === 408;
+
+const fetchWithTimeout = async (url: string, options: RequestInit, timeout: number) => {
+	const controller = new AbortController();
+	const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+	try {
+		const response = await fetch(url, { ...options, signal: controller.signal });
+		clearTimeout(timeoutId);
+		return response;
+	} catch (error) {
+		clearTimeout(timeoutId);
+		throw error;
+	}
+};
+
+const fetchFromProxy = async (appId: string, region: string, retryCount = 0) => {
+	const MAX_RETRIES = 6; // More retries for cold starts
+	const BASE_DELAY = 1000;
+	const TIMEOUT = 9000; // Just under Vercel's 10s limit
+
+	try {
+		const response = await fetchWithTimeout(
+			dealDataProxy,
+			{
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ appId, region }),
+			},
+			TIMEOUT
+		);
+
+		if (isRetryableError(response) && retryCount < MAX_RETRIES) {
+			const delay = calculateDelay(retryCount, BASE_DELAY);
+			console.log(
+				`LootScout: Proxy error ${response.status}, retrying in ${delay}ms... (${retryCount + 1}/${MAX_RETRIES})`
+			);
+			await sleep(delay);
 			return fetchFromProxy(appId, region, retryCount + 1);
 		}
 
 		return response;
 	} catch (error) {
-		if (retryCount < 1) {
-			console.log('LootScout: Network error, retrying... (1/1)');
-			await new Promise((resolve) => setTimeout(resolve, 2000));
+		if (retryCount < MAX_RETRIES) {
+			const delay = calculateDelay(retryCount, BASE_DELAY);
+			console.log(
+				`LootScout: Network error, retrying in ${delay}ms... (${retryCount + 1}/${MAX_RETRIES})`
+			);
+			await sleep(delay);
 			return fetchFromProxy(appId, region, retryCount + 1);
 		}
 		throw error;
