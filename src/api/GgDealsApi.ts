@@ -1,5 +1,5 @@
 import { GgDealsApiParams, GgDealsApiResponse } from '../shared/types';
-import { handleApiError } from '../utils/apiErrorHandler';
+import { handleApiError } from '../utils/ErrorHandler';
 
 const GG_DEALS_BASE_URL = 'https://api.gg.deals/v1/prices/by-steam-app-id/';
 const dealDataProxy = import.meta.env.VITE_PROXY_URL;

@@ -1,4 +1,4 @@
-import { getStorageItem, setStorageItem } from './storageService';
+import { getStorageItem, setStorageItem } from './StorageService';
 
 const DEFAULT_CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
 

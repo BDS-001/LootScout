@@ -1,5 +1,5 @@
 import { SteamApiParams, SteamApiResponse, SteamPriceOverview } from '../shared/types';
-import { handleApiError } from '../utils/apiErrorHandler';
+import { handleApiError } from '../utils/ErrorHandler';
 
 function normalizeSteamPriceOverview(priceOverview: SteamPriceOverview): SteamPriceOverview {
 	const normalized = { ...priceOverview };

@@ -1,5 +1,5 @@
-import { ExtensionLifecycle } from './background/extensionLifecycle';
-import { MessageRouter } from './background/messageRouter';
+import { ExtensionLifecycle } from './background/ExtensionLifecycle';
+import { MessageRouter } from './background/MessageRouter';
 
 console.log('Hello from the background!');
 

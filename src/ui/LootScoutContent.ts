@@ -1,5 +1,5 @@
 import { GameData, ApiError } from '../shared/types';
-import { formatPrice } from '../utils/priceCalculations';
+import { formatPrice } from '../utils/PriceUtils';
 import { createRarityComponent } from './RarityComponent';
 import regionMap from '../constants/regionMap';
 

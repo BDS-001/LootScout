@@ -1,5 +1,5 @@
-import fetchGgDealsData from './ggDealsApi';
-import { getStorageItem, setStorageItem } from '../services/storageService';
+import fetchGgDealsData from './GgDealsApi';
+import { getStorageItem, setStorageItem } from '../services/StorageService';
 
 export interface ApiKeyTestResult {
 	success: boolean;

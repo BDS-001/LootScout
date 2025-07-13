@@ -1,7 +1,7 @@
 import browser from 'webextension-polyfill';
-import { parseSteamCountryCode } from '../parsers/steamLanguageParser';
-import { isValidCountryCode } from '../services/countryService';
-import { setStorageItem } from '../services/storageService';
+import { parseSteamCountryCode } from '../parsers/LanguageParser';
+import { isValidCountryCode } from '../services/CountryService';
+import { setStorageItem } from '../services/StorageService';
 
 export class ExtensionLifecycle {
 	private async initializeCountryCode(): Promise<void> {

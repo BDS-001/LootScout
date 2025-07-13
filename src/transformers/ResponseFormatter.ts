@@ -1,5 +1,5 @@
 import { CombinedGameDataResponse, GameDataResponse, ApiError } from '../shared/types';
-import { calculateDiscount, calculateSavings } from '../utils/priceCalculations';
+import { calculateDiscount, calculateSavings } from '../utils/PriceUtils';
 import { getRarity } from '../helpers/getRarity';
 import { getHltbUrl } from '../helpers/hltb';
 

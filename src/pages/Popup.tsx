@@ -1,8 +1,8 @@
 import './Popup.css';
 import { useState, useEffect } from 'react';
 import regionMap from '../constants/regionMap';
-import { loadApiKey, validateAndSaveApiKey } from '../api/apiKeyService';
-import { loadCountryCode, updateCountryCode } from '../services/countryService';
+import { loadApiKey, validateAndSaveApiKey } from '../api/ApiKeyService';
+import { loadCountryCode, updateCountryCode } from '../services/CountryService';
 
 const VERSION = '0.0.0';
 const GITHUB_URL = 'https://github.com/BDS-001/LootScout';

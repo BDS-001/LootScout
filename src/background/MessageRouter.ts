@@ -1,6 +1,6 @@
 import browser from 'webextension-polyfill';
-import { updateCountryCode, loadCountryCode } from '../services/countryService';
-import { DataCoordinator } from './dataCoordinator';
+import { updateCountryCode, loadCountryCode } from '../services/CountryService';
+import { DataCoordinator } from './DataCoordinator';
 
 export class MessageRouter {
 	private dataCoordinator: DataCoordinator;

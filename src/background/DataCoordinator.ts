@@ -1,9 +1,9 @@
-import fetchCombinedGameData from '../api/combinedGameData';
-import { normalizeResponse } from '../transformers/formatResponse';
+import fetchCombinedGameData from '../api/CombinedGameData';
+import { normalizeResponse } from '../transformers/ResponseFormatter';
 import { CombinedGameDataParams } from '../shared/types';
-import { loadCountryCode } from '../services/countryService';
-import { getApiKeyWithFallback } from '../api/apiKeyService';
-import { getCacheItemWithExpiry, setCacheItem } from '../services/cacheService';
+import { loadCountryCode } from '../services/CountryService';
+import { getApiKeyWithFallback } from '../api/ApiKeyService';
+import { getCacheItemWithExpiry, setCacheItem } from '../services/CacheService';
 
 export class DataCoordinator {
 	private static readonly CACHE_DURATION = 30 * 60 * 1000; // 30 minutes

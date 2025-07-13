@@ -1,7 +1,7 @@
-import fetchGgDealsData from './ggDealsApi';
-import fetchSteamStoreData from './steamStoreApi';
+import fetchGgDealsData from './GgDealsApi';
+import fetchSteamStoreData from './SteamStoreApi';
 import { CombinedGameDataParams, CombinedGameDataResponse } from '../shared/types';
-import { handleApiError } from '../utils/apiErrorHandler';
+import { handleApiError } from '../utils/ErrorHandler';
 
 export default async function fetchCombinedGameData(
 	params: CombinedGameDataParams

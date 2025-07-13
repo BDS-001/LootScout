@@ -1,5 +1,5 @@
 import browser from 'webextension-polyfill';
-import parseSteamPageUrl from './parsers/steamAppIdParser';
+import parseSteamPageUrl from './parsers/SteamParser';
 import { injectLootScoutContainer, updateContainerState } from './ui/LootScoutContainer';
 import { GameDataResponse, ApiError } from './shared/types';
 import injectCSS from './utils/injectCSS';
