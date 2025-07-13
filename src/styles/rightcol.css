@@ -43,7 +43,7 @@
 	margin-top: var(--spacing-base);
 }
 
-.steam_equal {
+.steam_comparison {
 	color: var(--color-steam-gray);
 	font-size: var(--font-size-sm);
 	font-style: italic;

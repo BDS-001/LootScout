@@ -1,20 +1,23 @@
 import browser from 'webextension-polyfill';
 import parseSteamPageUrl from './parsers/steamAppIdParser';
-import { createLootScoutContentRightCol } from './ui/createLootScoutContent';
-import { GameDataResponse } from './shared/types';
+import { injectLootScoutContainer, updateContainerState } from './ui/LootScoutContainer';
+import { GameDataResponse, ApiError } from './shared/types';
 import injectCSS from './utils/injectCSS';
 
 async function initializeContentScript(): Promise<void> {
 	injectCSS();
 
-	const { appId } = parseSteamPageUrl();
-	if (!appId) return;
+	const { appId, appName } = parseSteamPageUrl();
+	if (!appId || !appName) return;
+
+	const container = injectLootScoutContainer(appName);
+	if (!container) return;
 
 	try {
-		const response: GameDataResponse = await browser.runtime.sendMessage({
+		const response = (await browser.runtime.sendMessage({
 			action: 'getAppData',
 			appId,
-		});
+		})) as GameDataResponse;
 
 		console.log('LootScout API Response:', response);
 
@@ -22,14 +25,32 @@ async function initializeContentScript(): Promise<void> {
 			const currentCountry = await browser.runtime.sendMessage({
 				action: 'getCountryCode',
 			});
-			createLootScoutContentRightCol(response, currentCountry);
+
+			updateContainerState(container, {
+				status: 'success',
+				gameData: response,
+				appName,
+				countryCode: currentCountry,
+			});
 		} else {
-			console.error('LootScout: Failed to fetch game data:', {
-				responseSuccess: response.success,
-				error: response.data,
+			updateContainerState(container, {
+				status: 'error',
+				error: response.data as ApiError,
+				appName,
 			});
 		}
 	} catch (error) {
+		updateContainerState(container, {
+			status: 'error',
+			error: {
+				name: 'CommunicationError',
+				message: 'Failed to communicate with extension background',
+				code: 0,
+				status: 0,
+			},
+			appName,
+		});
+
 		console.error('LootScout: Error communicating with background script:', error);
 	}
 }

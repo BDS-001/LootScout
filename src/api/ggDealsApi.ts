@@ -40,10 +40,10 @@ export default async function fetchGgDealsData(
 	try {
 		let result;
 		if (apiKey) {
-			console.log('Data from direct API');
+			console.log('LootScout: Fetching data via direct API (user key)');
 			result = await fetchFromApi(appId, apiKey, region);
 		} else if (dealDataProxy) {
-			console.log('Data from proxy server');
+			console.log('LootScout: Fetching data via proxy server');
 			result = await fetchFromProxy(appId, region);
 		} else {
 			throw new Error('No API key provided and no proxy configured');

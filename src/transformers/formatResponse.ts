@@ -5,17 +5,17 @@ import { getHltbUrl } from '../helpers/hltb';
 
 // Steam Deal Status Function
 function getSteamDealStatus(
-	steamEqualsCurrent: boolean,
-	steamEqualsHistorical: boolean
+	steamIsBestCurrent: boolean,
+	steamIsBestHistorical: boolean
 ): { text: string; className: string } {
-	if (steamEqualsHistorical) {
+	if (steamIsBestHistorical) {
 		return {
 			text: 'Steam is offering the historical low',
 			className: 'steam_historical_low',
 		};
-	} else if (steamEqualsCurrent) {
+	} else if (steamIsBestCurrent) {
 		return {
-			text: 'Steam is offering the current best deal',
+			text: 'Steam has the best current deal',
 			className: 'steam_current_best',
 		};
 	} else {
@@ -32,14 +32,41 @@ function validateGameData(res: CombinedGameDataResponse): {
 	ggDealsData?: any;
 	error?: ApiError;
 } {
-	if (!res.success || !res.data.dealData.success || !res.data.steamStoreData.success) {
+	if (!res.success) {
+		console.error('LootScout: CombinedGameDataResponse not successful:', res);
 		return {
 			isValid: false,
 			error: {
-				name: 'Normalization Error',
-				message: 'Failed to normalize response data',
+				name: 'API Error',
+				message: 'Combined API request failed',
 				code: 0,
 				status: 0,
+			} as ApiError,
+		};
+	}
+
+	if (!res.data.dealData.success) {
+		console.error('LootScout: GG.deals API failed:', res.data.dealData);
+		return {
+			isValid: false,
+			error: {
+				name: 'GG.deals API Error',
+				message: res.data.dealData.data?.message || 'GG.deals API request failed',
+				code: res.data.dealData.data?.code || 0,
+				status: res.data.dealData.data?.status || 0,
+			} as ApiError,
+		};
+	}
+
+	if (!res.data.steamStoreData.success) {
+		console.error('LootScout: Steam API failed:', res.data.steamStoreData);
+		return {
+			isValid: false,
+			error: {
+				name: 'Steam API Error',
+				message: res.data.steamStoreData.data?.message || 'Steam API request failed',
+				code: res.data.steamStoreData.data?.code || 0,
+				status: res.data.steamStoreData.data?.status || 0,
 			} as ApiError,
 		};
 	}
@@ -74,8 +101,8 @@ function calculatePriceMetrics(steamPriceOverview: any, ggDealsData: any) {
 	const historicalDiscount = calculateDiscount(steamPrice, historicalRetail);
 	const currentSavings = calculateSavings(steamPrice, currentRetail);
 	const historicalSavings = calculateSavings(steamPrice, historicalRetail);
-	const steamEqualsCurrent = steamPrice === currentRetail;
-	const steamEqualsHistorical = steamPrice === historicalRetail;
+	const steamIsBestCurrent = steamPrice <= currentRetail;
+	const steamIsBestHistorical = steamPrice <= historicalRetail;
 
 	return {
 		steamPrice,
@@ -88,8 +115,8 @@ function calculatePriceMetrics(steamPriceOverview: any, ggDealsData: any) {
 		historicalDiscount,
 		currentSavings,
 		historicalSavings,
-		steamEqualsCurrent,
-		steamEqualsHistorical,
+		steamIsBestCurrent,
+		steamIsBestHistorical,
 	};
 }
 
@@ -110,8 +137,8 @@ function buildGameDataResponse(
 ): GameDataResponse {
 	const steamPriceOverview = steamAppData.data.price_overview;
 	const steamStatus = getSteamDealStatus(
-		priceMetrics.steamEqualsCurrent,
-		priceMetrics.steamEqualsHistorical
+		priceMetrics.steamIsBestCurrent,
+		priceMetrics.steamIsBestHistorical
 	);
 
 	return {
@@ -146,7 +173,7 @@ function buildGameDataResponse(
 					name: rarityMetrics.currentRarity,
 					className: rarityMetrics.currentRarity.toLowerCase(),
 				},
-				isEqualToSteam: priceMetrics.steamEqualsCurrent,
+				isEqualToSteam: priceMetrics.steamIsBestCurrent,
 			},
 			historicalBest: {
 				rawDiscount: priceMetrics.historicalRawDiscount,
@@ -156,7 +183,7 @@ function buildGameDataResponse(
 					name: rarityMetrics.historicalRarity,
 					className: rarityMetrics.historicalRarity.toLowerCase(),
 				},
-				isEqualToSteam: priceMetrics.steamEqualsHistorical,
+				isEqualToSteam: priceMetrics.steamIsBestHistorical,
 			},
 			hltb: {
 				url: getHltbUrl(ggDealsData.title),

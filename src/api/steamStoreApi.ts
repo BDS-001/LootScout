@@ -31,7 +31,6 @@ export default async function fetchSteamStoreData(
 		}
 
 		const data = await result.json();
-		console.log('Steam Store API result:', data);
 
 		if (data[appId]?.data?.price_overview) {
 			data[appId].data.price_overview = normalizeSteamPriceOverview(

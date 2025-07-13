@@ -51,8 +51,12 @@ export default async function handler(req, res) {
 	if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
 	try {
-		const { appId, apiKey, region } = req.body;
-		const effectiveApiKey = apiKey || process.env.GG_DEALS_API_KEY;
+		const { appId, region } = req.body;
+		const effectiveApiKey = process.env.GG_DEALS_API_KEY;
+
+		if (!effectiveApiKey) {
+			throw new Error('Server configuration error: Missing API key');
+		}
 
 		validateParams(appId, effectiveApiKey, region);
 

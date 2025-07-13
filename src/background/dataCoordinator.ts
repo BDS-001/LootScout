@@ -14,7 +14,7 @@ export class DataCoordinator {
 		const cachedData = await getCacheItemWithExpiry(cacheKey, DataCoordinator.CACHE_DURATION);
 
 		if (cachedData) {
-			console.log('Data from cache');
+			console.log('LootScout: Using cached data');
 			return cachedData;
 		}
 
