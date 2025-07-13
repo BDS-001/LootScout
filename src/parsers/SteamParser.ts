@@ -1,7 +1,7 @@
 import { SteamAppUrlData } from '../shared/types';
 
 function formatAppName(appName: string) {
-	return appName.trim().replace('_', ' ');
+	return appName.trim().replace(/_/g, ' ');
 }
 
 export default function parseSteamPageUrl(): SteamAppUrlData {
