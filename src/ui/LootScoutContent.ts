@@ -33,29 +33,25 @@ export function createErrorContent(error?: ApiError): string {
 	`;
 }
 
+function formatRegionDisplay(countryCode: string): string {
+	const countryInfo = regionMap[countryCode as keyof typeof regionMap];
+	return countryInfo ? `${countryInfo.name} (${countryInfo.currency})` : countryCode.toUpperCase();
+}
+
+function createRegionInfo(countryCode?: string): string {
+	return countryCode
+		? `<span class="footer_info">Region: ${formatRegionDisplay(countryCode)}</span>`
+		: '';
+}
+
 // Success state content
 export function createSuccessContent(gameData: GameData, countryCode?: string): string {
 	const { lootScout } = gameData;
 
-	let regionSection = '';
-	if (countryCode) {
-		const countryInfo = regionMap[countryCode as keyof typeof regionMap];
-		const countryDisplay = countryInfo
-			? `${countryInfo.name} (${countryInfo.currency})`
-			: countryCode.toUpperCase();
-
-		regionSection = `
-			<div class="deal_section">
-				<div class="deal_header">Region: ${countryDisplay}</div>
-			</div>
-		`;
-	}
-
 	return `
-		${regionSection}
 		
 		<div class="deal_section">
-			<div class="deal_header">Steam Current Discount Rating</div>
+			<div class="deal_header">Steam Discount Rating</div>
 			<div class="deal_price">${formatPrice(gameData.steam.final, gameData.steam.currency)} <span class="raw_discount">(${gameData.steam.discount_percent}% off)</span></div>
 			<div class="deal_status">
 				<span class="${lootScout.steam.status.className}">${lootScout.steam.status.text}</span>
@@ -111,7 +107,8 @@ export function createSuccessContent(gameData: GameData, countryCode?: string): 
 		</div>
 		
 		<div class="loot_scout_footer">
-			<span class="powered_by">Powered by&nbsp;<a href="https://gg.deals/" target="_blank">GG.deals</a></span>
+			<span class="footer_info">Powered by&nbsp;<a href="https://gg.deals/" target="_blank">GG.deals</a></span>
+			${createRegionInfo(countryCode)}
 		</div>
 	`;
 }

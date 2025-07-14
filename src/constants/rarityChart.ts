@@ -6,5 +6,5 @@ export const RARITY_CHART = [
 	{ name: 'Legendary', range: '60–79%', description: 'Excellent deal' },
 	{ name: 'Mythic', range: '80–89%', description: 'High-tier discounts' },
 	{ name: 'Exotic', range: '90–99%', description: 'Insane value' },
-	{ name: 'Iridescent', range: '100%', description: 'Press add to account NOW - dont think' },
+	{ name: 'Iridescent', range: '100%', description: 'Stop reading this and get it NOW' },
 ];

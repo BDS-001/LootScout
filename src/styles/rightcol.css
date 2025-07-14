@@ -1,4 +1,13 @@
 /* Right column content styles for Steam sidebar */
+.game-title-section {
+	text-align: center;
+	margin-bottom: var(--spacing-lg);
+	padding: var(--spacing-sm) var(--spacing-base);
+	color: var(--color-steam-blue);
+	font-size: var(--font-size-lg);
+	font-weight: var(--font-weight-semibold);
+}
+
 .deal_section {
 	margin-bottom: var(--spacing-lg);
 	padding: var(--spacing-base);
@@ -79,23 +88,30 @@
 	padding-bottom: 20px;
 }
 
-.powered_by {
+.footer_info {
 	position: absolute;
 	bottom: 0;
-	left: 0;
 	color: var(--color-steam-gray);
 	font-size: var(--font-size-sm);
 	font-weight: var(--font-weight-normal);
-	text-align: left;
 	margin: 0;
 }
 
-.powered_by a {
+.footer_info:first-child {
+	left: 0;
+	text-align: left;
+}
+
+.footer_info:last-child {
+	right: 0;
+	text-align: right;
+}
+
+.footer_info a {
 	color: var(--color-steam-gray);
 	text-decoration: none;
 	font-size: var(--font-size-sm);
 	font-weight: var(--font-weight-normal);
-	position: absolute;
 	background: none;
 	border: none;
 	padding: 0;
@@ -103,7 +119,7 @@
 	display: inline;
 }
 
-.powered_by a:hover {
+.footer_info a:hover {
 	color: var(--color-white);
 	text-decoration: underline;
 	background: none;

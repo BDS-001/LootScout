@@ -7,10 +7,10 @@ import injectCSS from './utils/injectCSS';
 async function initializeContentScript(): Promise<void> {
 	injectCSS();
 
-	const { appId, appName } = parseSteamPageUrl();
-	if (!appId || !appName) return;
+	const { appId } = parseSteamPageUrl();
+	if (!appId) return;
 
-	const container = injectLootScoutContainer(appName);
+	const container = injectLootScoutContainer();
 	if (!container) return;
 
 	try {
@@ -29,14 +29,12 @@ async function initializeContentScript(): Promise<void> {
 			updateContainerState(container, {
 				status: 'success',
 				gameData: response,
-				appName,
 				countryCode: currentCountry,
 			});
 		} else {
 			updateContainerState(container, {
 				status: 'error',
 				error: response.data as ApiError,
-				appName,
 			});
 		}
 	} catch (error) {
@@ -48,7 +46,6 @@ async function initializeContentScript(): Promise<void> {
 				code: 0,
 				status: 0,
 			},
-			appName,
 		});
 
 		console.error('LootScout: Error communicating with background script:', error);
