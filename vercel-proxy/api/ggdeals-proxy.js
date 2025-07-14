@@ -26,10 +26,15 @@ const isExtensionOrigin = (origin) =>
 	origin?.startsWith('moz-extension://') ||
 	origin?.startsWith('safari-web-extension://');
 
-const setCorsHeaders = (res, origin) => {
-	res.setHeader('Access-Control-Allow-Origin', origin);
-	res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-	res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+const validateRequest = (request) => {
+	if (!isExtensionOrigin(request.headers.get('origin'))) {
+		throw new Error('Forbidden');
+	}
+	if (request.method === 'OPTIONS') return null;
+	if (request.method !== 'POST') {
+		throw new Error('Method not allowed');
+	}
+	return request;
 };
 
 const validateParams = (appId, region) => {
@@ -38,37 +43,80 @@ const validateParams = (appId, region) => {
 	if (!VALID_REGIONS.includes(region.toLowerCase())) throw new Error('Invalid region');
 };
 
-export default async function handler(req, res) {
-	const origin = req.headers.origin;
+const getCorsHeaders = (origin) => ({
+	'Access-Control-Allow-Origin': origin,
+	'Access-Control-Allow-Methods': 'POST, OPTIONS',
+	'Access-Control-Allow-Headers': 'Content-Type',
+});
 
-	if (!isExtensionOrigin(origin)) {
-		return res.status(403).json({ error: 'Forbidden' });
+const fetchGamePrices = async (appId, region, apiKey) => {
+	const url = `${GG_DEALS_BASE_URL}?ids=${appId}&key=${apiKey}&region=${region}`;
+	const response = await fetch(url);
+
+	if (!response.ok) {
+		throw new Error(`GG Deals API error: ${response.status}`);
 	}
 
-	setCorsHeaders(res, origin);
+	return response.json();
+};
 
-	if (req.method === 'OPTIONS') return res.status(200).end();
-	if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+const createErrorResponse = (error, origin) => {
+	const status =
+		error.message.includes('Invalid') ||
+		error.message.includes('Missing') ||
+		error.message.includes('Forbidden')
+			? 400
+			: error.message.includes('Method not allowed')
+				? 405
+				: error.message.includes('Forbidden')
+					? 403
+					: 500;
+
+	return new Response(JSON.stringify({ error: error.message }), {
+		status,
+		headers: {
+			'Content-Type': 'application/json',
+			...getCorsHeaders(origin),
+		},
+	});
+};
+
+export default async function handler(request) {
+	const origin = request.headers.get('origin');
 
 	try {
-		const { appId, region } = req.body;
-		const effectiveApiKey = process.env.GG_DEALS_API_KEY;
+		const validatedRequest = validateRequest(request);
 
-		if (!effectiveApiKey) {
+		if (!validatedRequest) {
+			return new Response(null, {
+				status: 200,
+				headers: getCorsHeaders(origin),
+			});
+		}
+
+		const { appId, region } = await request.json();
+
+		const apiKey = process.env.GG_DEALS_API_KEY;
+		if (!apiKey) {
 			throw new Error('Server configuration error: Missing API key');
 		}
 
 		validateParams(appId, region);
 
-		const url = `${GG_DEALS_BASE_URL}?ids=${appId}&key=${effectiveApiKey}&region=${region}`;
-		const response = await fetch(url);
+		const data = await fetchGamePrices(appId, region, apiKey);
 
-		if (!response.ok) throw new Error(`GG Deals API error: ${response.status}`);
-
-		return res.status(200).json(await response.json());
+		return new Response(JSON.stringify(data), {
+			status: 200,
+			headers: {
+				'Content-Type': 'application/json',
+				...getCorsHeaders(origin),
+			},
+		});
 	} catch (error) {
-		const status =
-			error.message.includes('Invalid') || error.message.includes('Missing') ? 400 : 500;
-		return res.status(status).json({ error: error.message });
+		return createErrorResponse(error, origin);
 	}
 }
+
+export const config = {
+	runtime: 'edge',
+};
