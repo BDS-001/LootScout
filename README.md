@@ -1,15 +1,15 @@
 # LootScout 🎮
 
-A Browser extension that enhances your Steam browsing experience by providing real-time game deal information and pricing comparisons directly on Steam store pages.
+A browser extension that enhances your Steam browsing experience by providing real-time game deal information and pricing comparisons directly on Steam store pages.
 
 ## Features
 
 - **Real-time Deal Comparison**: Compare current Steam prices with the best deals available across multiple platforms
 - **Historical Price Tracking**: View historical low prices to make informed purchase decisions
-- **Rarity-based Deal Rating**: Games deals are rated using a gaming-inspired rarity system (Common to Iridescent)
+- **Rarity-based Deal Rating**: Game deals are rated using a gaming-inspired rarity system (Common to Iridescent)
 - **Steam Deal Analysis**: See how Steam's current discount compares to the best available deals
-- **HowLongToBeat Integration**: Quick access to game completion time estimates
 - **Clean UI Integration**: Seamlessly integrates with Steam's existing interface
+- **Smart Caching**: 30-minute cache system for optimal performance
 
 ## How It Works
 
@@ -47,7 +47,7 @@ Deals are categorized using a rarity system based on discount percentages:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/LootScout.git
+   git clone https://github.com/your-username/LootScout.git
    cd LootScout
    ```
 
@@ -121,38 +121,41 @@ The included Vercel proxy server (`vercel-proxy/`) allows shared API access:
 ```
 src/
 ├── api/                    # API integration modules
-│   ├── apiKeyService.ts    # API key storage and validation
-│   ├── combinedGameData.ts # Combines data from multiple APIs
-│   ├── ggDealsApi.ts      # GG.deals API integration
-│   └── steamStoreApi.ts   # Steam Store API integration
+│   ├── ApiKeyService.ts    # API key storage and validation
+│   ├── CombinedGameData.ts # Combines data from multiple APIs
+│   ├── GgDealsApi.ts      # GG.deals API integration
+│   └── SteamStoreApi.ts   # Steam Store API integration
 ├── background/            # Background script modules
-│   ├── dataCoordinator.ts # Main data fetching coordinator
-│   ├── extensionLifecycle.ts # Extension lifecycle management
-│   └── messageRouter.ts   # Message routing between scripts
+│   ├── DataCoordinator.ts # Main data fetching coordinator
+│   ├── ExtensionLifecycle.ts # Extension lifecycle management
+│   └── MessageRouter.ts   # Message routing between scripts
 ├── constants/            # Configuration constants
 │   ├── rarityChart.ts    # Rarity system definitions
 │   └── regionMap.ts      # Region/currency mappings
 ├── helpers/              # Utility functions
-│   ├── getRarity.ts      # Rarity calculation logic
-│   └── hltb.ts          # HowLongToBeat integration
+│   └── getRarity.ts      # Rarity calculation logic
 ├── pages/                # Extension pages
 │   └── Popup.tsx         # Extension popup component
 ├── parsers/              # Data parsing utilities
-│   ├── steamAppIdParser.ts # Steam App ID extraction
-│   └── steamLanguageParser.ts # Language detection
+│   ├── LanguageParser.ts  # Language detection  
+│   └── SteamParser.ts     # Steam App ID extraction
 ├── services/             # Core services
-│   ├── cacheService.ts   # Data caching functionality
-│   ├── countryService.ts # User region detection
-│   └── storageService.ts # Browser storage abstraction
+│   ├── CacheService.ts   # Data caching functionality
+│   ├── CountryService.ts # User region detection
+│   └── StorageService.ts # Browser storage abstraction
 ├── shared/               # Shared types and interfaces
 │   └── types.ts          # TypeScript type definitions
 ├── styles/               # CSS styling
 ├── transformers/         # Data transformation utilities
-│   └── formatResponse.ts # API response formatting
+│   └── ResponseFormatter.ts # API response formatting
 ├── ui/                   # UI components
-│   ├── RarityComponent.ts # Deal rarity display component
-│   └── createLootScoutContent.ts # Main content injection
+│   ├── LootScoutContainer.ts # Main container injection
+│   ├── LootScoutContent.ts # Content display component
+│   └── RarityComponent.ts # Deal rarity display component
 ├── utils/                # General utilities
+│   ├── ErrorHandler.ts   # Error handling utilities
+│   ├── PriceUtils.ts     # Price calculation helpers
+│   └── injectCSS.ts      # CSS injection utility
 ├── background.ts         # Extension background script
 ├── content.ts           # Content script for Steam pages
 └── manifest.json        # Extension manifest
