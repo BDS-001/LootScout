@@ -26,11 +26,10 @@ export class MessageRouter {
 	): Promise<{ success: boolean; error?: any }> {
 		try {
 			await updateCountryCode(countryCode);
-			console.log('Updated country code:', countryCode);
 			return { success: true };
 		} catch (error) {
 			console.error('Error updating country code:', error);
-			return { success: false, error: error };
+			return { success: false, error };
 		}
 	}
 
