@@ -1,11 +1,14 @@
 {
 	"manifest_version": 3,
+	"short_name": "LootScout",
+	"author": "BDS-001",
+	"homepage_url": "https://github.com/BDS-001/LootScout",
 	"icons": {
-		"16": "icon/lootscout32.png",
+		"16": "icon/lootscout16.png",
 		"32": "icon/lootscout32.png",
 		"48": "icon/lootscout64.png",
 		"96": "icon/lootscout96.png",
-		"128": "icon/lootscout96.png"
+		"128": "icon/lootscout128.png"
 	},
 	"action": {
 		"default_popup": "src/popup.html"

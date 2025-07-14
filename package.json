@@ -1,6 +1,6 @@
 {
 	"name": "loot-scout",
-	"description": "A web extension template project",
+	"description": "Steam game deal finder with real-time price comparisons and rarity-based deal ratings",
 	"private": true,
 	"version": "1.0.0",
 	"type": "module",
