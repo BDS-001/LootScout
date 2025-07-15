@@ -15,8 +15,8 @@
 	/* Legendary - Orange */
 	--rarity-legendary: #ff9800;
 
-	/* Mythic - Teal */
-	--rarity-mythic: #00ced1;
+	/* Mythic - Jade */
+	--rarity-mythic: #00C896;
 
 	/* Exotic - Red */
 	--rarity-exotic: #dc143c;
@@ -49,11 +49,12 @@
 
 .rarity-mythic {
 	color: var(--rarity-mythic);
+	animation: text-glow 3.5s ease-in-out infinite;
 }
 
 .rarity-exotic {
 	color: var(--rarity-exotic);
-	text-shadow: 0 0 10px var(--rarity-exotic);
+	animation: text-glow 4s ease-in-out infinite;
 }
 
 .rarity-iridescent {
@@ -71,6 +72,25 @@
 	}
 	100% {
 		filter: hue-rotate(360deg);
+	}
+}
+
+/* Glow animations */
+@keyframes text-glow {
+	0%, 100% {
+		text-shadow: 0 0 8px currentColor, 0 0 15px currentColor;
+	}
+	50% {
+		text-shadow: 0 0 12px currentColor, 0 0 25px currentColor, 0 0 40px currentColor;
+	}
+}
+
+@keyframes box-glow {
+	0%, 100% {
+		box-shadow: 0 0 8px currentColor, 0 0 15px currentColor;
+	}
+	50% {
+		box-shadow: 0 0 12px currentColor, 0 0 25px currentColor, 0 0 40px currentColor;
 	}
 }
 
@@ -96,7 +116,7 @@
 }
 
 .rarity-mythic-bg {
-	background-color: #003a3a;
+	background-color: #003A2A;
 }
 
 .rarity-exotic-bg {
@@ -130,11 +150,12 @@
 
 .rarity-mythic-border {
 	border: var(--border-width) solid var(--rarity-mythic);
+	animation: box-glow 3.5s ease-in-out infinite;
 }
 
 .rarity-exotic-border {
 	border: var(--border-width) solid var(--rarity-exotic);
-	box-shadow: 0 0 10px var(--rarity-exotic);
+	animation: box-glow 4s ease-in-out infinite;
 }
 
 .rarity-iridescent-border {
