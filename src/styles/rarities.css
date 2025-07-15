@@ -15,8 +15,8 @@
 	/* Legendary - Orange */
 	--rarity-legendary: #ff9800;
 
-	/* Mythic - Jade */
-	--rarity-mythic: #00C896;
+	/* Mythic - Cyan */
+	--rarity-mythic: #40E0D0;
 
 	/* Exotic - Red */
 	--rarity-exotic: #dc143c;
@@ -116,7 +116,7 @@
 }
 
 .rarity-mythic-bg {
-	background-color: #003A2A;
+	background-color: #0D3A3A;
 }
 
 .rarity-exotic-bg {
