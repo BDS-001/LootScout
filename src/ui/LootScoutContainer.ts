@@ -92,8 +92,7 @@ export function updateContainerState(container: HTMLElement, state: ContainerSta
 		case 'success':
 			if (state.gameData) {
 				const gameTitle = state.gameData.title ? createGameTitleSection(state.gameData.title) : '';
-				elements.content.innerHTML =
-					gameTitle + createSuccessContent(state.gameData);
+				elements.content.innerHTML = gameTitle + createSuccessContent(state.gameData);
 			}
 			break;
 

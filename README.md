@@ -137,7 +137,7 @@ src/
 ├── pages/                # Extension pages
 │   └── Popup.tsx         # Extension popup component
 ├── parsers/              # Data parsing utilities
-│   ├── LanguageParser.ts  # Language detection  
+│   ├── LanguageParser.ts  # Language detection
 │   └── SteamParser.ts     # Steam App ID extraction
 ├── services/             # Core services
 │   ├── CacheService.ts   # Data caching functionality

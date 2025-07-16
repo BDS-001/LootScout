@@ -16,7 +16,7 @@
 	--rarity-legendary: #ff9800;
 
 	/* Mythic - Cyan */
-	--rarity-mythic: #40E0D0;
+	--rarity-mythic: #40e0d0;
 
 	/* Exotic - Red */
 	--rarity-exotic: #dc143c;
@@ -77,20 +77,32 @@
 
 /* Glow animations */
 @keyframes text-glow {
-	0%, 100% {
-		text-shadow: 0 0 8px currentColor, 0 0 15px currentColor;
+	0%,
+	100% {
+		text-shadow:
+			0 0 8px currentColor,
+			0 0 15px currentColor;
 	}
 	50% {
-		text-shadow: 0 0 12px currentColor, 0 0 25px currentColor, 0 0 40px currentColor;
+		text-shadow:
+			0 0 12px currentColor,
+			0 0 25px currentColor,
+			0 0 40px currentColor;
 	}
 }
 
 @keyframes box-glow {
-	0%, 100% {
-		box-shadow: 0 0 8px currentColor, 0 0 15px currentColor;
+	0%,
+	100% {
+		box-shadow:
+			0 0 8px currentColor,
+			0 0 15px currentColor;
 	}
 	50% {
-		box-shadow: 0 0 12px currentColor, 0 0 25px currentColor, 0 0 40px currentColor;
+		box-shadow:
+			0 0 12px currentColor,
+			0 0 25px currentColor,
+			0 0 40px currentColor;
 	}
 }
 
@@ -116,7 +128,7 @@
 }
 
 .rarity-mythic-bg {
-	background-color: #0D3A3A;
+	background-color: #0d3a3a;
 }
 
 .rarity-exotic-bg {

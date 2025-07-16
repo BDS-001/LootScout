@@ -11,7 +11,7 @@ export const updateCountryCode = async (countryCode: string): Promise<void> => {
 	if (!isValidCountryCode(countryCode)) {
 		throw new Error(`Invalid country code: ${countryCode}`);
 	}
-	
+
 	await setStorageItem('countryCode', countryCode);
 };
 
