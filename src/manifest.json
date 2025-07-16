@@ -1,5 +1,6 @@
 {
 	"manifest_version": 3,
+	"name": "LootScout",
 	"short_name": "LootScout",
 	"author": "BDS-001",
 	"homepage_url": "https://github.com/BDS-001/LootScout",
