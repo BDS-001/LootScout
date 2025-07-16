@@ -162,9 +162,9 @@
 }
 
 .footer-links {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	text-align: center;
 }
 
 .github-link {
