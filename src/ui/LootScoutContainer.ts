@@ -1,11 +1,14 @@
-import { GameData, ApiError } from '../shared/types';
+import { GameData, ApiError, RegionCode } from '../shared/types';
 import { createLoadingContent, createErrorContent, createSuccessContent } from './LootScoutContent';
+import { getCountryInfo } from '../services/CountryService';
 
 const ELEMENT_IDS = {
 	CONTAINER: 'lootscout-container',
 	HEADER: 'lootscout-header',
 	CONTENT: 'lootscout-content',
 } as const;
+
+const APP_NAME = 'LootScout';
 
 export interface ContainerState {
 	status: 'loading' | 'success' | 'error';
@@ -25,9 +28,9 @@ function createContainerElements(): ContainerElements {
 	container.id = ELEMENT_IDS.CONTAINER;
 
 	const header = document.createElement('div');
-	header.className = 'block responsive_apppage_details_right heading';
+	header.className = 'block responsive_apppage_details_right heading lootscout-header';
 	header.id = ELEMENT_IDS.HEADER;
-	header.textContent = 'LootScout';
+	header.innerHTML = `<span class="header-title">${APP_NAME}</span>`;
 
 	const content = document.createElement('div');
 	content.className = 'block responsive_apppage_details_right recommendation_noinfo';
@@ -62,9 +65,24 @@ function createGameTitleSection(title: string): string {
 	return `<div class="game-title-section">${title}</div>`;
 }
 
+function updateHeader(header: HTMLElement, countryCode?: string): void {
+	const regionInfo = countryCode ? createRegionDisplay(countryCode) : '';
+	header.innerHTML = `
+		<span class="header-title">${APP_NAME}</span>
+		${regionInfo ? `<span class="header-region">${regionInfo}</span>` : ''}
+	`;
+}
+
+function createRegionDisplay(countryCode: string): string {
+	const countryInfo = getCountryInfo(countryCode as RegionCode);
+	return countryInfo ? `${countryInfo.name} (${countryInfo.currency})` : countryCode.toUpperCase();
+}
+
 export function updateContainerState(container: HTMLElement, state: ContainerState): void {
 	const elements = getContainerElements(container);
 	if (!elements) return;
+
+	updateHeader(elements.header, state.countryCode);
 
 	switch (state.status) {
 		case 'loading':
@@ -75,7 +93,7 @@ export function updateContainerState(container: HTMLElement, state: ContainerSta
 			if (state.gameData) {
 				const gameTitle = state.gameData.title ? createGameTitleSection(state.gameData.title) : '';
 				elements.content.innerHTML =
-					gameTitle + createSuccessContent(state.gameData, state.countryCode);
+					gameTitle + createSuccessContent(state.gameData);
 			}
 			break;
 

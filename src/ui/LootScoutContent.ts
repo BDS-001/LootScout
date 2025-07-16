@@ -1,7 +1,6 @@
 import { GameData, ApiError } from '../shared/types';
 import { formatPrice } from '../utils/PriceUtils';
 import { createRarityComponent } from './RarityComponent';
-import regionMap from '../constants/regionMap';
 
 // Loading state content
 export function createLoadingContent(): string {
@@ -33,19 +32,8 @@ export function createErrorContent(error?: ApiError): string {
 	`;
 }
 
-function formatRegionDisplay(countryCode: string): string {
-	const countryInfo = regionMap[countryCode as keyof typeof regionMap];
-	return countryInfo ? `${countryInfo.name} (${countryInfo.currency})` : countryCode.toUpperCase();
-}
-
-function createRegionInfo(countryCode?: string): string {
-	return countryCode
-		? `<span class="footer_info">Region: ${formatRegionDisplay(countryCode)}</span>`
-		: '';
-}
-
 // Success state content
-export function createSuccessContent(gameData: GameData, countryCode?: string): string {
+export function createSuccessContent(gameData: GameData): string {
 	const { lootScout } = gameData;
 
 	return `
@@ -107,8 +95,7 @@ export function createSuccessContent(gameData: GameData, countryCode?: string): 
 		</div>
 		
 		<div class="loot_scout_footer">
-			<span class="footer_info">Powered by&nbsp;<a href="https://gg.deals/" target="_blank">GG.deals</a></span>
-			${createRegionInfo(countryCode)}
+			<span class="footer_info">Powered by&nbsp;<a href="https://gg.deals/" target="_blank">GG.deals</a>&nbsp;and&nbsp;<a href="https://store.steampowered.com/" target="_blank">Valve Corporation</a></span>
 		</div>
 	`;
 }

@@ -1,4 +1,24 @@
 /* Right column content styles for Steam sidebar */
+
+/* LootScout Header */
+.lootscout-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: var(--spacing-sm) var(--spacing-base);
+}
+
+.header-title {
+	font-weight: var(--font-weight-bold);
+	color: var(--color-steam-blue);
+}
+
+.header-region {
+	font-size: var(--font-size-sm);
+	color: var(--color-steam-gray);
+	font-weight: var(--font-weight-normal);
+}
+
 .game-title-section {
 	text-align: center;
 	margin-bottom: var(--spacing-lg);
@@ -82,29 +102,16 @@
 }
 
 .loot_scout_footer {
-	position: relative;
 	text-align: center;
 	margin-top: var(--spacing-base);
-	padding-bottom: 20px;
+	padding-top: var(--spacing-sm);
 }
 
 .footer_info {
-	position: absolute;
-	bottom: 0;
 	color: var(--color-steam-gray);
 	font-size: var(--font-size-sm);
 	font-weight: var(--font-weight-normal);
 	margin: 0;
-}
-
-.footer_info:first-child {
-	left: 0;
-	text-align: left;
-}
-
-.footer_info:last-child {
-	right: 0;
-	text-align: right;
 }
 
 .footer_info a {
