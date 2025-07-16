@@ -1,27 +1,9 @@
-/* Simple Tavern Theme */
-:root {
-	--tavern-gold: #f4d03f;
-	--tavern-wood: #2c1810;
-	--tavern-wood-light: #3e2723;
-	--tavern-leather: #4a2c2a;
-	--text-primary: #ffffff;
-	--text-secondary: #e8d5b7;
-	--text-muted: #bcaaa4;
-	--transition: all 0.2s ease;
-	--border-radius: 8px;
-	--spacing: 16px;
-}
-
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-}
+@import '../styles/shared-theme.css';
 
 .popup-container {
 	width: 100%;
 	height: 100vh;
-	background: linear-gradient(135deg, var(--tavern-wood) 0%, var(--tavern-wood-light) 100%);
+	background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 	color: var(--text-primary);
 	display: flex;
@@ -30,10 +12,10 @@
 }
 
 .header {
-	background: rgba(0, 0, 0, 0.3);
+	background: var(--bg-elevated);
 	padding: 16px;
 	text-align: center;
-	border-bottom: 1px solid var(--tavern-gold);
+	border-bottom: 1px solid var(--border-accent);
 }
 
 .popup-icon {
@@ -47,7 +29,7 @@
 	font-size: 18px;
 	font-weight: 700;
 	margin-bottom: 4px;
-	color: var(--tavern-gold);
+	color: var(--text-accent-bright);
 }
 
 .popup-description {
@@ -65,16 +47,16 @@
 }
 
 .setting-item {
-	background: var(--tavern-leather);
+	background: var(--bg-elevated);
 	border-radius: var(--border-radius);
 	padding: 12px;
-	border: 1px solid rgba(244, 208, 63, 0.2);
+	border: 1px solid var(--border-subtle);
 	transition: var(--transition);
 }
 
 .setting-item:hover {
-	background: #5a322f;
-	border-color: var(--tavern-gold);
+	background: var(--fantasy-slate);
+	border-color: var(--border-accent);
 }
 
 .setting-label {
@@ -82,7 +64,7 @@
 	font-size: 14px;
 	font-weight: 600;
 	margin-bottom: 4px;
-	color: var(--tavern-gold);
+	color: var(--text-accent-soft);
 }
 
 .setting-description {
@@ -96,9 +78,9 @@
 .country-select,
 .api-key-input {
 	padding: 8px 12px;
-	border: 1px solid rgba(244, 208, 63, 0.3);
+	border: 1px solid var(--border-subtle);
 	border-radius: var(--border-radius);
-	background: rgba(0, 0, 0, 0.3);
+	background: var(--bg-primary);
 	color: var(--text-primary);
 	font-size: 13px;
 	transition: var(--transition);
@@ -107,8 +89,8 @@
 .country-select:focus,
 .api-key-input:focus {
 	outline: none;
-	border-color: var(--tavern-gold);
-	background: rgba(0, 0, 0, 0.4);
+	border-color: var(--fantasy-amber);
+	background: var(--bg-secondary);
 }
 
 .country-select {
@@ -117,7 +99,7 @@
 }
 
 .country-select option {
-	background: var(--tavern-wood);
+	background: var(--bg-elevated);
 	color: var(--text-primary);
 	padding: 8px;
 }
@@ -138,10 +120,10 @@
 
 .apply-button {
 	padding: 8px 12px;
-	border: 1px solid var(--tavern-gold);
+	border: 1px solid var(--fantasy-amber);
 	border-radius: var(--border-radius);
-	background: var(--tavern-gold);
-	color: var(--tavern-wood);
+	background: var(--fantasy-amber);
+	color: var(--bg-primary);
 	font-size: 13px;
 	font-weight: 600;
 	cursor: pointer;
@@ -152,15 +134,15 @@
 }
 
 .apply-button:hover:not(:disabled) {
-	background: #fff176;
+	background: var(--fantasy-amber-bright);
 }
 
 .apply-button:disabled {
 	opacity: 0.5;
 	cursor: not-allowed;
-	background: #666;
-	border-color: #666;
-	color: #999;
+	background: var(--fantasy-slate);
+	border-color: var(--fantasy-slate);
+	color: var(--text-muted);
 }
 
 .test-status {
@@ -168,15 +150,15 @@
 	font-size: 11px;
 	color: var(--text-secondary);
 	padding: 6px 8px;
-	background: rgba(0, 0, 0, 0.2);
+	background: var(--bg-primary);
 	border-radius: 4px;
-	border-left: 2px solid var(--tavern-gold);
+	border-left: 2px solid var(--fantasy-amber);
 }
 
 .footer {
-	background: rgba(0, 0, 0, 0.3);
+	background: var(--bg-primary);
 	padding: 12px var(--spacing);
-	border-top: 1px solid rgba(244, 208, 63, 0.3);
+	border-top: 1px solid var(--border-subtle);
 }
 
 .footer-links {
@@ -186,7 +168,7 @@
 }
 
 .github-link {
-	color: var(--text-secondary);
+	color: var(--link-color);
 	text-decoration: none;
 	font-size: 12px;
 	font-weight: 500;
@@ -194,7 +176,7 @@
 }
 
 .github-link:hover {
-	color: var(--tavern-gold);
+	color: var(--link-hover);
 }
 
 .version {

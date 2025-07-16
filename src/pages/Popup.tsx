@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import regionMap from '../constants/regionMap';
 import { loadApiKey, validateAndSaveApiKey } from '../api/ApiKeyService';
 import { loadCountryCode, updateCountryCode } from '../services/CountryService';
+import browser from 'webextension-polyfill';
 
 const VERSION = '0.0.0';
 const GITHUB_URL = 'https://github.com/BDS-001/LootScout';
@@ -154,6 +155,16 @@ export default function Popup() {
 				<div className="footer-links">
 					<a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="github-link">
 						Source Code
+					</a>
+					<a
+						href="#"
+						onClick={(e) => {
+							e.preventDefault();
+							browser.tabs.create({ url: browser.runtime.getURL('src/about.html') });
+						}}
+						className="github-link"
+					>
+						About
 					</a>
 					<span className="version">v{VERSION}</span>
 				</div>

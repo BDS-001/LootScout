@@ -1,0 +1,57 @@
+/* Cohesive Fantasy Theme - Based on App Icon */
+:root {
+	/* Core fantasy palette */
+	--fantasy-midnight: #1a1f2e;
+	--fantasy-charcoal: #2a2f3d;
+	--fantasy-slate: #3a4052;
+	--fantasy-amber: #d4af37;
+	--fantasy-amber-bright: #f4d03f;
+	--fantasy-amber-soft: #b8965d;
+
+	/* Background colors */
+	--bg-primary: #0f1419;
+	--bg-secondary: var(--fantasy-midnight);
+	--bg-elevated: var(--fantasy-charcoal);
+	--bg-accent: rgba(212, 175, 55, 0.08);
+
+	/* Text colors */
+	--text-primary: #ffffff;
+	--text-secondary: #c9d1d9;
+	--text-muted: #8b949e;
+	--text-accent: var(--fantasy-amber);
+	--text-accent-bright: var(--fantasy-amber-bright);
+	--text-accent-soft: var(--fantasy-amber-soft);
+
+	/* Interactive colors */
+	--link-color: #79c0ff;
+	--link-hover: #a5d6ff;
+
+	/* Border colors */
+	--border-subtle: rgba(212, 175, 55, 0.15);
+	--border-accent: rgba(212, 175, 55, 0.3);
+	--border-muted: rgba(139, 148, 158, 0.15);
+
+	/* Legacy variables for compatibility */
+	--tavern-wood: var(--fantasy-charcoal);
+	--tavern-wood-dark: var(--bg-primary);
+	--tavern-wood-light: var(--fantasy-slate);
+	--tavern-leather: var(--bg-elevated);
+
+	--transition: all 0.2s ease;
+	--border-radius: 8px;
+	--spacing: 16px;
+}
+
+/* Shared base styles */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	background: var(--bg-primary);
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+	color: var(--text-primary);
+	line-height: 1.6;
+}
