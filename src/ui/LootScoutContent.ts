@@ -95,7 +95,7 @@ export function createSuccessContent(gameData: GameData): string {
 		</div>
 		
 		<div class="loot_scout_footer">
-			<span class="footer_info">Powered by&nbsp;<a href="https://gg.deals/" target="_blank">GG.deals</a>&nbsp;and&nbsp;<a href="https://store.steampowered.com/" target="_blank">Valve Corporation</a></span>
+			<span class="footer_info">Powered by&nbsp;<a href="https://gg.deals/" target="_blank">GG.deals</a>&nbsp;and&nbsp;<a href="https://store.steampowered.com/" target="_blank">Steam</a>.<br>Not affiliated with GG.deals or Valve Corporation.</span>
 		</div>
 	`;
 }
