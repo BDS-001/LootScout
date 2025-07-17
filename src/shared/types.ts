@@ -52,24 +52,12 @@ export interface SteamApiParams {
 	region: RegionCode;
 }
 
-// ISP-compliant interfaces
-export interface ApiCredentials {
-	apiKey: string;
-}
-
-export interface GameIdentifier {
+// Combined interface - simpler approach
+export interface CombinedGameDataParams {
 	appId: string;
-}
-
-export interface LocalizationParams {
+	apiKey: string;
 	region: RegionCode;
 }
-
-// Composed interface for backward compatibility
-export interface CombinedGameDataParams
-	extends ApiCredentials,
-		GameIdentifier,
-		LocalizationParams {}
 
 // Steam Types
 export interface SteamPriceOverview {
@@ -88,6 +76,10 @@ export interface SteamAppData {
 		steam_appid: number;
 		is_free: boolean;
 		price_overview?: SteamPriceOverview;
+		release_date?: {
+			coming_soon: boolean;
+			date: string;
+		};
 	};
 }
 
@@ -123,25 +115,12 @@ export type CombinedGameDataResponse =
 	| { success: true; data: CombinedGameData }
 	| { success: false; data: ApiError; error?: unknown };
 
-// ISP-compliant GameData interfaces
-export interface GameBasicInfo {
+// Simple, consolidated GameData interface
+export interface GameData {
 	success: true;
 	title: string;
 	appId: string;
-}
-
-export interface RarityInfo {
-	name: string;
-	className: string;
-}
-
-export interface DealStatus {
-	text: string;
-	className: string;
-}
-
-export interface GamePricing {
-	deal: {
+	deal?: {
 		currentBest: number;
 		historicalBest: number;
 		currency: string;
@@ -153,26 +132,35 @@ export interface GamePricing {
 		final: number;
 		discount_percent: number;
 	};
-}
-
-export interface GameAnalytics {
 	lootScout: {
 		steam: {
-			status: DealStatus;
-			rarity: RarityInfo;
+			status: {
+				text: string;
+				className: string;
+			};
+			rarity: {
+				name: string;
+				className: string;
+			};
 		};
-		currentBest: {
+		currentBest?: {
 			rawDiscount: number;
 			discount: number;
 			savings: number;
-			rarity: RarityInfo;
+			rarity: {
+				name: string;
+				className: string;
+			};
 			isEqualToSteam: boolean;
 		};
-		historicalBest: {
+		historicalBest?: {
 			rawDiscount: number;
 			discount: number;
 			savings: number;
-			rarity: RarityInfo;
+			rarity: {
+				name: string;
+				className: string;
+			};
 			isEqualToSteam: boolean;
 		};
 		hltb: {
@@ -180,8 +168,5 @@ export interface GameAnalytics {
 		};
 	};
 }
-
-// Composed interface for backward compatibility
-export interface GameData extends GameBasicInfo, GamePricing, GameAnalytics {}
 
 export type GameDataResponse = GameData | { success: false; data: ApiError; error?: unknown };

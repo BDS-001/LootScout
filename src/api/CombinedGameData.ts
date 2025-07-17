@@ -1,7 +1,19 @@
 import fetchGgDealsData from './GgDealsApi';
 import fetchSteamStoreData from './SteamStoreApi';
-import { CombinedGameDataParams, CombinedGameDataResponse } from '../shared/types';
+import {
+	CombinedGameDataParams,
+	CombinedGameDataResponse,
+	GgDealsApiResponse,
+} from '../shared/types';
 import { handleApiError } from '../utils/ErrorHandler';
+
+function shouldSkipGgDeals(steamAppData: any): boolean {
+	return steamAppData?.data?.is_free || steamAppData?.data?.release_date?.coming_soon;
+}
+
+function createEmptyGgDealsResponse(): GgDealsApiResponse {
+	return { success: true as const, data: {} as Record<string, null> };
+}
 
 export default async function fetchCombinedGameData(
 	params: CombinedGameDataParams
@@ -9,11 +21,12 @@ export default async function fetchCombinedGameData(
 	const { appId, apiKey, region } = params;
 
 	try {
-		// Fetch both APIs concurrently for better performance
-		const [ggDealsData, steamStoreData] = await Promise.all([
-			fetchGgDealsData({ appId, apiKey, region }),
-			fetchSteamStoreData({ appId, region }),
-		]);
+		const steamStoreData = await fetchSteamStoreData({ appId, region });
+
+		const steamAppData = steamStoreData.success ? steamStoreData.data[appId] : null;
+		const ggDealsData = shouldSkipGgDeals(steamAppData)
+			? createEmptyGgDealsResponse()
+			: await fetchGgDealsData({ appId, apiKey, region });
 
 		return {
 			success: true,

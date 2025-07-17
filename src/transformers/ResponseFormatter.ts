@@ -31,6 +31,8 @@ function validateGameData(res: CombinedGameDataResponse): {
 	steamAppData?: any;
 	ggDealsData?: any;
 	error?: ApiError;
+	isFree?: boolean;
+	isComingSoon?: boolean;
 } {
 	if (!res.success) {
 		console.error('LootScout: CombinedGameDataResponse not successful:', res);
@@ -41,19 +43,6 @@ function validateGameData(res: CombinedGameDataResponse): {
 				message: 'Combined API request failed',
 				code: 0,
 				status: 0,
-			} as ApiError,
-		};
-	}
-
-	if (!res.data.dealData.success) {
-		console.error('LootScout: GG.deals API failed:', res.data.dealData);
-		return {
-			isValid: false,
-			error: {
-				name: 'GG.deals API Error',
-				message: res.data.dealData.data?.message || 'GG.deals API request failed',
-				code: res.data.dealData.data?.code || 0,
-				status: res.data.dealData.data?.status || 0,
 			} as ApiError,
 		};
 	}
@@ -72,6 +61,26 @@ function validateGameData(res: CombinedGameDataResponse): {
 	}
 
 	const steamAppData = res.data.steamStoreData.data[res.data.appId];
+	const isFree = steamAppData?.data?.is_free || false;
+	const isComingSoon = steamAppData?.data?.release_date?.coming_soon || false;
+
+	if (isFree || isComingSoon) {
+		return { isValid: true, steamAppData, isFree, isComingSoon };
+	}
+
+	if (!res.data.dealData.success) {
+		console.error('LootScout: GG.deals API failed:', res.data.dealData);
+		return {
+			isValid: false,
+			error: {
+				name: 'GG.deals API Error',
+				message: res.data.dealData.data?.message || 'GG.deals API request failed',
+				code: res.data.dealData.data?.code || 0,
+				status: res.data.dealData.data?.status || 0,
+			} as ApiError,
+		};
+	}
+
 	const ggDealsData = res.data.dealData.data[res.data.appId];
 
 	if (!steamAppData?.data?.price_overview || !ggDealsData) {
@@ -126,6 +135,65 @@ function calculateRarityMetrics(steamPriceOverview: any, priceMetrics: any) {
 	const historicalRarity = getRarity(priceMetrics.historicalRawDiscount);
 
 	return { steamRarity, currentRarity, historicalRarity };
+}
+
+function buildFreeGameResponse(appId: string, steamAppData: any): GameDataResponse {
+	return {
+		success: true,
+		title: steamAppData.data.name,
+		appId,
+		steam: {
+			currency: 'USD',
+			initial: 0,
+			final: 0,
+			discount_percent: 0,
+		},
+		lootScout: {
+			steam: {
+				status: {
+					text: 'This game is free to play',
+					className: 'steam_free_game',
+				},
+				rarity: {
+					name: 'Free',
+					className: 'free',
+				},
+			},
+			hltb: {
+				url: getHltbUrl(steamAppData.data.name),
+			},
+		},
+	};
+}
+
+function buildComingSoonResponse(appId: string, steamAppData: any): GameDataResponse {
+	const releaseDate = steamAppData.data.release_date?.date || 'TBA';
+	return {
+		success: true,
+		title: steamAppData.data.name,
+		appId,
+		steam: {
+			currency: 'USD',
+			initial: 0,
+			final: 0,
+			discount_percent: 0,
+		},
+		lootScout: {
+			steam: {
+				status: {
+					text: `Coming soon: ${releaseDate}`,
+					className: 'steam_coming_soon',
+				},
+				rarity: {
+					name: 'Coming Soon',
+					className: 'coming_soon',
+				},
+			},
+			hltb: {
+				url: getHltbUrl(steamAppData.data.name),
+			},
+		},
+	};
 }
 
 function buildGameDataResponse(
@@ -201,15 +269,22 @@ export function normalizeResponse(res: CombinedGameDataResponse): GameDataRespon
 		};
 	}
 
-	const { steamAppData, ggDealsData } = validation;
+	const { steamAppData, ggDealsData, isFree, isComingSoon } = validation;
+	const appId = (res.data as any).appId;
+
+	// Handle free games
+	if (isFree) {
+		return buildFreeGameResponse(appId, steamAppData);
+	}
+
+	// Handle coming soon games
+	if (isComingSoon) {
+		return buildComingSoonResponse(appId, steamAppData);
+	}
+
+	// Handle regular games with pricing data
 	const priceMetrics = calculatePriceMetrics(steamAppData.data.price_overview, ggDealsData);
 	const rarityMetrics = calculateRarityMetrics(steamAppData.data.price_overview, priceMetrics);
 
-	return buildGameDataResponse(
-		(res.data as any).appId,
-		steamAppData,
-		ggDealsData,
-		priceMetrics,
-		rarityMetrics
-	);
+	return buildGameDataResponse(appId, steamAppData, ggDealsData, priceMetrics, rarityMetrics);
 }

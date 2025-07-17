@@ -32,10 +32,82 @@ export function createErrorContent(error?: ApiError): string {
 	`;
 }
 
+function createSimpleFooter(): string {
+	return `
+		<div class="loot_scout_footer">
+			<span class="footer_info">Powered by&nbsp;<a href="https://store.steampowered.com/" target="_blank">Steam</a>.<br>Not affiliated with Valve Corporation.</span>
+		</div>
+	`;
+}
+
+function createResourcesSection(hltbUrl: string): string {
+	return `
+		<div class="deal_section">
+			<div class="deal_header">Additional Resources</div>
+			<div class="additional_resources">
+				<a href="${hltbUrl}" target="_blank" class="linkbar">
+					<span>How Long to Beat</span>
+				</a>
+			</div>
+		</div>
+	`;
+}
+
+function createSpecialGameContent(
+	header: string,
+	statusText: string,
+	statusClass: string,
+	hltbUrl: string
+): string {
+	return `
+		<div class="deal_section">
+			<div class="deal_header">${header}</div>
+			<div class="deal_status">
+				<span class="${statusClass}">${statusText}</span>
+			</div>
+		</div>
+		${createResourcesSection(hltbUrl)}
+		${createSimpleFooter()}
+	`;
+}
+
+// Free game content
+export function createFreeGameContent(gameData: GameData): string {
+	return createSpecialGameContent(
+		'🎮 Free to Play',
+		'This game is free to play',
+		gameData.lootScout.steam.status.className,
+		gameData.lootScout.hltb.url
+	);
+}
+
+// Coming soon game content
+export function createComingSoonContent(gameData: GameData): string {
+	return createSpecialGameContent(
+		'📅 Coming Soon',
+		gameData.lootScout.steam.status.text,
+		gameData.lootScout.steam.status.className,
+		gameData.lootScout.hltb.url
+	);
+}
+
 // Success state content
 export function createSuccessContent(gameData: GameData): string {
 	const { lootScout } = gameData;
 
+	// Check if deal data is missing (free or coming soon games)
+	if (!gameData.deal || !lootScout.currentBest || !lootScout.historicalBest) {
+		// Check if it's a free game
+		if (lootScout.steam.rarity.className === 'free') {
+			return createFreeGameContent(gameData);
+		}
+		// Check if it's a coming soon game
+		if (lootScout.steam.rarity.className === 'coming_soon') {
+			return createComingSoonContent(gameData);
+		}
+	}
+
+	// Regular game with pricing data
 	return `
 		
 		<div class="deal_section">
@@ -49,40 +121,40 @@ export function createSuccessContent(gameData: GameData): string {
 		
 		<div class="deal_section">
 			<div class="deal_header">Current Best Deal</div>
-			<div class="deal_price">${formatPrice(gameData.deal.currentBest, gameData.deal.currency)} <span class="raw_discount">(${lootScout.currentBest.rawDiscount}% off)</span></div>
-			<div class="deal_discount"><span class="highlight_green">${lootScout.currentBest.discount}%</span> off Steam</div>
+			<div class="deal_price">${formatPrice(gameData.deal!.currentBest, gameData.deal!.currency)} <span class="raw_discount">(${lootScout.currentBest!.rawDiscount}% off)</span></div>
+			<div class="deal_discount"><span class="highlight_green">${lootScout.currentBest!.discount}%</span> off Steam</div>
 			<div class="deal_comparison">
 				${
-					gameData.steam.final === gameData.deal.currentBest
+					gameData.steam.final === gameData.deal!.currentBest
 						? '<span class="steam_comparison">Equal to Steam</span>'
-						: lootScout.currentBest.savings < 0
+						: lootScout.currentBest!.savings < 0
 							? '<span class="steam_comparison">Worse than Steam</span>'
-							: `<span class="deal_text">Save extra <span class="highlight_green">${formatPrice(Math.abs(lootScout.currentBest.savings), gameData.deal.currency)}</span></span>`
+							: `<span class="deal_text">Save extra <span class="highlight_green">${formatPrice(Math.abs(lootScout.currentBest!.savings), gameData.deal!.currency)}</span></span>`
 				}
 			</div>
 			<div class="deal_button">
-				<a href="${gameData.deal.url}" target="_blank" class="btnv6_blue_hoverfade btn_medium"><span>View Deals</span></a>
+				<a href="${gameData.deal!.url}" target="_blank" class="btnv6_blue_hoverfade btn_medium"><span>View Deals</span></a>
 			</div>
-			${createRarityComponent(lootScout.currentBest.rawDiscount, true)}
+			${createRarityComponent(lootScout.currentBest!.rawDiscount, true)}
 		</div>
 		
 		<div class="deal_section">
 			<div class="deal_header">Historical Low</div>
-			<div class="deal_price">${formatPrice(gameData.deal.historicalBest, gameData.deal.currency)} <span class="raw_discount">(${lootScout.historicalBest.rawDiscount}% off)</span></div>
-			<div class="deal_discount"><span class="highlight_green">${lootScout.historicalBest.discount}%</span> off Steam</div>
+			<div class="deal_price">${formatPrice(gameData.deal!.historicalBest, gameData.deal!.currency)} <span class="raw_discount">(${lootScout.historicalBest!.rawDiscount}% off)</span></div>
+			<div class="deal_discount"><span class="highlight_green">${lootScout.historicalBest!.discount}%</span> off Steam</div>
 			<div class="deal_comparison">
 				${
-					gameData.steam.final === gameData.deal.historicalBest
+					gameData.steam.final === gameData.deal!.historicalBest
 						? '<span class="steam_comparison">Equal to Steam</span>'
-						: lootScout.historicalBest.savings < 0
+						: lootScout.historicalBest!.savings < 0
 							? '<span class="steam_comparison">Worse than Steam</span>'
-							: `<span class="deal_text">Save extra <span class="highlight_green">${formatPrice(Math.abs(lootScout.historicalBest.savings), gameData.deal.currency)}</span></span>`
+							: `<span class="deal_text">Save extra <span class="highlight_green">${formatPrice(Math.abs(lootScout.historicalBest!.savings), gameData.deal!.currency)}</span></span>`
 				}
 			</div>
 			<div class="deal_button">
-				<a href="${gameData.deal.url}" target="_blank" class="btnv6_blue_hoverfade btn_medium"><span>View Deals</span></a>
+				<a href="${gameData.deal!.url}" target="_blank" class="btnv6_blue_hoverfade btn_medium"><span>View Deals</span></a>
 			</div>
-			${createRarityComponent(lootScout.historicalBest.rawDiscount, true)}
+			${createRarityComponent(lootScout.historicalBest!.rawDiscount, true)}
 		</div>
 		
 		<div class="deal_section">
