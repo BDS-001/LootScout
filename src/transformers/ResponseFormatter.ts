@@ -1,7 +1,11 @@
 import { CombinedGameDataResponse, GameDataResponse, SteamReviewsResponse } from '../shared/types';
 import { validateGameData } from './GameDataValidator';
 import { calculatePriceMetrics, calculateRarityMetrics } from './PriceCalculator';
-import { buildFreeGameResponse, buildComingSoonResponse, buildGameDataResponse } from './ResponseBuilder';
+import {
+	buildFreeGameResponse,
+	buildComingSoonResponse,
+	buildGameDataResponse,
+} from './ResponseBuilder';
 import { processSteamReviews } from './SteamReviewProcessor';
 
 export function normalizeResponse(res: CombinedGameDataResponse): GameDataResponse {
@@ -14,7 +18,10 @@ export function normalizeResponse(res: CombinedGameDataResponse): GameDataRespon
 	}
 
 	const { steamAppData, ggDealsData, isFree, isComingSoon, hasValidReviews } = validation;
-	const { appId, steamReviewData } = res.data as { appId: string; steamReviewData: { success: boolean; data: SteamReviewsResponse } | null };
+	const { appId, steamReviewData } = res.data as {
+		appId: string;
+		steamReviewData: { success: boolean; data: SteamReviewsResponse } | null;
+	};
 
 	if (isComingSoon) {
 		return buildComingSoonResponse(appId, steamAppData, null);
@@ -39,5 +46,12 @@ export function normalizeResponse(res: CombinedGameDataResponse): GameDataRespon
 	const priceMetrics = calculatePriceMetrics(steamApp.data.price_overview, ggDealsData);
 	const rarityMetrics = calculateRarityMetrics(steamApp.data.price_overview, priceMetrics);
 
-	return buildGameDataResponse(appId, steamApp, ggDealsData, priceMetrics, rarityMetrics, processedReviews);
+	return buildGameDataResponse(
+		appId,
+		steamApp,
+		ggDealsData,
+		priceMetrics,
+		rarityMetrics,
+		processedReviews
+	);
 }

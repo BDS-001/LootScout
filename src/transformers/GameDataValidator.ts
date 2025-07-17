@@ -20,7 +20,14 @@ function validateSteamReviewData(steamReviewData: unknown): boolean {
 	}
 
 	const { query_summary } = reviewData;
-	const requiredFields = ['num_reviews', 'review_score', 'review_score_desc', 'total_positive', 'total_negative', 'total_reviews'] as const;
+	const requiredFields = [
+		'num_reviews',
+		'review_score',
+		'review_score_desc',
+		'total_positive',
+		'total_negative',
+		'total_reviews',
+	] as const;
 	for (const field of requiredFields) {
 		if (!(field in query_summary)) {
 			return false;
@@ -68,12 +75,12 @@ export function validateGameData(res: CombinedGameDataResponse): ValidationResul
 	}
 
 	const steamStoreResponse = res.data.steamStoreData.data as Record<string, unknown>;
-	const steamAppData = steamStoreResponse[res.data.appId] as { 
-		data?: { 
-			is_free?: boolean; 
-			release_date?: { coming_soon?: boolean }; 
+	const steamAppData = steamStoreResponse[res.data.appId] as {
+		data?: {
+			is_free?: boolean;
+			release_date?: { coming_soon?: boolean };
 			price_overview?: unknown;
-		} 
+		};
 	};
 	const isFree = steamAppData?.data?.is_free || false;
 	const isComingSoon = steamAppData?.data?.release_date?.coming_soon || false;

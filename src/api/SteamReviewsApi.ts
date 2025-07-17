@@ -2,9 +2,8 @@ import { SteamApiParams, SteamApiResponse, SteamPriceOverview } from '../shared/
 import { handleApiError } from '../utils/ErrorHandler';
 
 function getSteamReviewBaseUrl(appId: string): string {
-	return `https://store.steampowered.com/appreviews/${appId}`
+	return `https://store.steampowered.com/appreviews/${appId}`;
 }
-
 
 export default async function fetchSteamReviewData(
 	params: SteamApiParams

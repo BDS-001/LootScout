@@ -2,7 +2,11 @@ import { GameDataResponse, ProcessedSteamReviews } from '../shared/types';
 import { getHltbUrl } from '../helpers/hltb';
 import { getSteamDealStatus } from './PriceCalculator';
 
-export function buildFreeGameResponse(appId: string, steamAppData: any, processedReviews?: ProcessedSteamReviews | null): GameDataResponse {
+export function buildFreeGameResponse(
+	appId: string,
+	steamAppData: any,
+	processedReviews?: ProcessedSteamReviews | null
+): GameDataResponse {
 	return {
 		success: true,
 		title: steamAppData.data.name,
@@ -39,7 +43,11 @@ export function buildFreeGameResponse(appId: string, steamAppData: any, processe
 	};
 }
 
-export function buildComingSoonResponse(appId: string, steamAppData: any, processedReviews?: ProcessedSteamReviews | null): GameDataResponse {
+export function buildComingSoonResponse(
+	appId: string,
+	steamAppData: any,
+	processedReviews?: ProcessedSteamReviews | null
+): GameDataResponse {
 	const releaseDate = steamAppData.data.release_date?.date || 'TBA';
 	return {
 		success: true,
