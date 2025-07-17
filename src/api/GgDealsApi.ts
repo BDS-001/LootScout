@@ -32,7 +32,7 @@ const fetchWithTimeout = async (url: string, options: RequestInit, timeout: numb
 
 const fetchFromProxy = async (appId: string, region: string, retryCount = 0) => {
 	const MAX_RETRIES = 6; // More retries for cold starts
-	const BASE_DELAY = 1000;
+	const BASE_DELAY = 500;
 	const TIMEOUT = 9000; // Just under Vercel's 10s limit
 
 	try {
