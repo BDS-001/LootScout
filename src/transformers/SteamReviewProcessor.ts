@@ -1,8 +1,5 @@
 import { SteamReview, SteamReviewsResponse, ProcessedSteamReviews } from '../shared/types';
 
-function truncatePlaytime(playtime: number): number {
-	return Math.trunc(playtime * 100) / 100;
-}
 
 function calculatePlaytime(reviews: SteamReview[]): number {
 	if (reviews.length === 0) return -1;
@@ -11,6 +8,8 @@ function calculatePlaytime(reviews: SteamReview[]): number {
 		.map(review => review.author.playtime_forever)
 		.filter(playtime => playtime > 0)
 		.sort((a, b) => a - b);
+	
+	console.log('Raw playtime values (minutes):', reviewPlayTimes);
 	
 	if (reviewPlayTimes.length === 0) return -1;
 	
@@ -25,8 +24,11 @@ function calculatePlaytime(reviews: SteamReview[]): number {
 	
 	const sum = reviewPlayTimes.reduce((acc, curr) => acc + curr, 0);
 	const average = sum / reviewPlayTimes.length;
+	const averageHours = average / 60; // Convert minutes to hours
 	
-	return truncatePlaytime(average);
+	console.log(`Average playtime: ${average} minutes (${averageHours.toFixed(2)} hours)`);
+	
+	return Number(averageHours.toFixed(2)); // Return in hours with 2 decimal places
 }
 
 

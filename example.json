@@ -1,247 +1,265 @@
 {
-	"973810": {
-		"success": true,
-		"data": {
-			"type": "game",
-			"name": "Journey To The Savage Planet",
-			"steam_appid": 973810,
-			"required_age": 0,
-			"is_free": false,
-			"controller_support": "full",
-			"dlc": [1503200],
-			"detailed_description": "<h1>CRIME BOSS</h1><p></p><br><h1>About the Game</h1><h2 class=\"bb_tag\"><strong>Onward to Adventure</strong></h2><div class=\"bb_img_ctn\"><img class=\"bb_img\" src=\"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/extras/SavagePlanet__Main_Capsule.jpg?t=1723047768\" /></div><br><br>WELCOME TO THE PIONEER PROGRAM! As the newest recruit of Kindred Aerospace - The 4th best interstellar space exploration company - Your job is to determine if the planet ARY-26 planet is fit for humans. You may be short on equipment and experience, but good luck!<h2 class=\"bb_tag\"><strong>Play with a friend</strong></h2> Play solo or online with a friend. If you have one. <br><br><div class=\"bb_img_ctn\"><img class=\"bb_img\" src=\"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/extras/Steam_Grapple.gif?t=1723047768\" /></div><h2 class=\"bb_tag\"><strong>Explore and catalog the flora and fauna.</strong></h2> From strange spherical birds to hallucinogenic plants to ‘festering alien orifices.’ Try not to die.<br><br><div class=\"bb_img_ctn\"><img class=\"bb_img\" src=\"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/extras/Steam_Scan.gif?t=1723047768\" /></div><h2 class=\"bb_tag\"><strong>No Expense Spared*</strong></h2>You get some cool tools for free, like a laser pistol, rocket booster pack, and ‘probe’, but if you need something you have a slick 3D printer can turn space trash into sweet items.<br><br><br><div class=\"bb_img_ctn\"><img class=\"bb_img\" src=\"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/extras/ezgif-5-966d31b4e58e.gif?t=1723047768\" /></div><h2 class=\"bb_tag\"> <strong>Are you alone?</strong></h2>Bonus mysteries! Complete your survey of the planet to find out. You’ll know you’re on the road to completion when you’ve heard the words ‘cucumber sh*twater’ and found the ‘festering butthole’.<br><br><br><div class=\"bb_img_ctn\"><img class=\"bb_img\" src=\"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/extras/Steam_Pano5.gif?t=1723047768\" /></div><br><br><br>*Most Expenses Spared.<br><br><div class=\"bb_img_ctn\"><img class=\"bb_img\" src=\"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/extras/ss_953ad321bb975382bfe58bb5f44bb45050f68e53.800x600.jpg?t=1723047768\" /></div>",
-			"about_the_game": "<h2 class=\"bb_tag\"><strong>Onward to Adventure</strong></h2><div class=\"bb_img_ctn\"><img class=\"bb_img\" src=\"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/extras/SavagePlanet__Main_Capsule.jpg?t=1723047768\" /></div><br><br>WELCOME TO THE PIONEER PROGRAM! As the newest recruit of Kindred Aerospace - The 4th best interstellar space exploration company - Your job is to determine if the planet ARY-26 planet is fit for humans. You may be short on equipment and experience, but good luck!<h2 class=\"bb_tag\"><strong>Play with a friend</strong></h2> Play solo or online with a friend. If you have one. <br><br><div class=\"bb_img_ctn\"><img class=\"bb_img\" src=\"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/extras/Steam_Grapple.gif?t=1723047768\" /></div><h2 class=\"bb_tag\"><strong>Explore and catalog the flora and fauna.</strong></h2> From strange spherical birds to hallucinogenic plants to ‘festering alien orifices.’ Try not to die.<br><br><div class=\"bb_img_ctn\"><img class=\"bb_img\" src=\"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/extras/Steam_Scan.gif?t=1723047768\" /></div><h2 class=\"bb_tag\"><strong>No Expense Spared*</strong></h2>You get some cool tools for free, like a laser pistol, rocket booster pack, and ‘probe’, but if you need something you have a slick 3D printer can turn space trash into sweet items.<br><br><br><div class=\"bb_img_ctn\"><img class=\"bb_img\" src=\"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/extras/ezgif-5-966d31b4e58e.gif?t=1723047768\" /></div><h2 class=\"bb_tag\"> <strong>Are you alone?</strong></h2>Bonus mysteries! Complete your survey of the planet to find out. You’ll know you’re on the road to completion when you’ve heard the words ‘cucumber sh*twater’ and found the ‘festering butthole’.<br><br><br><div class=\"bb_img_ctn\"><img class=\"bb_img\" src=\"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/extras/Steam_Pano5.gif?t=1723047768\" /></div><br><br><br>*Most Expenses Spared.<br><br><div class=\"bb_img_ctn\"><img class=\"bb_img\" src=\"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/extras/ss_953ad321bb975382bfe58bb5f44bb45050f68e53.800x600.jpg?t=1723047768\" /></div>",
-			"short_description": "&quot;WELCOME TO THE PIONEER PROGRAM! As the newest recruit of Kindred Aerospace - The 4th best interstellar space exploration company - Your job is to determine if the planet ARY-26 planet is fit for humans. You may be short on equipment and experience, but you'll figure it out. Good luck!",
-			"supported_languages": "English<strong>*</strong>, French<strong>*</strong>, Italian, German, Spanish - Spain, Japanese, Korean, Portuguese - Brazil, Russian, Simplified Chinese, Traditional Chinese, Spanish - Latin America<br><strong>*</strong>languages with full audio support",
-			"reviews": "“Funny, fresh, and full of surprises, Typhoon’s debut blends genres expertly.”<br>84 – PC Gamer<br><br>“One of the most interesting and unique indie games to be released in a very long time.”<br>90 – Screen Rant<br>",
-			"header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/header.jpg?t=1723047768",
-			"capsule_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/capsule_231x87.jpg?t=1723047768",
-			"capsule_imagev5": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/capsule_184x69.jpg?t=1723047768",
-			"website": null,
-			"pc_requirements": {
-				"minimum": "<strong>Minimum:</strong><br><ul class=\"bb_ul\"><li><strong>OS *:</strong> Win 7, 8, 10<br></li><li><strong>Processor:</strong> Intel Core i5-750, 2.67 GHz<br></li><li><strong>Memory:</strong> 4 GB RAM<br></li><li><strong>Graphics:</strong> NVIDIA GeForce GTX 660 | AMD Radeon HD 7950</li></ul>"
-			},
-			"mac_requirements": [],
-			"linux_requirements": [],
-			"legal_notice": "© 2021 Google LLC. Journey to the Savage Planet, Typhoon Studios, and related marks are trademarks of Google LLC. 505 Games and the 505 Games logo are registered trademarks of 505 Games S.p.A and/or its Affiliates. All other trademarks and copyrights are the property of their respective holders.",
-			"developers": ["Typhoon"],
-			"publishers": ["505 Games"],
-			"price_overview": {
-				"currency": "CAD",
-				"initial": 3999,
-				"final": 999,
-				"discount_percent": 75,
-				"initial_formatted": "CDN$ 39.99",
-				"final_formatted": "CDN$ 9.99"
-			},
-			"packages": [1311372, 319446, 1302797],
-			"package_groups": [
-				{
-					"name": "default",
-					"title": "Buy Journey To The Savage Planet",
-					"description": "",
-					"selection_text": "Select a purchase option",
-					"save_text": "",
-					"display_type": 0,
-					"is_recurring_subscription": "false",
-					"subs": [
-						{
-							"packageid": 319446,
-							"percent_savings_text": "-75% ",
-							"percent_savings": 0,
-							"option_text": "Journey to the Savage Planet - <span class=\"discount_original_price\">CDN$ 39.99</span> CDN$ 9.99",
-							"option_description": "",
-							"can_get_free_license": "0",
-							"is_free_license": false,
-							"price_in_cents_with_discount": 999
-						}
-					]
-				}
-			],
-			"platforms": {
-				"windows": true,
-				"mac": false,
-				"linux": false
-			},
-			"metacritic": {
-				"score": 76,
-				"url": "https://www.metacritic.com/game/pc/journey-to-the-savage-planet?ftag=MCD-06-10aaa1f"
-			},
-			"categories": [
-				{
-					"id": 2,
-					"description": "Single-player"
-				},
-				{
-					"id": 1,
-					"description": "Multi-player"
-				},
-				{
-					"id": 9,
-					"description": "Co-op"
-				},
-				{
-					"id": 38,
-					"description": "Online Co-op"
-				},
-				{
-					"id": 28,
-					"description": "Full controller support"
-				},
-				{
-					"id": 62,
-					"description": "Family Sharing"
-				}
-			],
-			"genres": [
-				{
-					"id": "1",
-					"description": "Action"
-				},
-				{
-					"id": "25",
-					"description": "Adventure"
-				}
-			],
-			"screenshots": [
-				{
-					"id": 0,
-					"path_thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/ss_c9809b056be7d5f4210d55af7a7dbfda2b7480e6.600x338.jpg?t=1723047768",
-					"path_full": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/ss_c9809b056be7d5f4210d55af7a7dbfda2b7480e6.1920x1080.jpg?t=1723047768"
-				},
-				{
-					"id": 1,
-					"path_thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/ss_67e0af7bc3390a591589dd50d66917c6d2ad2a80.600x338.jpg?t=1723047768",
-					"path_full": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/ss_67e0af7bc3390a591589dd50d66917c6d2ad2a80.1920x1080.jpg?t=1723047768"
-				},
-				{
-					"id": 2,
-					"path_thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/ss_d6736e9ca759d284a6e91a1d71797b1c4a9907dd.600x338.jpg?t=1723047768",
-					"path_full": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/ss_d6736e9ca759d284a6e91a1d71797b1c4a9907dd.1920x1080.jpg?t=1723047768"
-				},
-				{
-					"id": 3,
-					"path_thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/ss_b5dd7c241e7b052a4ee484cce66e8cd61ea9f6ba.600x338.jpg?t=1723047768",
-					"path_full": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/ss_b5dd7c241e7b052a4ee484cce66e8cd61ea9f6ba.1920x1080.jpg?t=1723047768"
-				},
-				{
-					"id": 4,
-					"path_thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/ss_2753367eb3fca09a41d9c56f7a713e5f325ba610.600x338.jpg?t=1723047768",
-					"path_full": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/ss_2753367eb3fca09a41d9c56f7a713e5f325ba610.1920x1080.jpg?t=1723047768"
-				},
-				{
-					"id": 5,
-					"path_thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/ss_0ee2a117aa34d54299302b41458b5b4b1cc96310.600x338.jpg?t=1723047768",
-					"path_full": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/ss_0ee2a117aa34d54299302b41458b5b4b1cc96310.1920x1080.jpg?t=1723047768"
-				},
-				{
-					"id": 6,
-					"path_thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/ss_669279500eff83566aad523e8a640218f8a542e9.600x338.jpg?t=1723047768",
-					"path_full": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/ss_669279500eff83566aad523e8a640218f8a542e9.1920x1080.jpg?t=1723047768"
-				},
-				{
-					"id": 7,
-					"path_thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/ss_53a862c3941d4b1739293d95d00b21ddc759da4c.600x338.jpg?t=1723047768",
-					"path_full": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/973810/ss_53a862c3941d4b1739293d95d00b21ddc759da4c.1920x1080.jpg?t=1723047768"
-				}
-			],
-			"movies": [
-				{
-					"id": 256818947,
-					"name": "JTSP Trailer 1",
-					"thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/256818947/movie.293x165.jpg?t=1611336703",
-					"webm": {
-						"480": "http://video.akamai.steamstatic.com/store_trailers/256818947/movie480_vp9.webm?t=1611336703",
-						"max": "http://video.akamai.steamstatic.com/store_trailers/256818947/movie_max_vp9.webm?t=1611336703"
-					},
-					"mp4": {
-						"480": "http://video.akamai.steamstatic.com/store_trailers/256818947/movie480.mp4?t=1611336703",
-						"max": "http://video.akamai.steamstatic.com/store_trailers/256818947/movie_max.mp4?t=1611336703"
-					},
-					"highlight": true
-				}
-			],
-			"recommendations": {
-				"total": 5269
-			},
-			"achievements": {
-				"total": 51,
-				"highlighted": [
-					{
-						"name": "Colonizer",
-						"path": "https://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/973810/ac38890cc2cc345d2053532eb714348e850dbda0.jpg"
-					},
-					{
-						"name": "Cragclaw Defeated",
-						"path": "https://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/973810/c7a6f2cfc1c444c10dafb0a0110bed02d4662fca.jpg"
-					},
-					{
-						"name": "Floopsnoot Queen Defeated",
-						"path": "https://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/973810/0e248dddcc4e4f121f9607a4c7695d961271f068.jpg"
-					},
-					{
-						"name": "Teratomo Defeated",
-						"path": "https://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/973810/094323cfdca5834ca1e0fcde030d9d86f97b0b31.jpg"
-					},
-					{
-						"name": "Open Sesame",
-						"path": "https://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/973810/e4fa855796756d6d54e968b27fc01af959eb31f3.jpg"
-					},
-					{
-						"name": "Aaaaaaand we're back",
-						"path": "https://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/973810/a86305f89912aec7922ae9906b81af8218a01649.jpg"
-					},
-					{
-						"name": "Phone Home",
-						"path": "https://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/973810/ff2a7d01f43e47e60c0eb85ec9dbe05bac2a1cf6.jpg"
-					},
-					{
-						"name": "Cannibals",
-						"path": "https://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/973810/1934eda0fd171006fdcf2523159ea67aa557271d.jpg"
-					},
-					{
-						"name": "Little Shop of Horrors",
-						"path": "https://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/973810/ddaee31729eaeef31ae3dd84353115527d99e3a5.jpg"
-					},
-					{
-						"name": "The $600 Man",
-						"path": "https://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/973810/627326e937cce55aefb35aac86e708fc5e8f7507.jpg"
-					}
-				]
-			},
-			"release_date": {
-				"coming_soon": false,
-				"date": "28 Jan, 2021"
-			},
-			"support_info": {
-				"url": "https://support.505games.com/",
-				"email": ""
-			},
-			"background": "https://store.akamai.steamstatic.com/images/storepagebackground/app/973810?t=1723047768",
-			"background_raw": "https://store.akamai.steamstatic.com/images/storepagebackground/app/973810?t=1723047768",
-			"content_descriptors": {
-				"ids": [1, 2, 5],
-				"notes": "Players use laser blasters to shoot enemy creatures; players can also kick aliens into carnivorous plants, resulting in splatters of green blood. The game depicts some comical TV ads that contain instances crude humor: a phone-sex commercial for a gelatinous blob creature (“Chat with the most seductive soft bodies in space...”); a fast-food commercial showing human limbs going through a meat grinder. In one sequence, players encounter a creature with an anus-like orifice; players' scanning equipment confirms “a festering butthole” and “pile of poop.” During the course of the game, certain plants release a gas that alters the screen and color saturation; text indicates that the plants “disperse thick mists of hallucinogenic spores. Enjoy responsibly.” "
-			},
-			"ratings": {
-				"esrb": {
-					"rating": "t"
-				},
-				"dejus": {
-					"rating": "14",
-					"descriptors": "Linguagem imprópria\r\nViolência",
-					"use_age_gate": "true",
-					"required_age": "14"
-				},
-				"steam_germany": {
-					"rating_generated": "1",
-					"rating": "12",
-					"required_age": "12",
-					"banned": "0",
-					"use_age_gate": "0",
-					"descriptors": "Fantasy-Gewalt"
-				}
-			}
-		}
-	}
+    "success": 1,
+    "query_summary": {
+        "num_reviews": 10,
+        "review_score": 8,
+        "review_score_desc": "Very Positive",
+        "total_positive": 4603,
+        "total_negative": 665,
+        "total_reviews": 5268
+    },
+    "reviews": [
+        {
+            "recommendationid": "198578139",
+            "author": {
+                "steamid": "76561198018518792",
+                "num_games_owned": 0,
+                "num_reviews": 145,
+                "playtime_forever": 83,
+                "playtime_last_two_weeks": 0,
+                "playtime_at_review": 83,
+                "last_played": 1746833065
+            },
+            "language": "english",
+            "review": "A decently polished coop game with a lot of love and care put into it. I don't think it really fits for me however, mostly due to the subjective humor. The game tries so very hard to be funny and bombards you with jokes and witty dialogue that in the case that the jokes don't really land, its incredibly annoying. It almost reminds me of the annoying orange era of humour, though not quite that bad.",
+            "timestamp_created": 1751309718,
+            "timestamp_updated": 1751309718,
+            "voted_up": false,
+            "votes_up": 5,
+            "votes_funny": 4,
+            "weighted_vote_score": "0.49551314115524292",
+            "comment_count": 0,
+            "steam_purchase": true,
+            "received_for_free": false,
+            "written_during_early_access": false,
+            "primarily_steam_deck": false
+        },
+        {
+            "recommendationid": "197510024",
+            "author": {
+                "steamid": "76561198146593189",
+                "num_games_owned": 2642,
+                "num_reviews": 263,
+                "playtime_forever": 1981,
+                "playtime_last_two_weeks": 0,
+                "playtime_at_review": 1981,
+                "last_played": 1749259591
+            },
+            "language": "english",
+            "review": "Journey to the savage planet is an excellent 3d platformer/metroidvania where you set your foot on multiple biomes that are really fun to explore and find all their secrets. \n\nThe movement starts pretty basic but the further you go through the game, the more movement option you unlock to make it more fun. There is even a speedrun strats with the grappling hook that makes you go super far/fast that is so fun to pull off but pretty hard. \n\nThe exploration always end up being rewarding and never too confusing to not know where to go next.\n\nThe combat is a bit lacking however and is clearly not the strong suit of the game.\n\nThe dialogue have a portal-ish vibe that makes it really fun and a few bizarre add that really add to the world building.\n\nThis is definitivly one of my favorite game that i've played over the year.",
+            "timestamp_created": 1750217805,
+            "timestamp_updated": 1750217839,
+            "voted_up": true,
+            "votes_up": 5,
+            "votes_funny": 0,
+            "weighted_vote_score": "0.589235126972198486",
+            "comment_count": 0,
+            "steam_purchase": true,
+            "received_for_free": false,
+            "written_during_early_access": false,
+            "primarily_steam_deck": false
+        },
+        {
+            "recommendationid": "199016498",
+            "author": {
+                "steamid": "76561198116835409",
+                "num_games_owned": 526,
+                "num_reviews": 66,
+                "playtime_forever": 328,
+                "playtime_last_two_weeks": 134,
+                "playtime_at_review": 328,
+                "last_played": 1751721643
+            },
+            "language": "english",
+            "review": "keşif yönü geniş bir oyun olsa da ana hikaye bittikten sonra aynı yerleri tekrar tekrar gezip bir şey aramak can sıkıcı olabiliyor, bunun dışında evreni ve mekanikleri keyifli 6/10",
+            "timestamp_created": 1751721880,
+            "timestamp_updated": 1751721880,
+            "voted_up": true,
+            "votes_up": 3,
+            "votes_funny": 1,
+            "weighted_vote_score": "0.486631035804748535",
+            "comment_count": 1,
+            "steam_purchase": true,
+            "received_for_free": false,
+            "written_during_early_access": false,
+            "primarily_steam_deck": false
+        },
+        {
+            "recommendationid": "198834069",
+            "author": {
+                "steamid": "76561198043801187",
+                "num_games_owned": 452,
+                "num_reviews": 20,
+                "playtime_forever": 576,
+                "playtime_last_two_weeks": 0,
+                "playtime_at_review": 516,
+                "last_played": 1751555063
+            },
+            "language": "english",
+            "review": "You in best toilet jokes competition and this game is your opponent.\nAnd you are messing with a CHAMPION.",
+            "timestamp_created": 1751552139,
+            "timestamp_updated": 1751552139,
+            "voted_up": true,
+            "votes_up": 1,
+            "votes_funny": 0,
+            "weighted_vote_score": "0.523809552192687988",
+            "comment_count": 0,
+            "steam_purchase": true,
+            "received_for_free": false,
+            "written_during_early_access": false,
+            "primarily_steam_deck": false
+        },
+        {
+            "recommendationid": "198364983",
+            "author": {
+                "steamid": "76561198061444617",
+                "num_games_owned": 0,
+                "num_reviews": 4,
+                "playtime_forever": 547,
+                "playtime_last_two_weeks": 0,
+                "playtime_at_review": 547,
+                "last_played": 1751119897
+            },
+            "language": "russian",
+            "review": "Увлекательное и забавное приключение на психоделичной планете, сопровождающееся юморными катсценами с реальными актерами. Лайк!",
+            "timestamp_created": 1751120217,
+            "timestamp_updated": 1751120217,
+            "voted_up": true,
+            "votes_up": 1,
+            "votes_funny": 0,
+            "weighted_vote_score": "0.52173912525177002",
+            "comment_count": 0,
+            "steam_purchase": true,
+            "received_for_free": false,
+            "written_during_early_access": false,
+            "primarily_steam_deck": false
+        },
+        {
+            "recommendationid": "198761799",
+            "author": {
+                "steamid": "76561198014953513",
+                "num_games_owned": 1251,
+                "num_reviews": 129,
+                "playtime_forever": 34,
+                "playtime_last_two_weeks": 0,
+                "playtime_at_review": 34,
+                "last_played": 1751402989
+            },
+            "language": "russian",
+            "review": "Как сказали великие люди: \"Вот не могу ничего плохого про эту игру сказать, но и хорошего ничего тоже\"\nЭт вот оно\n\nЗдесь вторично всё\nОт юмора до геймплея\nМы в коопе СТОЛЬКО всего разного схавали\nНо, чел, не, сюда тебе не надо\nДаже если изголодался по коопам, ну спроси людей, тебе столько игр насоветуют\nНо не эту\n\nДаже припарка в виде 75% скидки не помогла\n\n5 зевающих ауфов из 10",
+            "timestamp_created": 1751481385,
+            "timestamp_updated": 1751481385,
+            "voted_up": false,
+            "votes_up": 3,
+            "votes_funny": 1,
+            "weighted_vote_score": "0.497237563133239746",
+            "comment_count": 0,
+            "steam_purchase": true,
+            "received_for_free": false,
+            "written_during_early_access": false,
+            "primarily_steam_deck": false
+        },
+        {
+            "recommendationid": "197821136",
+            "author": {
+                "steamid": "76561198069138430",
+                "num_games_owned": 240,
+                "num_reviews": 43,
+                "playtime_forever": 543,
+                "playtime_last_two_weeks": 45,
+                "playtime_at_review": 498,
+                "last_played": 1751599064
+            },
+            "language": "english",
+            "review": "There's a lot to like about this game, but I can't bring myself to finish because I feel like I'm just meandering around with little to no direction. The lack of a minimap is frustrating, since it's such a big map. There were several occasions where I just didn't know where to go and/or how to get there.\n\nI finally got to the temple and it's just a dark room with no indication to what to do, or where to go. I had to look up a game guide to understand where to go next. Just an incredibly frustrating oversight in an otherwise okay game.\n\nThe humor wears a little thin as well. It's kind of the same Rick and Morty-esque joke over and over.",
+            "timestamp_created": 1750538441,
+            "timestamp_updated": 1750538441,
+            "voted_up": false,
+            "votes_up": 1,
+            "votes_funny": 0,
+            "weighted_vote_score": "0.501510560512542725",
+            "comment_count": 0,
+            "steam_purchase": true,
+            "received_for_free": false,
+            "written_during_early_access": false,
+            "primarily_steam_deck": false
+        },
+        {
+            "recommendationid": "199890200",
+            "author": {
+                "steamid": "76561198048847463",
+                "num_games_owned": 0,
+                "num_reviews": 232,
+                "playtime_forever": 25,
+                "playtime_last_two_weeks": 25,
+                "playtime_at_review": 25,
+                "last_played": 1752480692
+            },
+            "language": "russian",
+            "review": "Крайне посредственно.\r\nСлишком много сомнительного юмора.\r\nУ кого не запускается - попробуйте выбрать другой слот сохранения.",
+            "timestamp_created": 1752615012,
+            "timestamp_updated": 1752615012,
+            "voted_up": true,
+            "votes_up": 0,
+            "votes_funny": 0,
+            "weighted_vote_score": 0.5,
+            "comment_count": 0,
+            "steam_purchase": true,
+            "received_for_free": false,
+            "written_during_early_access": false,
+            "primarily_steam_deck": false
+        },
+        {
+            "recommendationid": "199885531",
+            "author": {
+                "steamid": "76561198036308324",
+                "num_games_owned": 0,
+                "num_reviews": 25,
+                "playtime_forever": 488,
+                "playtime_last_two_weeks": 389,
+                "playtime_at_review": 471,
+                "last_played": 1752611763
+            },
+            "language": "english",
+            "review": "Boring, repetetive, uninspired, anticlimactic",
+            "timestamp_created": 1752610796,
+            "timestamp_updated": 1752610796,
+            "voted_up": false,
+            "votes_up": 1,
+            "votes_funny": 0,
+            "weighted_vote_score": "0.46229475736618042",
+            "comment_count": 0,
+            "steam_purchase": true,
+            "received_for_free": false,
+            "written_during_early_access": false,
+            "primarily_steam_deck": false
+        },
+        {
+            "recommendationid": "199881171",
+            "author": {
+                "steamid": "76561198083893518",
+                "num_games_owned": 408,
+                "num_reviews": 13,
+                "playtime_forever": 972,
+                "playtime_last_two_weeks": 822,
+                "playtime_at_review": 845,
+                "deck_playtime_at_review": 149,
+                "last_played": 1752779948
+            },
+            "language": "spanish",
+            "review": "És senzill pero adictiu. Poques vegades he tingut l'impuls de completar un joc al 100%. Com és evident; molt millor en cooperatiu.",
+            "timestamp_created": 1752606895,
+            "timestamp_updated": 1752606895,
+            "voted_up": true,
+            "votes_up": 1,
+            "votes_funny": 0,
+            "weighted_vote_score": "0.523809552192687988",
+            "comment_count": 0,
+            "steam_purchase": true,
+            "received_for_free": false,
+            "written_during_early_access": false,
+            "primarily_steam_deck": false
+        }
+    ],
+    "cursor": "AoMFQFaAAAAAAAAFP+AAAAAAAABznb76BQ=="
 }

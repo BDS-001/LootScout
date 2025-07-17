@@ -109,6 +109,7 @@ export interface CombinedGameData {
 	appId: string;
 	dealData: GgDealsApiResponse;
 	steamStoreData: SteamApiResponse;
+	steamReviewData: SteamApiResponse | null;
 }
 
 export type CombinedGameDataResponse =
@@ -166,7 +167,66 @@ export interface GameData {
 		hltb: {
 			url: string;
 		};
+		reviews?: {
+			totalReviews: number;
+			positivePercentage: number;
+			reviewSummary: string;
+			reviewScore: string;
+		};
 	};
 }
 
 export type GameDataResponse = GameData | { success: false; data: ApiError; error?: unknown };
+
+// Steam Review Types
+export interface SteamReviewAuthor {
+	steamid: string;
+	num_games_owned: number;
+	num_reviews: number;
+	playtime_forever: number;
+	playtime_last_two_weeks: number;
+	playtime_at_review: number;
+	last_played: number;
+}
+
+export interface SteamReview {
+	recommendationid: string;
+	author: SteamReviewAuthor;
+	language: string;
+	review: string;
+	timestamp_created: number;
+	timestamp_updated: number;
+	voted_up: boolean;
+	votes_up: number;
+	votes_funny: number;
+	weighted_vote_score: string;
+	comment_count: number;
+	steam_purchase: boolean;
+	received_for_free: boolean;
+	written_during_early_access: boolean;
+	primarily_steam_deck: boolean;
+}
+
+export interface SteamReviewQuerySummary {
+	num_reviews: number;
+	review_score: number;
+	review_score_desc: string;
+	total_positive: number;
+	total_negative: number;
+	total_reviews: number;
+}
+
+export interface SteamReviewsResponse {
+	success: number;
+	query_summary: SteamReviewQuerySummary;
+	reviews: SteamReview[];
+	cursor?: string;
+}
+
+export interface ProcessedSteamReviews {
+	totalReviews: number;
+	positivePercentage: number;
+	reviewSummary: string;
+	reviewScore: string;
+	averagePlaytime: number;
+}

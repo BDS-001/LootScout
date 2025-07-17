@@ -1,5 +1,6 @@
 import fetchGgDealsData from './GgDealsApi';
 import fetchSteamStoreData from './SteamStoreApi';
+import fetchSteamReviewData from './SteamReviewsApi';
 import {
 	CombinedGameDataParams,
 	CombinedGameDataResponse,
@@ -7,8 +8,14 @@ import {
 } from '../shared/types';
 import { handleApiError } from '../utils/ErrorHandler';
 
-function shouldSkipGgDeals(steamAppData: any): boolean {
-	return steamAppData?.data?.is_free || steamAppData?.data?.release_date?.coming_soon;
+function getGameStatus(steamAppData: any): 'not_released' | 'free' | 'paid' {
+	if (steamAppData?.data?.release_date?.coming_soon) {
+		return 'not_released';
+	}
+	if (steamAppData?.data?.is_free) {
+		return 'free';
+	}
+	return 'paid';
 }
 
 function createEmptyGgDealsResponse(): GgDealsApiResponse {
@@ -21,12 +28,30 @@ export default async function fetchCombinedGameData(
 	const { appId, apiKey, region } = params;
 
 	try {
-		const steamStoreData = await fetchSteamStoreData({ appId, region });
+		const steamParams = { appId, region };
+		const steamStoreData = await fetchSteamStoreData(steamParams);
 
 		const steamAppData = steamStoreData.success ? steamStoreData.data[appId] : null;
-		const ggDealsData = shouldSkipGgDeals(steamAppData)
-			? createEmptyGgDealsResponse()
-			: await fetchGgDealsData({ appId, apiKey, region });
+		const gameStatus = getGameStatus(steamAppData);
+
+		let steamReviewData = null;
+		let ggDealsData = createEmptyGgDealsResponse();
+
+		switch (gameStatus) {
+			case 'not_released':
+				break;
+
+			case 'free':
+				steamReviewData = await fetchSteamReviewData(steamParams);
+				break;
+
+			case 'paid':
+				[steamReviewData, ggDealsData] = await Promise.all([
+					fetchSteamReviewData(steamParams),
+					fetchGgDealsData({ appId, apiKey, region }),
+				]);
+				break;
+		}
 
 		return {
 			success: true,
@@ -34,6 +59,7 @@ export default async function fetchCombinedGameData(
 				appId,
 				dealData: ggDealsData,
 				steamStoreData,
+				steamReviewData,
 			},
 		};
 	} catch (error) {
