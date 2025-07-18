@@ -61,3 +61,8 @@ export function calculateRarityMetrics(steamPriceOverview: any, priceMetrics: an
 
 	return { steamRarity, currentRarity, historicalRarity };
 }
+
+export function calculateCostPerHour(price: number, averagePlaytime: number): number {
+	if (!averagePlaytime || averagePlaytime <= 0) return 0;
+	return price / averagePlaytime;
+}

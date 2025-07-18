@@ -1,28 +1,5 @@
 import { SteamReview, SteamReviewsResponse, ProcessedSteamReviews } from '../shared/types';
-
-function removeOutliers(playtime: Array<number>): Array<number> {
-	const q1Index = Math.floor(playtime.length * 0.25);
-	const q3Index = Math.floor(playtime.length * 0.75);
-
-	const q1 = playtime[q1Index];
-	const q3 = playtime[q3Index];
-
-	const iqr = q3 - q1;
-	const iqrMin = q1 - 1.5 * iqr;
-	const iqrMax = q3 + 1.5 * iqr;
-
-	return playtime.filter((time) => time >= iqrMin && time <= iqrMax);
-}
-
-function calculateMean(playtime: Array<number>): number {
-	const sum = playtime.reduce((acc, curr) => acc + curr, 0);
-	const average = sum / playtime.length;
-	const averageHours = average / 60;
-
-	console.log(`Average playtime: ${average.toFixed(2)} minutes (${averageHours.toFixed(2)} hours)`);
-
-	return averageHours;
-}
+import { removeOutliers, calculateMean } from '../utils/MathUtils';
 
 function calculatePlaytime(reviews: SteamReview[]): number {
 	if (reviews.length === 0) return -1;
@@ -37,7 +14,14 @@ function calculatePlaytime(reviews: SteamReview[]): number {
 	const filteredPlaytimes =
 		reviewPlayTimes.length < 10 ? reviewPlayTimes : removeOutliers(reviewPlayTimes);
 
-	return calculateMean(filteredPlaytimes);
+	const averageMinutes = calculateMean(filteredPlaytimes);
+	const averageHours = averageMinutes / 60;
+
+	console.log(
+		`Average playtime: ${averageMinutes.toFixed(2)} minutes (${averageHours.toFixed(2)} hours)`
+	);
+
+	return averageHours;
 }
 
 function processSteamReviews(response: SteamReviewsResponse): ProcessedSteamReviews {

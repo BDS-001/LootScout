@@ -172,6 +172,11 @@ export interface GameData {
 		hltb: {
 			url: string;
 		};
+		costPerHour?: {
+			steam: number;
+			currentBest: number;
+			historicalBest: number;
+		};
 		reviews?: {
 			totalReviews: number;
 			positivePercentage: number;

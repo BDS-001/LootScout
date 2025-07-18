@@ -113,6 +113,7 @@ export function createSuccessContent(gameData: GameData): string {
 		<div class="deal_section">
 			<div class="deal_header">Steam Discount Rating</div>
 			<div class="deal_price">${formatPrice(gameData.steam.final, gameData.steam.currency)} <span class="raw_discount">(${gameData.steam.discount_percent}% off)</span></div>
+			${lootScout.costPerHour ? `<div class="cost_per_hour">${formatPrice(lootScout.costPerHour.steam, gameData.steam.currency)}/hr</div>` : ''}
 			<div class="deal_status">
 				<span class="${lootScout.steam.status.className}">${lootScout.steam.status.text}</span>
 			</div>
@@ -122,6 +123,7 @@ export function createSuccessContent(gameData: GameData): string {
 		<div class="deal_section">
 			<div class="deal_header">Current Best Deal</div>
 			<div class="deal_price">${formatPrice(gameData.deal!.currentBest, gameData.deal!.currency)} <span class="raw_discount">(${lootScout.currentBest!.rawDiscount}% off)</span></div>
+			${lootScout.costPerHour ? `<div class="cost_per_hour">${formatPrice(lootScout.costPerHour.currentBest, gameData.deal!.currency)}/hr</div>` : ''}
 			<div class="deal_discount"><span class="highlight_green">${lootScout.currentBest!.discount}%</span> off Steam</div>
 			<div class="deal_comparison">
 				${
@@ -141,6 +143,7 @@ export function createSuccessContent(gameData: GameData): string {
 		<div class="deal_section">
 			<div class="deal_header">Historical Low</div>
 			<div class="deal_price">${formatPrice(gameData.deal!.historicalBest, gameData.deal!.currency)} <span class="raw_discount">(${lootScout.historicalBest!.rawDiscount}% off)</span></div>
+			${lootScout.costPerHour ? `<div class="cost_per_hour">${formatPrice(lootScout.costPerHour.historicalBest, gameData.deal!.currency)}/hr</div>` : ''}
 			<div class="deal_discount"><span class="highlight_green">${lootScout.historicalBest!.discount}%</span> off Steam</div>
 			<div class="deal_comparison">
 				${

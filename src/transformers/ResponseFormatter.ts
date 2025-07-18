@@ -5,7 +5,11 @@ import {
 	CombinedGameData,
 } from '../shared/types';
 import { validateGameData } from './GameDataValidator';
-import { calculatePriceMetrics, calculateRarityMetrics } from './PriceCalculator';
+import {
+	calculatePriceMetrics,
+	calculateRarityMetrics,
+	calculateCostPerHour,
+} from './PriceCalculator';
 import {
 	buildFreeGameResponse,
 	buildComingSoonResponse,
@@ -40,12 +44,27 @@ export function normalizeResponse(
 	const priceMetrics = calculatePriceMetrics(steamApp.data.price_overview, ggDealsData);
 	const rarityMetrics = calculateRarityMetrics(steamApp.data.price_overview, priceMetrics);
 
+	const costPerHour = processedReviews?.averagePlaytime
+		? {
+				steam: calculateCostPerHour(priceMetrics.steamPrice, processedReviews.averagePlaytime),
+				currentBest: calculateCostPerHour(
+					priceMetrics.currentRetail,
+					processedReviews.averagePlaytime
+				),
+				historicalBest: calculateCostPerHour(
+					priceMetrics.historicalRetail,
+					processedReviews.averagePlaytime
+				),
+			}
+		: null;
+
 	return buildGameDataResponse(
 		appId,
 		steamApp,
 		ggDealsData,
 		priceMetrics,
 		rarityMetrics,
-		processedReviews
+		processedReviews,
+		costPerHour
 	);
 }

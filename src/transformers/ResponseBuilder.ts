@@ -90,7 +90,8 @@ export function buildGameDataResponse(
 	ggDealsData: any,
 	priceMetrics: any,
 	rarityMetrics: any,
-	processedReviews?: ProcessedSteamReviews | null
+	processedReviews?: ProcessedSteamReviews | null,
+	costPerHour?: { steam: number; currentBest: number; historicalBest: number } | null
 ): GameDataResponse {
 	const steamPriceOverview = steamAppData.data.price_overview;
 	const steamStatus = getSteamDealStatus(
@@ -152,6 +153,13 @@ export function buildGameDataResponse(
 			hltb: {
 				url: getHltbUrl(ggDealsData.title),
 			},
+			...(costPerHour && {
+				costPerHour: {
+					steam: costPerHour.steam,
+					currentBest: costPerHour.currentBest,
+					historicalBest: costPerHour.historicalBest,
+				},
+			}),
 		},
 	};
 }
