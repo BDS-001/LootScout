@@ -1,5 +1,14 @@
 import { RegionInfo, RegionCode } from '../shared/types';
 
+export const DEFAULT_REGION: RegionCode = 'us';
+
+export const languageOverrides: Record<string, RegionCode> = {
+	en: 'us',
+	pt: 'br',
+	da: 'dk',
+	sv: 'se',
+};
+
 const regionMap: Record<RegionCode, RegionInfo> = {
 	au: { name: 'Australia', currency: 'AUD', symbol: 'A$' },
 	be: { name: 'Belgium', currency: 'EUR', symbol: '€' },
