@@ -1,4 +1,5 @@
+import { getUrl } from './getUrl';
+
 export function getHltbUrl(title: string): string {
-	const formattedTitle = title.trim().replace(/ /g, '%2520');
-	return `https://howlongtobeat.com/?q=${formattedTitle}`;
+	return getUrl('https://howlongtobeat.com/', 'q', title, '%2520');
 }

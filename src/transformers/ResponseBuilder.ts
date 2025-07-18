@@ -1,5 +1,4 @@
 import { GameDataResponse, ProcessedSteamReviews } from '../shared/types';
-import { getHltbUrl } from '../helpers/hltb';
 import { getSteamDealStatus } from './PriceCalculator';
 
 export function buildFreeGameResponse(
@@ -35,9 +34,6 @@ export function buildFreeGameResponse(
 					className: 'free',
 				},
 			},
-			hltb: {
-				url: getHltbUrl(steamAppData.data.name),
-			},
 		},
 	};
 }
@@ -68,9 +64,6 @@ export function buildComingSoonResponse(
 					name: 'Coming Soon',
 					className: 'coming_soon',
 				},
-			},
-			hltb: {
-				url: getHltbUrl(steamAppData.data.name),
 			},
 			...(processedReviews && {
 				reviews: {
@@ -149,9 +142,6 @@ export function buildGameDataResponse(
 					className: rarityMetrics.historicalRarity.toLowerCase(),
 				},
 				isEqualToSteam: priceMetrics.steamIsBestHistorical,
-			},
-			hltb: {
-				url: getHltbUrl(ggDealsData.title),
 			},
 			...(costPerHour && {
 				costPerHour: {

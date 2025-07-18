@@ -169,9 +169,6 @@ export interface GameData {
 			};
 			isEqualToSteam: boolean;
 		};
-		hltb: {
-			url: string;
-		};
 		costPerHour?: {
 			steam: number;
 			currentBest: number;

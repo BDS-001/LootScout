@@ -1,6 +1,8 @@
 import { GameData, ApiError } from '../shared/types';
 import { formatPrice } from '../utils/PriceUtils';
 import { createRarityComponent } from './RarityComponent';
+import { getYouTubeUrl } from '../helpers/youtube';
+import { getHltbUrl } from '../helpers/hltb';
 
 // Loading state content
 export function createLoadingContent(): string {
@@ -44,13 +46,18 @@ function createValueMetric(costValue: number, currency: string): string {
 	return `<div class="value_metric">${formatPrice(costValue, currency)} per hour</div>`;
 }
 
-function createResourcesSection(hltbUrl: string): string {
+function createResourcesSection(gameTitle: string): string {
+	const hltbUrl = getHltbUrl(gameTitle);
+	const youtubeUrl = getYouTubeUrl(gameTitle);
 	return `
 		<div class="deal_section">
 			<div class="deal_header">Additional Resources</div>
 			<div class="additional_resources">
 				<a href="${hltbUrl}" target="_blank" class="linkbar">
 					<span>How Long to Beat</span>
+				</a>
+				<a href="${youtubeUrl}" target="_blank" class="linkbar">
+					<span>YouTube</span>
 				</a>
 			</div>
 		</div>
@@ -61,7 +68,7 @@ function createSpecialGameContent(
 	header: string,
 	statusText: string,
 	statusClass: string,
-	hltbUrl: string
+	gameTitle: string
 ): string {
 	return `
 		<div class="deal_section">
@@ -70,7 +77,7 @@ function createSpecialGameContent(
 				<span class="${statusClass}">${statusText}</span>
 			</div>
 		</div>
-		${createResourcesSection(hltbUrl)}
+		${createResourcesSection(gameTitle)}
 		${createSimpleFooter()}
 	`;
 }
@@ -81,7 +88,7 @@ export function createFreeGameContent(gameData: GameData): string {
 		'🎮 Free to Play',
 		'This game is free to play',
 		gameData.lootScout.steam.status.className,
-		gameData.lootScout.hltb.url
+		gameData.title
 	);
 }
 
@@ -91,7 +98,7 @@ export function createComingSoonContent(gameData: GameData): string {
 		'📅 Coming Soon',
 		gameData.lootScout.steam.status.text,
 		gameData.lootScout.steam.status.className,
-		gameData.lootScout.hltb.url
+		gameData.title
 	);
 }
 
@@ -170,14 +177,7 @@ export function createSuccessContent(gameData: GameData): string {
 			${createRarityComponent(lootScout.historicalBest!.rawDiscount, true)}
 		</div>
 		
-		<div class="deal_section">
-			<div class="deal_header">Additional Resources</div>
-			<div class="additional_resources">
-				<a href="${lootScout.hltb.url}" target="_blank" class="linkbar">
-					<span>How Long to Beat</span>
-				</a>
-			</div>
-		</div>
+		${createResourcesSection(gameData.title)}
 		
 		<div class="loot_scout_footer">
 			<span class="footer_info">Powered by&nbsp;<a href="https://gg.deals/" target="_blank">GG.deals</a>&nbsp;and&nbsp;<a href="https://store.steampowered.com/" target="_blank">Steam</a>.<br>Not affiliated with GG.deals or Valve Corporation.</span>
