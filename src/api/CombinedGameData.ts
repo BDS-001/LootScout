@@ -23,7 +23,8 @@ function createEmptyGgDealsResponse(): GgDealsApiResponse {
 }
 
 export default async function fetchCombinedGameData(
-	params: CombinedGameDataParams
+	params: CombinedGameDataParams,
+	skipSteamReviews = false
 ): Promise<CombinedGameDataResponse> {
 	const { appId, apiKey, region } = params;
 
@@ -42,14 +43,20 @@ export default async function fetchCombinedGameData(
 				break;
 
 			case 'free':
-				steamReviewData = await fetchSteamReviewData(steamParams);
+				if (!skipSteamReviews) {
+					steamReviewData = await fetchSteamReviewData(steamParams);
+				}
 				break;
 
 			case 'paid':
-				[steamReviewData, ggDealsData] = await Promise.all([
-					fetchSteamReviewData(steamParams),
-					fetchGgDealsData({ appId, apiKey, region }),
-				]);
+				if (!skipSteamReviews) {
+					[steamReviewData, ggDealsData] = await Promise.all([
+						fetchSteamReviewData(steamParams),
+						fetchGgDealsData({ appId, apiKey, region }),
+					]);
+				} else {
+					ggDealsData = await fetchGgDealsData({ appId, apiKey, region });
+				}
 				break;
 		}
 

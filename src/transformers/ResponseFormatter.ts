@@ -1,4 +1,9 @@
-import { CombinedGameDataResponse, GameDataResponse, SteamReviewsResponse } from '../shared/types';
+import {
+	CombinedGameDataResponse,
+	GameDataResponse,
+	ProcessedSteamReviews,
+	CombinedGameData,
+} from '../shared/types';
 import { validateGameData } from './GameDataValidator';
 import { calculatePriceMetrics, calculateRarityMetrics } from './PriceCalculator';
 import {
@@ -6,9 +11,11 @@ import {
 	buildComingSoonResponse,
 	buildGameDataResponse,
 } from './ResponseBuilder';
-import { processSteamReviews } from './SteamReviewProcessor';
 
-export function normalizeResponse(res: CombinedGameDataResponse): GameDataResponse {
+export function normalizeResponse(
+	res: CombinedGameDataResponse,
+	processedReviews?: ProcessedSteamReviews | null
+): GameDataResponse {
 	const validation = validateGameData(res);
 	if (!validation.isValid) {
 		return {
@@ -17,25 +24,12 @@ export function normalizeResponse(res: CombinedGameDataResponse): GameDataRespon
 		};
 	}
 
-	const { steamAppData, ggDealsData, isFree, isComingSoon, hasValidReviews } = validation;
-	const { appId, steamReviewData } = res.data as {
-		appId: string;
-		steamReviewData: { success: boolean; data: SteamReviewsResponse } | null;
-	};
+	const { steamAppData, ggDealsData, isFree, isComingSoon } = validation;
+	const combinedData = res.data as CombinedGameData;
+	const appId = combinedData.appId;
 
 	if (isComingSoon) {
 		return buildComingSoonResponse(appId, steamAppData, null);
-	}
-
-	let processedReviews = null;
-	if (hasValidReviews && steamReviewData?.success) {
-		try {
-			processedReviews = processSteamReviews(steamReviewData.data);
-			console.log('Processed Steam Reviews:', processedReviews);
-		} catch (error) {
-			console.warn('Failed to process Steam reviews:', error);
-			processedReviews = null;
-		}
 	}
 
 	if (isFree) {
