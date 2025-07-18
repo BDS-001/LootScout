@@ -16,6 +16,13 @@ export function buildFreeGameResponse(
 			initial: 0,
 			final: 0,
 			discount_percent: 0,
+			...(processedReviews && {
+				totalReviews: processedReviews.totalReviews,
+				positivePercentage: processedReviews.positivePercentage,
+				reviewSummary: processedReviews.reviewSummary,
+				reviewScore: processedReviews.reviewScore,
+				averagePlaytime: processedReviews.averagePlaytime,
+			}),
 		},
 		lootScout: {
 			steam: {
@@ -31,14 +38,6 @@ export function buildFreeGameResponse(
 			hltb: {
 				url: getHltbUrl(steamAppData.data.name),
 			},
-			...(processedReviews && {
-				reviews: {
-					totalReviews: processedReviews.totalReviews,
-					positivePercentage: processedReviews.positivePercentage,
-					reviewSummary: processedReviews.reviewSummary,
-					reviewScore: processedReviews.reviewScore,
-				},
-			}),
 		},
 	};
 }
@@ -114,6 +113,13 @@ export function buildGameDataResponse(
 			initial: steamPriceOverview.initial,
 			final: steamPriceOverview.final,
 			discount_percent: steamPriceOverview.discount_percent,
+			...(processedReviews && {
+				totalReviews: processedReviews.totalReviews,
+				positivePercentage: processedReviews.positivePercentage,
+				reviewSummary: processedReviews.reviewSummary,
+				reviewScore: processedReviews.reviewScore,
+				averagePlaytime: processedReviews.averagePlaytime,
+			}),
 		},
 		lootScout: {
 			steam: {
@@ -146,14 +152,6 @@ export function buildGameDataResponse(
 			hltb: {
 				url: getHltbUrl(ggDealsData.title),
 			},
-			...(processedReviews && {
-				reviews: {
-					totalReviews: processedReviews.totalReviews,
-					positivePercentage: processedReviews.positivePercentage,
-					reviewSummary: processedReviews.reviewSummary,
-					reviewScore: processedReviews.reviewScore,
-				},
-			}),
 		},
 	};
 }
