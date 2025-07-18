@@ -44,19 +44,20 @@ export function normalizeResponse(
 	const priceMetrics = calculatePriceMetrics(steamApp.data.price_overview, ggDealsData);
 	const rarityMetrics = calculateRarityMetrics(steamApp.data.price_overview, priceMetrics);
 
-	const costPerHour = processedReviews?.averagePlaytime
-		? {
-				steam: calculateCostPerHour(priceMetrics.steamPrice, processedReviews.averagePlaytime),
-				currentBest: calculateCostPerHour(
-					priceMetrics.currentRetail,
-					processedReviews.averagePlaytime
-				),
-				historicalBest: calculateCostPerHour(
-					priceMetrics.historicalRetail,
-					processedReviews.averagePlaytime
-				),
-			}
-		: null;
+	const costPerHour =
+		processedReviews?.averagePlaytime && processedReviews.averagePlaytime > 0
+			? {
+					steam: calculateCostPerHour(priceMetrics.steamPrice, processedReviews.averagePlaytime),
+					currentBest: calculateCostPerHour(
+						priceMetrics.currentRetail,
+						processedReviews.averagePlaytime
+					),
+					historicalBest: calculateCostPerHour(
+						priceMetrics.historicalRetail,
+						processedReviews.averagePlaytime
+					),
+				}
+			: null;
 
 	return buildGameDataResponse(
 		appId,
