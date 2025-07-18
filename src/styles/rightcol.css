@@ -28,6 +28,17 @@
 	font-weight: var(--font-weight-semibold);
 }
 
+.game-title {
+	color: var(--color-steam-blue);
+}
+
+.game-playtime {
+	color: var(--color-steam-gray);
+	font-size: var(--font-size-sm);
+	font-weight: var(--font-weight-normal);
+	margin-top: var(--spacing-xs);
+}
+
 .deal_section {
 	margin-bottom: var(--spacing-lg);
 	padding: var(--spacing-base);

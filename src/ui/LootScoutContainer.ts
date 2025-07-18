@@ -61,8 +61,14 @@ function getContainerElements(container: HTMLElement): ContainerElements | null 
 	return { container, header, content };
 }
 
-function createGameTitleSection(title: string): string {
-	return `<div class="game-title-section">${title}</div>`;
+function createGameTitleSection(title: string, averagePlaytime?: number): string {
+	const playtimeDisplay = averagePlaytime && averagePlaytime > 0 
+		? `<div class="game-playtime">Average playtime: ${averagePlaytime.toFixed(1)} hours</div>`
+		: '';
+	return `<div class="game-title-section">
+		<div class="game-title">${title}</div>
+		${playtimeDisplay}
+	</div>`;
 }
 
 function updateHeader(header: HTMLElement, countryCode?: string): void {
@@ -91,7 +97,7 @@ export function updateContainerState(container: HTMLElement, state: ContainerSta
 
 		case 'success':
 			if (state.gameData) {
-				const gameTitle = state.gameData.title ? createGameTitleSection(state.gameData.title) : '';
+				const gameTitle = state.gameData.title ? createGameTitleSection(state.gameData.title, state.gameData.steam.averagePlaytime) : '';
 				elements.content.innerHTML = gameTitle + createSuccessContent(state.gameData);
 			}
 			break;

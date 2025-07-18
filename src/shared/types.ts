@@ -132,6 +132,11 @@ export interface GameData {
 		initial: number;
 		final: number;
 		discount_percent: number;
+		totalReviews?: number;
+		positivePercentage?: number;
+		reviewSummary?: string;
+		reviewScore?: string;
+		averagePlaytime?: number;
 	};
 	lootScout: {
 		steam: {
