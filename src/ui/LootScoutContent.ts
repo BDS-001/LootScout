@@ -118,11 +118,14 @@ export async function createSuccessContent(gameData: GameData): Promise<string> 
 		}
 	}
 
+	const reviewScore = gameData.steam.reviewScore;
+	const playtime = gameData.steam.averagePlaytime;
+
 	// Regular game with pricing data
 	const [steamRarity, currentRarity, historicalRarity] = await Promise.all([
-		createRarityComponent(gameData.steam.discount_percent),
-		createRarityComponent(lootScout.currentBest!.rawDiscount),
-		createRarityComponent(lootScout.historicalBest!.rawDiscount),
+		createRarityComponent(gameData.steam.discount_percent, reviewScore, playtime),
+		createRarityComponent(lootScout.currentBest!.rawDiscount, reviewScore, playtime),
+		createRarityComponent(lootScout.historicalBest!.rawDiscount, reviewScore, playtime),
 	]);
 
 	return `

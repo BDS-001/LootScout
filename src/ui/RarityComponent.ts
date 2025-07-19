@@ -54,8 +54,10 @@ function generateTooltipContent(): string {
 
 export async function createRarityComponent(
 	percentage: number,
+	reviewScore: number | null = null,
+	playtime: number | null = null
 ): Promise<string> {
-	const rarity = await getRarity(percentage);
+	const rarity = await getRarity(percentage, reviewScore, playtime);
 	const rarityClass = rarity.toLowerCase();
 	const componentId = `rarity-${Math.random().toString(36).substring(2, 9)}`;
 	const positionClass = 'deal_rarity_corner';

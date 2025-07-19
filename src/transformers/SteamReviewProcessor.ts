@@ -37,7 +37,7 @@ function processSteamReviews(response: SteamReviewsResponse): ProcessedSteamRevi
 		totalReviews,
 		positivePercentage,
 		reviewSummary: query_summary.review_score_desc,
-		reviewScore: query_summary.review_score.toString(),
+		reviewScore: query_summary.review_score,
 		averagePlaytime,
 	};
 }

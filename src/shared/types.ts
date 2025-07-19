@@ -135,7 +135,7 @@ export interface GameData {
 		totalReviews?: number;
 		positivePercentage?: number;
 		reviewSummary?: string;
-		reviewScore?: string;
+		reviewScore?: number;
 		averagePlaytime?: number;
 	};
 	lootScout: {
@@ -166,7 +166,7 @@ export interface GameData {
 			totalReviews: number;
 			positivePercentage: number;
 			reviewSummary: string;
-			reviewScore: string;
+			reviewScore: number;
 		};
 	};
 }
@@ -222,7 +222,7 @@ export interface ProcessedSteamReviews {
 	totalReviews: number;
 	positivePercentage: number;
 	reviewSummary: string;
-	reviewScore: string;
+	reviewScore: number;
 	averagePlaytime: number;
 }
 
