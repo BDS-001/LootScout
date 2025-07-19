@@ -2,8 +2,13 @@ import './Popup.css';
 import { useState, useEffect } from 'react';
 import regionMap from '../constants/regionMap';
 import { loadApiKey, validateAndSaveApiKey } from '../api/ApiKeyService';
-import { getRegion, updateRegion } from '../services/SettingsService';
-import { RegionCode } from '../shared/types';
+import {
+	getRegion,
+	updateRegion,
+	getRaritySettings,
+	updateRaritySettings,
+} from '../services/SettingsService';
+import { RegionCode, RaritySettings } from '../shared/types';
 import browser from 'webextension-polyfill';
 
 const VERSION = '0.0.0';
@@ -12,13 +17,22 @@ const GITHUB_URL = 'https://github.com/BDS-001/LootScout';
 const useSettings = () => {
 	const [selectedCountry, setSelectedCountry] = useState<string>('us');
 	const [apiKey, setApiKey] = useState<string>('');
+	const [raritySettings, setRaritySettings] = useState<RaritySettings>({
+		includePlaytime: false,
+		includeReviewScore: false,
+	});
 
 	useEffect(() => {
 		const loadSettings = async () => {
 			try {
-				const [countryCode, savedApiKey] = await Promise.all([getRegion(), loadApiKey()]);
+				const [countryCode, savedApiKey, savedRaritySettings] = await Promise.all([
+					getRegion(),
+					loadApiKey(),
+					getRaritySettings(),
+				]);
 				setSelectedCountry(countryCode);
 				if (savedApiKey) setApiKey(savedApiKey);
+				setRaritySettings(savedRaritySettings);
 			} catch (error) {
 				console.error('Error loading settings:', error);
 			}
@@ -26,7 +40,14 @@ const useSettings = () => {
 		loadSettings();
 	}, []);
 
-	return { selectedCountry, setSelectedCountry, apiKey, setApiKey };
+	return {
+		selectedCountry,
+		setSelectedCountry,
+		apiKey,
+		setApiKey,
+		raritySettings,
+		setRaritySettings,
+	};
 };
 
 const useApiKeyValidation = (apiKey: string) => {
@@ -114,8 +135,62 @@ const ApiKeySection = ({
 	</div>
 );
 
+const RaritySettingsSection = ({
+	raritySettings,
+	onSettingsChange,
+}: {
+	raritySettings: RaritySettings;
+	onSettingsChange: (newSettings: Partial<RaritySettings>) => void;
+}) => {
+	const handleToggle = (key: keyof RaritySettings) => {
+		onSettingsChange({ [key]: !raritySettings[key] });
+	};
+
+	return (
+		<div className="setting-item">
+			<label className="setting-label">Rarity Modifiers</label>
+			<p className="setting-description">
+				Adjust how rarity is calculated by including additional factors
+			</p>
+			<div className="toggle-group">
+				<div className="toggle-item">
+					<label className="toggle-label">
+						<input
+							type="checkbox"
+							checked={raritySettings.includePlaytime}
+							onChange={() => handleToggle('includePlaytime')}
+							className="toggle-checkbox"
+						/>
+						<span className="toggle-switch"></span>
+						<span className="toggle-text">Include Playtime</span>
+					</label>
+				</div>
+				<div className="toggle-item">
+					<label className="toggle-label">
+						<input
+							type="checkbox"
+							checked={raritySettings.includeReviewScore}
+							onChange={() => handleToggle('includeReviewScore')}
+							className="toggle-checkbox"
+						/>
+						<span className="toggle-switch"></span>
+						<span className="toggle-text">Include Review Score</span>
+					</label>
+				</div>
+			</div>
+		</div>
+	);
+};
+
 export default function Popup() {
-	const { selectedCountry, setSelectedCountry, apiKey, setApiKey } = useSettings();
+	const {
+		selectedCountry,
+		setSelectedCountry,
+		apiKey,
+		setApiKey,
+		raritySettings,
+		setRaritySettings,
+	} = useSettings();
 	const { testStatus, isTestingKey, testApiKey } = useApiKeyValidation(apiKey);
 
 	const handleCountryChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -126,6 +201,16 @@ export default function Popup() {
 			await updateRegion(newCountryCode as RegionCode);
 		} catch (error) {
 			console.error('Error updating country code:', error);
+		}
+	};
+
+	const handleRaritySettingsChange = async (newSettings: Partial<RaritySettings>) => {
+		setRaritySettings({ ...raritySettings, ...newSettings });
+
+		try {
+			await updateRaritySettings(newSettings);
+		} catch (error) {
+			console.error('Error updating rarity settings:', error);
 		}
 	};
 
@@ -143,6 +228,10 @@ export default function Popup() {
 
 			<div className="settings-section">
 				<CountrySelector selectedCountry={selectedCountry} onChange={handleCountryChange} />
+				<RaritySettingsSection
+					raritySettings={raritySettings}
+					onSettingsChange={handleRaritySettingsChange}
+				/>
 				<ApiKeySection
 					apiKey={apiKey}
 					setApiKey={setApiKey}
