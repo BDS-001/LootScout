@@ -120,9 +120,9 @@ export async function createSuccessContent(gameData: GameData): Promise<string> 
 
 	// Regular game with pricing data
 	const [steamRarity, currentRarity, historicalRarity] = await Promise.all([
-		createRarityComponent(gameData.steam.discount_percent, true),
-		createRarityComponent(lootScout.currentBest!.rawDiscount, true),
-		createRarityComponent(lootScout.historicalBest!.rawDiscount, true),
+		createRarityComponent(gameData.steam.discount_percent),
+		createRarityComponent(lootScout.currentBest!.rawDiscount),
+		createRarityComponent(lootScout.historicalBest!.rawDiscount),
 	]);
 
 	return `
