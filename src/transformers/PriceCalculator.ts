@@ -1,5 +1,4 @@
 import { calculateDiscount, calculateSavings } from '../utils/PriceUtils';
-import { getRarity } from '../helpers/getRarity';
 
 export function getSteamDealStatus(
 	steamIsBestCurrent: boolean,
@@ -52,14 +51,6 @@ export function calculatePriceMetrics(steamPriceOverview: any, ggDealsData: any)
 		steamIsBestCurrent,
 		steamIsBestHistorical,
 	};
-}
-
-export function calculateRarityMetrics(steamPriceOverview: any, priceMetrics: any) {
-	const steamRarity = getRarity(steamPriceOverview.discount_percent);
-	const currentRarity = getRarity(priceMetrics.currentRawDiscount);
-	const historicalRarity = getRarity(priceMetrics.historicalRawDiscount);
-
-	return { steamRarity, currentRarity, historicalRarity };
 }
 
 export function calculateCostPerHour(price: number, averagePlaytime: number): number {

@@ -109,11 +109,11 @@ export function createSuccessContent(gameData: GameData): string {
 	// Check if deal data is missing (free or coming soon games)
 	if (!gameData.deal || !lootScout.currentBest || !lootScout.historicalBest) {
 		// Check if it's a free game
-		if (lootScout.steam.rarity.className === 'free') {
+		if (lootScout.steam.status.className === 'steam_free_game') {
 			return createFreeGameContent(gameData);
 		}
 		// Check if it's a coming soon game
-		if (lootScout.steam.rarity.className === 'coming_soon') {
+		if (lootScout.steam.status.className === 'steam_coming_soon') {
 			return createComingSoonContent(gameData);
 		}
 	}

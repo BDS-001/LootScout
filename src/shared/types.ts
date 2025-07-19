@@ -144,29 +144,17 @@ export interface GameData {
 				text: string;
 				className: string;
 			};
-			rarity: {
-				name: string;
-				className: string;
-			};
 		};
 		currentBest?: {
 			rawDiscount: number;
 			discount: number;
 			savings: number;
-			rarity: {
-				name: string;
-				className: string;
-			};
 			isEqualToSteam: boolean;
 		};
 		historicalBest?: {
 			rawDiscount: number;
 			discount: number;
 			savings: number;
-			rarity: {
-				name: string;
-				className: string;
-			};
 			isEqualToSteam: boolean;
 		};
 		costPerHour?: {

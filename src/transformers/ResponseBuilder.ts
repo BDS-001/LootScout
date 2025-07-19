@@ -29,10 +29,6 @@ export function buildFreeGameResponse(
 					text: 'This game is free to play',
 					className: 'steam_free_game',
 				},
-				rarity: {
-					name: 'Free',
-					className: 'free',
-				},
 			},
 		},
 	};
@@ -60,10 +56,6 @@ export function buildComingSoonResponse(
 					text: `Coming soon: ${releaseDate}`,
 					className: 'steam_coming_soon',
 				},
-				rarity: {
-					name: 'Coming Soon',
-					className: 'coming_soon',
-				},
 			},
 			...(processedReviews && {
 				reviews: {
@@ -82,7 +74,6 @@ export function buildGameDataResponse(
 	steamAppData: any,
 	ggDealsData: any,
 	priceMetrics: any,
-	rarityMetrics: any,
 	processedReviews?: ProcessedSteamReviews | null,
 	costPerHour?: { steam: number; currentBest: number; historicalBest: number } | null
 ): GameDataResponse {
@@ -118,29 +109,17 @@ export function buildGameDataResponse(
 		lootScout: {
 			steam: {
 				status: steamStatus,
-				rarity: {
-					name: rarityMetrics.steamRarity,
-					className: rarityMetrics.steamRarity.toLowerCase(),
-				},
 			},
 			currentBest: {
 				rawDiscount: priceMetrics.currentRawDiscount,
 				discount: priceMetrics.currentDiscount,
 				savings: priceMetrics.currentSavings,
-				rarity: {
-					name: rarityMetrics.currentRarity,
-					className: rarityMetrics.currentRarity.toLowerCase(),
-				},
 				isEqualToSteam: priceMetrics.steamIsBestCurrent,
 			},
 			historicalBest: {
 				rawDiscount: priceMetrics.historicalRawDiscount,
 				discount: priceMetrics.historicalDiscount,
 				savings: priceMetrics.historicalSavings,
-				rarity: {
-					name: rarityMetrics.historicalRarity,
-					className: rarityMetrics.historicalRarity.toLowerCase(),
-				},
 				isEqualToSteam: priceMetrics.steamIsBestHistorical,
 			},
 			...(costPerHour && {
