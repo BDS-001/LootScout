@@ -52,11 +52,11 @@ function generateTooltipContent(): string {
 	).join('');
 }
 
-export function createRarityComponent(
+export async function createRarityComponent(
 	percentage: number,
 	useCornerPosition: boolean = true
-): string {
-	const rarity = getRarity(percentage);
+): Promise<string> {
+	const rarity = await getRarity(percentage);
 	const rarityClass = rarity.toLowerCase();
 	const componentId = `rarity-${Math.random().toString(36).substring(2, 9)}`;
 	const positionClass = useCornerPosition ? 'deal_rarity_corner' : '';

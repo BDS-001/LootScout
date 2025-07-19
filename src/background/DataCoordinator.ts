@@ -7,7 +7,7 @@ import {
 	CombinedGameDataResponse,
 	GgDealsApiResponse,
 } from '../shared/types';
-import { loadCountryCode } from '../services/CountryService';
+import { getRegion } from '../services/SettingsService';
 import { getApiKeyWithFallback } from '../api/ApiKeyService';
 import { getCacheItemWithExpiry, setCacheItem } from '../services/CacheService';
 import { processSteamReviews } from '../transformers/SteamReviewProcessor';
@@ -42,7 +42,7 @@ export class DataCoordinator {
 	}
 
 	public async fetchGameData(appId: string): Promise<any> {
-		const region = await loadCountryCode();
+		const region = await getRegion();
 		const cacheKey = `game_data_${appId}_${region}`;
 		const cachedData = await getCacheItemWithExpiry(cacheKey, DataCoordinator.CACHE_DURATION);
 

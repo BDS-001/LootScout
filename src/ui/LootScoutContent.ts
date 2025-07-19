@@ -103,7 +103,7 @@ export function createComingSoonContent(gameData: GameData): string {
 }
 
 // Success state content
-export function createSuccessContent(gameData: GameData): string {
+export async function createSuccessContent(gameData: GameData): Promise<string> {
 	const { lootScout } = gameData;
 
 	// Check if deal data is missing (free or coming soon games)
@@ -119,6 +119,12 @@ export function createSuccessContent(gameData: GameData): string {
 	}
 
 	// Regular game with pricing data
+	const [steamRarity, currentRarity, historicalRarity] = await Promise.all([
+		createRarityComponent(gameData.steam.discount_percent, true),
+		createRarityComponent(lootScout.currentBest!.rawDiscount, true),
+		createRarityComponent(lootScout.historicalBest!.rawDiscount, true),
+	]);
+
 	return `
 		
 		<div class="deal_section">
@@ -130,7 +136,7 @@ export function createSuccessContent(gameData: GameData): string {
 			<div class="deal_status">
 				<span class="${lootScout.steam.status.className}">${lootScout.steam.status.text}</span>
 			</div>
-			${createRarityComponent(gameData.steam.discount_percent, true)}
+			${steamRarity}
 		</div>
 		
 		<div class="deal_section">
@@ -152,7 +158,7 @@ export function createSuccessContent(gameData: GameData): string {
 			<div class="deal_button">
 				<a href="${gameData.deal!.url}" target="_blank" class="btnv6_blue_hoverfade btn_medium"><span>View Deals</span></a>
 			</div>
-			${createRarityComponent(lootScout.currentBest!.rawDiscount, true)}
+			${currentRarity}
 		</div>
 		
 		<div class="deal_section">
@@ -174,7 +180,7 @@ export function createSuccessContent(gameData: GameData): string {
 			<div class="deal_button">
 				<a href="${gameData.deal!.url}" target="_blank" class="btnv6_blue_hoverfade btn_medium"><span>View Deals</span></a>
 			</div>
-			${createRarityComponent(lootScout.historicalBest!.rawDiscount, true)}
+			${historicalRarity}
 		</div>
 		
 		${createResourcesSection(gameData.title)}

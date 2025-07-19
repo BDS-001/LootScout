@@ -1,5 +1,6 @@
 import browser from 'webextension-polyfill';
-import { updateCountryCode, loadCountryCode } from '../services/CountryService';
+import { updateRegion, getRegion } from '../services/SettingsService';
+import { RegionCode } from '../shared/types';
 import { DataCoordinator } from './DataCoordinator';
 
 export class MessageRouter {
@@ -25,7 +26,7 @@ export class MessageRouter {
 		countryCode: string
 	): Promise<{ success: boolean; error?: any }> {
 		try {
-			await updateCountryCode(countryCode);
+			await updateRegion(countryCode as RegionCode);
 			return { success: true };
 		} catch (error) {
 			console.error('Error updating country code:', error);
@@ -34,6 +35,6 @@ export class MessageRouter {
 	}
 
 	private async handleGetCountryCode(): Promise<string> {
-		return await loadCountryCode();
+		return await getRegion();
 	}
 }

@@ -2,7 +2,8 @@ import './Popup.css';
 import { useState, useEffect } from 'react';
 import regionMap from '../constants/regionMap';
 import { loadApiKey, validateAndSaveApiKey } from '../api/ApiKeyService';
-import { loadCountryCode, updateCountryCode } from '../services/CountryService';
+import { getRegion, updateRegion } from '../services/SettingsService';
+import { RegionCode } from '../shared/types';
 import browser from 'webextension-polyfill';
 
 const VERSION = '0.0.0';
@@ -15,7 +16,7 @@ const useSettings = () => {
 	useEffect(() => {
 		const loadSettings = async () => {
 			try {
-				const [countryCode, savedApiKey] = await Promise.all([loadCountryCode(), loadApiKey()]);
+				const [countryCode, savedApiKey] = await Promise.all([getRegion(), loadApiKey()]);
 				setSelectedCountry(countryCode);
 				if (savedApiKey) setApiKey(savedApiKey);
 			} catch (error) {
@@ -122,7 +123,7 @@ export default function Popup() {
 		setSelectedCountry(newCountryCode);
 
 		try {
-			await updateCountryCode(newCountryCode);
+			await updateRegion(newCountryCode as RegionCode);
 		} catch (error) {
 			console.error('Error updating country code:', error);
 		}

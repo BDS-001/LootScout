@@ -1,6 +1,6 @@
 import { GameData, ApiError, RegionCode } from '../shared/types';
 import { createLoadingContent, createErrorContent, createSuccessContent } from './LootScoutContent';
-import { getCountryInfo } from '../services/CountryService';
+import { getRegionInfo } from '../services/SettingsService';
 
 const ELEMENT_IDS = {
 	CONTAINER: 'lootscout-container',
@@ -81,11 +81,14 @@ function updateHeader(header: HTMLElement, countryCode?: string): void {
 }
 
 function createRegionDisplay(countryCode: string): string {
-	const countryInfo = getCountryInfo(countryCode as RegionCode);
+	const countryInfo = getRegionInfo(countryCode as RegionCode);
 	return countryInfo ? `${countryInfo.name} (${countryInfo.currency})` : countryCode.toUpperCase();
 }
 
-export function updateContainerState(container: HTMLElement, state: ContainerState): void {
+export async function updateContainerState(
+	container: HTMLElement,
+	state: ContainerState
+): Promise<void> {
 	const elements = getContainerElements(container);
 	if (!elements) return;
 
@@ -101,7 +104,8 @@ export function updateContainerState(container: HTMLElement, state: ContainerSta
 				const gameTitle = state.gameData.title
 					? createGameTitleSection(state.gameData.title, state.gameData.steam.averagePlaytime)
 					: '';
-				elements.content.innerHTML = gameTitle + createSuccessContent(state.gameData);
+				const successContent = await createSuccessContent(state.gameData);
+				elements.content.innerHTML = gameTitle + successContent;
 			}
 			break;
 

@@ -1,5 +1,5 @@
 import browser from 'webextension-polyfill';
-import { loadCountryCode } from '../services/CountryService';
+import { getRegion } from '../services/SettingsService';
 
 export class ExtensionLifecycle {
 	public setupEventListeners(): void {
@@ -7,7 +7,7 @@ export class ExtensionLifecycle {
 			console.log('Extension installed:', details);
 
 			if (details.reason === 'install') {
-				await loadCountryCode();
+				await getRegion();
 			}
 		});
 	}

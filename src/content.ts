@@ -26,19 +26,19 @@ async function initializeContentScript(): Promise<void> {
 				action: 'getCountryCode',
 			});
 
-			updateContainerState(container, {
+			await updateContainerState(container, {
 				status: 'success',
 				gameData: response,
 				countryCode: currentCountry,
 			});
 		} else {
-			updateContainerState(container, {
+			await updateContainerState(container, {
 				status: 'error',
 				error: response.data as ApiError,
 			});
 		}
 	} catch (error) {
-		updateContainerState(container, {
+		await updateContainerState(container, {
 			status: 'error',
 			error: {
 				name: 'CommunicationError',

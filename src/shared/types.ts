@@ -225,3 +225,14 @@ export interface ProcessedSteamReviews {
 	reviewScore: string;
 	averagePlaytime: number;
 }
+
+// Settings Types
+export interface RaritySettings {
+	includePlaytime: boolean;
+	includeReviewScore: boolean;
+}
+
+export interface AppSettings {
+	region: RegionCode;
+	rarity: RaritySettings;
+}
