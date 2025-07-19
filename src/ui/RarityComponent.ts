@@ -65,7 +65,7 @@ export async function createRarityComponent(
 	setTimeout(() => attachTooltipEvents(componentId), 100);
 
 	return `<div class="deal_rarity ${positionClass}" id="${componentId}">
-    <span class="rarity-badge rarity-${rarityClass} rarity-${rarityClass}-bg" data-tooltip="true">${rarity}</span>
+    <span class="rarity-badge rarity-${rarityClass}" data-tooltip="true">${rarity}</span>
     <div class="rarity-tooltip">
       <div class="tooltip-header">Rarity Chart:</div>
       ${generateTooltipContent()}
