@@ -1,4 +1,4 @@
-/* Modern homepage-style about page */
+/* Clean, optimized about page styles */
 * {
 	margin: 0;
 	padding: 0;
@@ -21,14 +21,9 @@
 
 /* Hero Section */
 .hero {
-	padding: 120px 0 80px;
+	padding: 120px 24px 80px;
 	text-align: center;
 	background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
-}
-
-.hero-content {
-	max-width: 600px;
-	margin: 0 auto;
 }
 
 .hero-logo {
@@ -64,60 +59,17 @@
 	margin: 0 auto;
 }
 
-/* Features Section */
-.features-section {
+/* Sections */
+.section {
 	padding: 80px 0;
 }
 
-.section-title {
-	font-size: 48px;
-	font-weight: 700;
-	color: var(--text-primary);
-	text-align: center;
-	margin-bottom: 60px;
-	letter-spacing: -0.01em;
-}
-
-.features-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-	gap: 40px;
-	margin-top: 60px;
-}
-
-.feature {
-	text-align: center;
-	padding: 40px 24px;
-	transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.feature:hover {
-	transform: translateY(-8px);
-}
-
-
-.feature h3 {
-	font-size: 24px;
-	font-weight: 600;
-	color: var(--text-accent);
-	margin-bottom: 16px;
-}
-
-.feature p {
-	font-size: 16px;
-	color: var(--text-secondary);
-	max-width: 280px;
-	margin: 0 auto;
-}
-
-/* Rarity Showcase */
-.rarity-showcase {
-	padding: 100px 0;
+.section.alt {
 	background: rgba(212, 175, 55, 0.02);
 	position: relative;
 }
 
-.rarity-showcase::before {
+.section.alt::before {
 	content: '';
 	position: absolute;
 	top: 0;
@@ -127,30 +79,34 @@
 	background: linear-gradient(90deg, transparent 0%, var(--border-accent) 50%, transparent 100%);
 }
 
-.rarity-showcase::after {
-	content: '';
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	height: 1px;
-	background: linear-gradient(90deg, transparent 0%, var(--border-accent) 50%, transparent 100%);
-}
-
-.center {
+.section h2 {
+	font-size: 48px;
+	font-weight: 700;
+	color: var(--text-primary);
 	text-align: center;
+	margin-bottom: 60px;
+	letter-spacing: -0.01em;
 }
 
-.section-subtitle {
+.subtitle {
 	font-size: 20px;
 	color: var(--text-secondary);
+	text-align: center;
 	margin-bottom: 60px;
 	max-width: 600px;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-.rarity-display {
+/* Grids */
+.grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 32px;
+	margin-top: 60px;
+}
+
+.rarity-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 	gap: 20px;
@@ -158,7 +114,37 @@
 	margin: 0 auto;
 }
 
-.rarity-tier {
+/* Cards */
+.card {
+	padding: 32px;
+	background: rgba(255, 255, 255, 0.02);
+	border-radius: 16px;
+	border: 1px solid var(--border-subtle);
+	transition: all 0.3s ease;
+	text-align: center;
+}
+
+.card:hover {
+	background: rgba(255, 255, 255, 0.03);
+	border-color: var(--border-accent);
+	transform: translateY(-4px);
+}
+
+.card h3 {
+	font-size: 24px;
+	font-weight: 600;
+	color: var(--text-accent);
+	margin-bottom: 16px;
+}
+
+.card p {
+	font-size: 16px;
+	color: var(--text-secondary);
+	margin: 0;
+}
+
+/* Rarity Items */
+.rarity-item {
 	display: flex;
 	align-items: center;
 	gap: 16px;
@@ -168,30 +154,14 @@
 	cursor: pointer;
 }
 
-.rarity-tier:hover {
+.rarity-item:hover {
 	background: rgba(255, 255, 255, 0.02);
 	transform: scale(1.02);
 }
 
-.rarity-tier.highlight {
+.rarity-item.highlight {
 	background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
 	border: 1px solid rgba(212, 175, 55, 0.2);
-	position: relative;
-	overflow: visible;
-}
-
-/* Enhanced effects for higher tier rarities */
-.rarity-tier:has(.rarity-mythic) {
-	background: rgba(64, 224, 208, 0.03);
-}
-
-.rarity-tier:has(.rarity-exotic) {
-	background: rgba(220, 20, 60, 0.03);
-}
-
-.rarity-tier:has(.rarity-iridescent) {
-	background: rgba(255, 107, 107, 0.03);
-	border: 1px solid rgba(255, 107, 107, 0.1);
 }
 
 .rarity-visual {
@@ -202,13 +172,8 @@
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.rarity-info {
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
-}
-
 .rarity-name {
+	display: block;
 	font-size: 16px;
 	font-weight: 600;
 	color: var(--text-primary);
@@ -220,26 +185,29 @@
 	opacity: 0.8;
 }
 
-/* Rarity Colors */
+/* Rarity Colors & Effects */
 .rarity-common { background: var(--rarity-common); }
 .rarity-uncommon { background: var(--rarity-uncommon); }
 .rarity-rare { background: var(--rarity-rare); }
 .rarity-epic { background: var(--rarity-epic); }
 .rarity-legendary { background: var(--rarity-legendary); }
+
 .rarity-mythic { 
 	background: var(--rarity-mythic);
 	animation: mythic-glow 3.5s ease-in-out infinite;
 }
+
 .rarity-exotic { 
 	background: var(--rarity-exotic);
 	animation: exotic-glow 4s ease-in-out infinite;
 }
+
 .rarity-iridescent { 
 	background: var(--rarity-iridescent);
 	animation: iridescent-glow 3s ease-in-out infinite alternate;
 }
 
-/* Glow animations for higher rarities */
+/* Glow Animations */
 @keyframes mythic-glow {
 	0%, 100% {
 		box-shadow: 
@@ -290,51 +258,12 @@
 	}
 }
 
-/* Modifiers Section */
-.modifiers-section {
-	padding: 80px 0;
-	background: rgba(212, 175, 55, 0.01);
-}
-
-.modifier-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-	gap: 40px;
-	margin-top: 40px;
-}
-
-.modifier-card {
-	padding: 32px;
-	background: rgba(255, 255, 255, 0.02);
-	border-radius: 16px;
-	border: 1px solid var(--border-subtle);
-	transition: all 0.3s ease;
-}
-
-.modifier-card:hover {
-	background: rgba(255, 255, 255, 0.03);
-	border-color: var(--border-accent);
-	transform: translateY(-4px);
-}
-
-.modifier-card h3 {
-	font-size: 22px;
-	font-weight: 600;
-	color: var(--text-accent);
-	margin-bottom: 12px;
-}
-
-.modifier-description {
-	font-size: 16px;
-	color: var(--text-secondary);
-	margin-bottom: 24px;
-	opacity: 0.9;
-}
-
-.modifier-effects {
+/* Effects */
+.effects {
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
+	margin-top: 16px;
 }
 
 .effect {
@@ -371,129 +300,28 @@
 	background: rgba(239, 68, 68, 0.05);
 }
 
-.effect-label {
+.effect span:first-child {
 	font-size: 14px;
 	font-weight: 600;
 	color: var(--text-primary);
 }
 
-.effect.critical-bonus .effect-label {
-	color: #00ff88;
-}
-
-.effect.bonus .effect-label {
-	color: #22c55e;
-}
-
-.effect.penalty .effect-label {
-	color: #f59e0b;
-}
-
-.effect.critical-penalty .effect-label {
-	color: #ef4444;
-}
-
-.effect-condition {
+.effect span:last-child {
 	font-size: 13px;
 	color: var(--text-secondary);
 	font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
 }
 
-/* Info Section */
-.info-section {
-	padding: 80px 0;
-}
-
-/* FAQ Section */
-.faq-section {
-	padding: 80px 0;
-	background: rgba(212, 175, 55, 0.01);
-	position: relative;
-}
-
-.faq-section::before {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	height: 1px;
-	background: linear-gradient(90deg, transparent 0%, var(--border-accent) 50%, transparent 100%);
-}
-
-.faq-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-	gap: 32px;
-	margin-top: 60px;
-}
-
-.faq-item {
-	padding: 28px;
-	background: rgba(255, 255, 255, 0.02);
-	border-radius: 16px;
-	border: 1px solid var(--border-subtle);
-	transition: all 0.3s ease;
-}
-
-.faq-item:hover {
-	background: rgba(255, 255, 255, 0.03);
-	border-color: var(--border-accent);
-	transform: translateY(-4px);
-}
-
-.faq-question {
-	font-size: 20px;
-	font-weight: 600;
-	color: var(--text-accent);
-	margin-bottom: 16px;
-	line-height: 1.4;
-}
-
-.faq-answer {
-	font-size: 16px;
-	color: var(--text-secondary);
-	line-height: 1.6;
-	margin: 0;
-}
-
-.info-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-	gap: 40px;
-	margin-top: 40px;
-}
-
-.info-card {
-	text-align: center;
-	padding: 40px 24px;
-	transition: transform 0.3s ease;
-}
-
-.info-card:hover {
-	transform: translateY(-4px);
-}
-
-.info-card h3 {
-	font-size: 24px;
-	font-weight: 600;
-	color: var(--text-accent);
-	margin-bottom: 20px;
-}
-
-.info-card p {
-	font-size: 16px;
-	color: var(--text-secondary);
-}
+.effect.critical-bonus span:first-child { color: #00ff88; }
+.effect.bonus span:first-child { color: #22c55e; }
+.effect.penalty span:first-child { color: #f59e0b; }
+.effect.critical-penalty span:first-child { color: #ef4444; }
 
 /* Footer */
 .footer {
 	padding: 60px 0 40px;
 	border-top: 1px solid var(--border-subtle);
 	margin-top: 60px;
-}
-
-.footer-content {
 	text-align: center;
 }
 
@@ -530,7 +358,7 @@
 /* Responsive Design */
 @media (max-width: 768px) {
 	.hero {
-		padding: 80px 0 60px;
+		padding: 80px 16px 60px;
 	}
 	
 	.hero-title {
@@ -545,35 +373,24 @@
 		font-size: 16px;
 	}
 	
-	.section-title {
+	.section {
+		padding: 60px 0;
+	}
+	
+	.section h2 {
 		font-size: 36px;
 		margin-bottom: 40px;
 	}
 	
-	.features-grid {
+	.grid {
 		grid-template-columns: 1fr;
-		gap: 32px;
+		gap: 24px;
 		margin-top: 40px;
 	}
 	
-	.rarity-display {
+	.rarity-grid {
 		grid-template-columns: 1fr;
 		gap: 16px;
-	}
-	
-	.modifier-grid {
-		grid-template-columns: 1fr;
-		gap: 32px;
-	}
-	
-	.faq-grid {
-		grid-template-columns: 1fr;
-		gap: 24px;
-	}
-	
-	.info-grid {
-		grid-template-columns: 1fr;
-		gap: 32px;
 	}
 	
 	.footer-links {
@@ -588,27 +405,14 @@
 	}
 	
 	.hero {
-		padding: 60px 0 40px;
+		padding: 60px 16px 40px;
 	}
 	
 	.hero-title {
 		font-size: 40px;
 	}
 	
-	.features-section,
-	.rarity-showcase,
-	.modifiers-section,
-	.info-section,
-	.faq-section {
-		padding: 60px 0;
-	}
-	
-	.modifier-grid {
-		grid-template-columns: 1fr;
-		gap: 24px;
-	}
-	
-	.modifier-card {
+	.card {
 		padding: 24px;
 	}
 }
