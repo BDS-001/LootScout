@@ -237,4 +237,3 @@
 .toggle-checkbox:checked + .toggle-switch::before {
 	transform: translateX(18px);
 }
-
