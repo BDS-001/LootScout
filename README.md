@@ -47,7 +47,7 @@ Deals are categorized using a rarity system based on discount percentages:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/LootScout.git
+   git clone https://github.com/BDS-001/LootScout.git
    cd LootScout
    ```
 
@@ -97,6 +97,7 @@ LootScout integrates with two main APIs:
 
 - **GG.deals API**: Provides comprehensive game pricing data across multiple platforms
 - **Steam Store API**: Fetches official Steam pricing and discount information
+- **Steam Reviews API**: Fetches user review data and sentiment analysis
 
 ### API Key Configuration
 
@@ -124,6 +125,7 @@ src/
 │   ├── ApiKeyService.ts    # API key storage and validation
 │   ├── CombinedGameData.ts # Combines data from multiple APIs
 │   ├── GgDealsApi.ts      # GG.deals API integration
+│   ├── SteamReviewsApi.ts # Steam Reviews API integration
 │   └── SteamStoreApi.ts   # Steam Store API integration
 ├── background/            # Background script modules
 │   ├── DataCoordinator.ts # Main data fetching coordinator
@@ -133,7 +135,10 @@ src/
 │   ├── rarityChart.ts    # Rarity system definitions
 │   └── regionMap.ts      # Region/currency mappings
 ├── helpers/              # Utility functions
-│   └── getRarity.ts      # Rarity calculation logic
+│   ├── getRarity.ts      # Rarity calculation logic
+│   ├── getUrl.ts         # URL generation utilities
+│   ├── hltb.ts           # HowLongToBeat integration
+│   └── youtube.ts        # YouTube search utilities
 ├── pages/                # Extension pages
 │   └── Popup.tsx         # Extension popup component
 ├── parsers/              # Data parsing utilities
@@ -141,19 +146,25 @@ src/
 │   └── SteamParser.ts     # Steam App ID extraction
 ├── services/             # Core services
 │   ├── CacheService.ts   # Data caching functionality
-│   ├── CountryService.ts # User region detection
+│   ├── GameStatusService.ts # Game status tracking
+│   ├── SettingsService.ts # User settings management
 │   └── StorageService.ts # Browser storage abstraction
 ├── shared/               # Shared types and interfaces
 │   └── types.ts          # TypeScript type definitions
 ├── styles/               # CSS styling
 ├── transformers/         # Data transformation utilities
-│   └── ResponseFormatter.ts # API response formatting
+│   ├── GameDataValidator.ts # Game data validation
+│   ├── PriceCalculator.ts # Price calculation logic
+│   ├── ResponseBuilder.ts # Response building utilities
+│   ├── ResponseFormatter.ts # API response formatting
+│   └── SteamReviewProcessor.ts # Steam review data processing
 ├── ui/                   # UI components
 │   ├── LootScoutContainer.ts # Main container injection
 │   ├── LootScoutContent.ts # Content display component
 │   └── RarityComponent.ts # Deal rarity display component
 ├── utils/                # General utilities
 │   ├── ErrorHandler.ts   # Error handling utilities
+│   ├── MathUtils.ts      # Mathematical calculation helpers
 │   ├── PriceUtils.ts     # Price calculation helpers
 │   └── injectCSS.ts      # CSS injection utility
 ├── background.ts         # Extension background script
