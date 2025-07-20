@@ -186,37 +186,48 @@
 }
 
 /* Rarity Colors & Effects */
-.rarity-common { background: var(--rarity-common); }
-.rarity-uncommon { background: var(--rarity-uncommon); }
-.rarity-rare { background: var(--rarity-rare); }
-.rarity-epic { background: var(--rarity-epic); }
-.rarity-legendary { background: var(--rarity-legendary); }
+.rarity-common {
+	background: var(--rarity-common);
+}
+.rarity-uncommon {
+	background: var(--rarity-uncommon);
+}
+.rarity-rare {
+	background: var(--rarity-rare);
+}
+.rarity-epic {
+	background: var(--rarity-epic);
+}
+.rarity-legendary {
+	background: var(--rarity-legendary);
+}
 
-.rarity-mythic { 
+.rarity-mythic {
 	background: var(--rarity-mythic);
 	animation: mythic-glow 3.5s ease-in-out infinite;
 }
 
-.rarity-exotic { 
+.rarity-exotic {
 	background: var(--rarity-exotic);
 	animation: exotic-glow 4s ease-in-out infinite;
 }
 
-.rarity-iridescent { 
+.rarity-iridescent {
 	background: var(--rarity-iridescent);
 	animation: iridescent-glow 3s ease-in-out infinite alternate;
 }
 
 /* Glow Animations */
 @keyframes mythic-glow {
-	0%, 100% {
-		box-shadow: 
+	0%,
+	100% {
+		box-shadow:
 			0 2px 8px rgba(0, 0, 0, 0.3),
 			0 0 8px var(--rarity-mythic),
 			0 0 15px var(--rarity-mythic);
 	}
 	50% {
-		box-shadow: 
+		box-shadow:
 			0 2px 8px rgba(0, 0, 0, 0.3),
 			0 0 12px var(--rarity-mythic),
 			0 0 25px var(--rarity-mythic),
@@ -225,14 +236,15 @@
 }
 
 @keyframes exotic-glow {
-	0%, 100% {
-		box-shadow: 
+	0%,
+	100% {
+		box-shadow:
 			0 2px 8px rgba(0, 0, 0, 0.3),
 			0 0 8px var(--rarity-exotic),
 			0 0 15px var(--rarity-exotic);
 	}
 	50% {
-		box-shadow: 
+		box-shadow:
 			0 2px 8px rgba(0, 0, 0, 0.3),
 			0 0 12px var(--rarity-exotic),
 			0 0 25px var(--rarity-exotic),
@@ -241,16 +253,16 @@
 }
 
 @keyframes iridescent-glow {
-	0% { 
+	0% {
 		filter: hue-rotate(0deg) brightness(1);
-		box-shadow: 
+		box-shadow:
 			0 2px 8px rgba(0, 0, 0, 0.3),
 			0 0 8px rgba(255, 107, 107, 0.8),
 			0 0 15px rgba(255, 107, 107, 0.6);
 	}
-	100% { 
+	100% {
 		filter: hue-rotate(360deg) brightness(1.2);
-		box-shadow: 
+		box-shadow:
 			0 2px 8px rgba(0, 0, 0, 0.3),
 			0 0 12px rgba(255, 107, 107, 1),
 			0 0 25px rgba(255, 107, 107, 0.8),
@@ -312,10 +324,18 @@
 	font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
 }
 
-.effect.critical-bonus span:first-child { color: #00ff88; }
-.effect.bonus span:first-child { color: #22c55e; }
-.effect.penalty span:first-child { color: #f59e0b; }
-.effect.critical-penalty span:first-child { color: #ef4444; }
+.effect.critical-bonus span:first-child {
+	color: #00ff88;
+}
+.effect.bonus span:first-child {
+	color: #22c55e;
+}
+.effect.penalty span:first-child {
+	color: #f59e0b;
+}
+.effect.critical-penalty span:first-child {
+	color: #ef4444;
+}
 
 /* Footer */
 .footer {
@@ -360,39 +380,39 @@
 	.hero {
 		padding: 80px 16px 60px;
 	}
-	
+
 	.hero-title {
 		font-size: 48px;
 	}
-	
+
 	.hero-subtitle {
 		font-size: 20px;
 	}
-	
+
 	.hero-description {
 		font-size: 16px;
 	}
-	
+
 	.section {
 		padding: 60px 0;
 	}
-	
+
 	.section h2 {
 		font-size: 36px;
 		margin-bottom: 40px;
 	}
-	
+
 	.grid {
 		grid-template-columns: 1fr;
 		gap: 24px;
 		margin-top: 40px;
 	}
-	
+
 	.rarity-grid {
 		grid-template-columns: 1fr;
 		gap: 16px;
 	}
-	
+
 	.footer-links {
 		flex-direction: column;
 		gap: 16px;
@@ -403,15 +423,15 @@
 	.container {
 		padding: 0 16px;
 	}
-	
+
 	.hero {
 		padding: 60px 16px 40px;
 	}
-	
+
 	.hero-title {
 		font-size: 40px;
 	}
-	
+
 	.card {
 		padding: 24px;
 	}
