@@ -24,26 +24,26 @@ function getDiscountValue(percentage: number): number {
 	}
 }
 
-function reviewScoreModifier(rarityIndex: number, reviewScore: number): number {
+function getReviewScoreBonus(reviewScore: number): number {
 	const BONUS = 9;
 	const PENALTY = 4;
 	const CRITICAL_PENALTY = 1;
 
-	if (reviewScore >= BONUS) return Math.min(rarityIndex + 1, MAX_RARITY_INDEX);
-	if (reviewScore <= CRITICAL_PENALTY) return Math.max(rarityIndex - 2, 0);
-	if (reviewScore <= PENALTY) return Math.max(rarityIndex - 1, 0);
-	return rarityIndex;
+	if (reviewScore >= BONUS) return 1;
+	if (reviewScore <= CRITICAL_PENALTY) return -2;
+	if (reviewScore <= PENALTY) return -1;
+	return 0;
 }
 
-function playtimeModifier(rarityIndex: number, playtime: number): number {
+function getPlaytimeBonus(playtime: number): number {
 	const CRITICAL_BONUS = 80;
 	const BONUS = 30;
 	const PENALTY = 5;
 
-	if (playtime >= CRITICAL_BONUS) return Math.min(rarityIndex + 2, MAX_RARITY_INDEX);
-	if (playtime >= BONUS) return Math.min(rarityIndex + 1, MAX_RARITY_INDEX);
-	if (playtime <= PENALTY) return Math.max(rarityIndex - 1, 0);
-	return rarityIndex;
+	if (playtime >= CRITICAL_BONUS) return 2;
+	if (playtime >= BONUS) return 1;
+	if (playtime <= PENALTY) return -1;
+	return 0;
 }
 
 export async function getRarity(
@@ -51,16 +51,44 @@ export async function getRarity(
 	reviewScore: number | null = null,
 	playtime: number | null = null
 ): Promise<string> {
+	const analysis = await getRarityAnalysis(percentage, reviewScore, playtime);
+	return analysis.name;
+}
+
+export interface RarityAnalysis {
+	name: string;
+	baseScore: number;
+	reviewBonus: number;
+	playtimeBonus: number;
+	finalScore: number;
+	reviewScore?: number;
+	playtime?: number;
+}
+
+export async function getRarityAnalysis(
+	percentage: number,
+	reviewScore: number | null = null,
+	playtime: number | null = null
+): Promise<RarityAnalysis> {
 	const { includeReviewScore, includePlaytime } = await getRaritySettings();
-	let rarityIndex = getDiscountValue(percentage);
+	const baseScore = getDiscountValue(percentage);
 
-	if (includeReviewScore && reviewScore !== null) {
-		rarityIndex = reviewScoreModifier(rarityIndex, reviewScore);
-	}
+	const reviewBonus =
+		includeReviewScore && reviewScore !== null ? getReviewScoreBonus(reviewScore) : 0;
+	const playtimeBonus = includePlaytime && playtime !== null ? getPlaytimeBonus(playtime) : 0;
 
-	if (includePlaytime && playtime !== null) {
-		rarityIndex = playtimeModifier(rarityIndex, playtime);
-	}
+	const finalScore = Math.max(
+		0,
+		Math.min(baseScore + reviewBonus + playtimeBonus, MAX_RARITY_INDEX)
+	);
 
-	return RARITY_CHART[rarityIndex].name;
+	return {
+		name: RARITY_CHART[finalScore].name,
+		baseScore,
+		reviewBonus,
+		playtimeBonus,
+		finalScore,
+		reviewScore: reviewScore || undefined,
+		playtime: playtime || undefined,
+	};
 }

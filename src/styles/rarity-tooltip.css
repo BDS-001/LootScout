@@ -33,7 +33,7 @@
 	transition:
 		opacity var(--transition-fast),
 		visibility var(--transition-fast);
-	min-width: 350px;
+	min-width: 280px;
 	text-align: left;
 	pointer-events: none;
 }
@@ -48,4 +48,52 @@
 .tooltip-item {
 	margin: var(--spacing-xs) 0;
 	line-height: 1.3;
+}
+
+.score-breakdown {
+	margin-bottom: var(--spacing-lg);
+	line-height: 1.4;
+}
+
+.score-breakdown > div {
+	margin: var(--spacing-sm) 0;
+	font-size: var(--font-size-base);
+}
+
+.final-rarity {
+	text-align: center;
+	margin-top: var(--spacing-lg);
+	padding-top: var(--spacing-sm);
+	border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.final-rarity strong {
+	font-size: 1.5em;
+	font-weight: var(--font-weight-bold);
+}
+
+.modifier-text {
+	font-weight: var(--font-weight-semibold);
+}
+
+.modifier-positive {
+	color: var(--color-steam-green);
+}
+
+.modifier-negative {
+	color: var(--color-steam-red);
+}
+
+.modifier-neutral {
+	color: var(--color-white);
+}
+
+.detail-text {
+	color: var(--color-steam-gray);
+	font-size: 0.9em;
+}
+
+.breakdown-label {
+	color: var(--color-steam-blue);
+	font-weight: var(--font-weight-semibold);
 }
