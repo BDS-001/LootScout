@@ -6,230 +6,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="./styles/shared-theme.css" />
 		<link rel="stylesheet" href="./styles/rarities.css" />
+		<link rel="stylesheet" href="./about.css" />
 		<title>About LootScout</title>
-		<style>
-			/* About page - cohesive fantasy design */
-			.container {
-				max-width: 1000px;
-				margin: 0 auto;
-				padding: 40px 24px;
-				background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-				min-height: 100vh;
-			}
-
-			.hero {
-				text-align: center;
-				padding: 60px 0;
-				background: var(--bg-elevated);
-				border-radius: 16px;
-				margin-bottom: 48px;
-				border: 1px solid var(--border-subtle);
-			}
-			.hero-icon {
-				width: 80px;
-				height: 80px;
-				margin-bottom: 24px;
-			}
-			.hero-title {
-				font-size: 48px;
-				font-weight: 700;
-				color: var(--text-accent-bright);
-				margin-bottom: 12px;
-				text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-			}
-			.hero-subtitle {
-				font-size: 20px;
-				color: var(--text-secondary);
-				opacity: 0.9;
-			}
-
-			.main-content {
-				display: grid;
-				grid-template-columns: 1fr 300px;
-				gap: 48px;
-				align-items: start;
-			}
-			@media (max-width: 768px) {
-				.main-content {
-					grid-template-columns: 1fr;
-				}
-			}
-
-			.section {
-				background: var(--bg-elevated);
-				padding: 32px;
-				border-radius: 12px;
-				margin-bottom: 32px;
-				border: 1px solid var(--border-subtle);
-			}
-			.section h2 {
-				color: var(--text-accent);
-				font-size: 28px;
-				margin-bottom: 20px;
-				display: flex;
-				align-items: center;
-				gap: 12px;
-			}
-			.section h2::before {
-				content: '';
-				width: 4px;
-				height: 28px;
-				background: var(--text-accent);
-				border-radius: 2px;
-			}
-			.section p {
-				color: var(--text-secondary);
-				font-size: 16px;
-				line-height: 1.7;
-				margin-bottom: 16px;
-			}
-			.section p:last-child {
-				margin-bottom: 0;
-			}
-
-			.features {
-				display: grid;
-				grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-				gap: 20px;
-				margin-top: 24px;
-			}
-			.feature {
-				padding: 20px;
-				background: var(--bg-primary);
-				border-radius: 8px;
-				border: 1px solid var(--border-muted);
-				transition: var(--transition);
-			}
-			.feature:hover {
-				border-color: var(--border-accent);
-				transform: translateY(-2px);
-			}
-			.feature h3 {
-				color: var(--text-accent);
-				font-size: 18px;
-				margin-bottom: 10px;
-			}
-			.feature p {
-				color: var(--text-secondary);
-				font-size: 15px;
-				line-height: 1.6;
-				margin: 0;
-			}
-
-			.sidebar {
-				position: sticky;
-				top: -16px;
-			}
-			.sidebar-section {
-				background: var(--bg-elevated);
-				padding: 18px;
-				border-radius: 12px;
-				margin-bottom: 24px;
-				border: 1px solid var(--border-subtle);
-			}
-			.sidebar h3 {
-				color: var(--text-accent);
-				font-size: 20px;
-				margin-bottom: 16px;
-			}
-
-			.faq-item {
-				margin-bottom: 20px;
-				padding-bottom: 20px;
-				border-bottom: 1px solid var(--border-muted);
-			}
-			.faq-item:last-child {
-				border-bottom: none;
-				margin-bottom: 0;
-			}
-			.faq-question {
-				color: var(--text-accent);
-				font-size: 16px;
-				font-weight: 600;
-				margin-bottom: 8px;
-			}
-			.faq-answer {
-				color: var(--text-secondary);
-				font-size: 14px;
-				line-height: 1.6;
-			}
-
-			.rarities {
-				display: grid;
-				grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-				gap: 16px;
-				margin-top: 24px;
-			}
-			.rarity-tier {
-				display: flex;
-				align-items: center;
-				padding: 16px;
-				border-radius: 8px;
-				background: var(--bg-primary);
-				border: 1px solid var(--border-muted);
-				border-left: 4px solid;
-				transition: var(--transition);
-			}
-			.rarity-tier:hover {
-				background: var(--bg-secondary);
-				transform: translateY(-1px);
-			}
-			.rarity-info {
-				flex: 1;
-			}
-			.rarity-name {
-				font-size: 18px;
-				font-weight: 600;
-				margin-bottom: 4px;
-			}
-			.rarity-range {
-				font-size: 14px;
-				color: var(--text-muted);
-				margin-bottom: 4px;
-			}
-			.rarity-description {
-				font-size: 14px;
-				color: var(--text-secondary);
-			}
-
-			.links {
-				text-align: center;
-				margin-top: 48px;
-				padding: 32px;
-				background: var(--bg-elevated);
-				border-radius: 12px;
-				border: 1px solid var(--border-subtle);
-			}
-			.links a {
-				color: var(--link-color);
-				text-decoration: none;
-				margin: 0 24px;
-				font-size: 16px;
-				font-weight: 500;
-				transition: var(--transition);
-				padding: 8px 16px;
-				border-radius: 6px;
-			}
-			.links a:hover {
-				color: var(--link-hover);
-				background: rgba(121, 192, 255, 0.1);
-			}
-
-			.disclaimer {
-				margin-top: 24px;
-				padding: 16px 24px;
-				background: var(--bg-primary);
-				border-radius: 8px;
-				border: 1px solid var(--border-muted);
-				text-align: center;
-			}
-			.disclaimer p {
-				color: var(--text-muted);
-				font-size: 12px;
-				line-height: 1.5;
-				margin: 0;
-			}
-		</style>
 	</head>
 	<body>
 		<div class="container">
@@ -279,56 +57,64 @@
 							Each tier has its own color and indicates the quality of the deal:
 						</p>
 						<div class="rarities">
-							<div class="rarity-tier" style="border-left-color: var(--rarity-common)">
+							<div class="rarity-tier">
+								<div class="rarity-color rarity-color-common"></div>
 								<div class="rarity-info">
 									<div class="rarity-name rarity-common">Common</div>
 									<div class="rarity-range">0–14% off</div>
 									<div class="rarity-description">Small or early discounts</div>
 								</div>
 							</div>
-							<div class="rarity-tier" style="border-left-color: var(--rarity-uncommon)">
+							<div class="rarity-tier">
+								<div class="rarity-color rarity-color-uncommon"></div>
 								<div class="rarity-info">
 									<div class="rarity-name rarity-uncommon">Uncommon</div>
 									<div class="rarity-range">15–29% off</div>
 									<div class="rarity-description">Light deal</div>
 								</div>
 							</div>
-							<div class="rarity-tier" style="border-left-color: var(--rarity-rare)">
+							<div class="rarity-tier">
+								<div class="rarity-color rarity-color-rare"></div>
 								<div class="rarity-info">
 									<div class="rarity-name rarity-rare">Rare</div>
 									<div class="rarity-range">30–44% off</div>
 									<div class="rarity-description">Solid discount</div>
 								</div>
 							</div>
-							<div class="rarity-tier" style="border-left-color: var(--rarity-epic)">
+							<div class="rarity-tier">
+								<div class="rarity-color rarity-color-epic"></div>
 								<div class="rarity-info">
 									<div class="rarity-name rarity-epic">Epic</div>
 									<div class="rarity-range">45–59% off</div>
 									<div class="rarity-description">Good value</div>
 								</div>
 							</div>
-							<div class="rarity-tier" style="border-left-color: var(--rarity-legendary)">
+							<div class="rarity-tier">
+								<div class="rarity-color rarity-color-legendary"></div>
 								<div class="rarity-info">
 									<div class="rarity-name rarity-legendary">Legendary</div>
 									<div class="rarity-range">60–79% off</div>
 									<div class="rarity-description">Excellent deal</div>
 								</div>
 							</div>
-							<div class="rarity-tier" style="border-left-color: var(--rarity-mythic)">
+							<div class="rarity-tier">
+								<div class="rarity-color rarity-color-mythic"></div>
 								<div class="rarity-info">
 									<div class="rarity-name rarity-mythic">Mythic</div>
 									<div class="rarity-range">80–89% off</div>
 									<div class="rarity-description">High-tier discounts</div>
 								</div>
 							</div>
-							<div class="rarity-tier" style="border-left-color: var(--rarity-exotic)">
+							<div class="rarity-tier">
+								<div class="rarity-color rarity-color-exotic"></div>
 								<div class="rarity-info">
 									<div class="rarity-name rarity-exotic">Exotic</div>
 									<div class="rarity-range">90–99% off</div>
 									<div class="rarity-description">Insane value</div>
 								</div>
 							</div>
-							<div class="rarity-tier" style="border-left-color: var(--rarity-iridescent-solid)">
+							<div class="rarity-tier">
+								<div class="rarity-color rarity-color-iridescent"></div>
 								<div class="rarity-info">
 									<div class="rarity-name rarity-iridescent">Iridescent</div>
 									<div class="rarity-range">100% off</div>
