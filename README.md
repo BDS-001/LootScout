@@ -34,6 +34,22 @@ Deals are categorized using a rarity system based on discount percentages:
 - **Exotic** (90–99%): Insane value
 - **Iridescent** (100%): Press add to account NOW - don't think
 
+### Rarity Modifiers
+
+The base rarity can be enhanced or reduced by additional factors:
+
+#### Review Score Modifier
+- **+1 Rarity**: Games with review scores ≥9/10 (exceptional quality)
+- **-1 Rarity**: Games with review scores ≤4/10 (poor quality)
+- **-2 Rarity**: Games with review scores ≤1/10 (critically poor)
+
+#### Playtime Modifier
+- **+2 Rarity**: Games with ≥80 hours average playtime (epic length games)
+- **+1 Rarity**: Games with ≥30 hours average playtime (substantial games)
+- **-1 Rarity**: Games with ≤5 hours average playtime (very short games)
+
+*Note: Modifiers are user-configurable and can be toggled on/off in extension settings.*
+
 ## Installation
 
 ### Prerequisites
