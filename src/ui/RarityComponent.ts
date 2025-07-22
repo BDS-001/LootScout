@@ -1,18 +1,6 @@
 import { getRarityAnalysis, RarityAnalysis } from '../helpers/getRarity';
 import { RARITY_CHART } from '../constants/rarityChart';
 
-const REVIEW_DESCRIPTIONS = [
-	'Overwhelmingly Positive',
-	'Very Positive',
-	'Positive',
-	'Mostly Positive',
-	'Mixed',
-	'Mostly Negative',
-	'Negative',
-	'Very Negative',
-	'Overwhelmingly Negative',
-];
-
 const PLAYTIME_THRESHOLDS: Record<number, string> = {
 	2: '≥80 hours',
 	1: '≥30 hours',
@@ -60,11 +48,6 @@ function formatModifier(bonus: number): string {
 	const sign = bonus >= 0 ? '+' : '';
 	return `${sign}${bonus}${tierText}`;
 }
-
-function getReviewDescription(reviewScore: number): string {
-	return REVIEW_DESCRIPTIONS[Math.min(Math.floor(reviewScore / 1.5), 6)] || 'Mixed';
-}
-
 function getPlaytimeDescription(bonus: number): string {
 	return PLAYTIME_THRESHOLDS[bonus] || 'standard';
 }
@@ -83,7 +66,10 @@ function shouldShowPlaytime(analysis: RarityAnalysis): boolean {
 	return analysis.playtimeUsed && analysis.playtime !== undefined;
 }
 
-function generateAnalysisTooltipContent(analysis: RarityAnalysis): string {
+function generateAnalysisTooltipContent(
+	analysis: RarityAnalysis,
+	reviewSummary: string | null = null
+): string {
 	const startingRarity = RARITY_CHART[analysis.baseScore].name;
 	const range = RARITY_CHART[analysis.baseScore].range;
 	const startingRarityClass = startingRarity.toLowerCase();
@@ -96,11 +82,7 @@ function generateAnalysisTooltipContent(analysis: RarityAnalysis): string {
 	};
 
 	const reviewScoreLine = shouldShowReviewScore(analysis)
-		? formatModifierLine(
-				'Review Score',
-				analysis.reviewBonus,
-				getReviewDescription(analysis.reviewScore!)
-			)
+		? formatModifierLine('Review Score', analysis.reviewBonus, reviewSummary || 'Missing')
 		: '';
 
 	const playtimeLine = shouldShowPlaytime(analysis)
@@ -126,7 +108,8 @@ function generateAnalysisTooltipContent(analysis: RarityAnalysis): string {
 export async function createRarityComponent(
 	percentage: number,
 	reviewScore: number | null = null,
-	playtime: number | null = null
+	playtime: number | null = null,
+	reviewSummary: string | null = null
 ): Promise<string> {
 	const analysis = await getRarityAnalysis(percentage, reviewScore, playtime);
 	const rarityClass = analysis.name.toLowerCase();
@@ -139,7 +122,7 @@ export async function createRarityComponent(
     <span class="rarity-badge rarity-${rarityClass}" data-tooltip="true">${analysis.name}</span>
     <div class="rarity-tooltip">
       <div class="tooltip-header">Deal Analysis:</div>
-      ${generateAnalysisTooltipContent(analysis)}
+      ${generateAnalysisTooltipContent(analysis, reviewSummary)}
     </div>
   </div>`;
 }
