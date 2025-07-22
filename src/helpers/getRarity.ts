@@ -35,6 +35,10 @@ function getReviewScoreBonus(reviewScore: number): number {
 	return 0;
 }
 
+function isValidPlaytime(playtime: number | null): boolean {
+	return playtime !== null && playtime !== -1;
+}
+
 function getPlaytimeBonus(playtime: number): number {
 	const CRITICAL_BONUS = 80;
 	const BONUS = 30;
@@ -85,9 +89,8 @@ export async function getRarityAnalysis(
 	const { includeReviewScore, includePlaytime } = await getRaritySettings();
 	const baseScore = getDiscountValue(percentage);
 
-	const reviewBonus =
-		includeReviewScore && reviewScore !== null ? getReviewScoreBonus(reviewScore) : 0;
-	const playtimeBonus = includePlaytime && playtime !== null ? getPlaytimeBonus(playtime) : 0;
+	const reviewBonus = includeReviewScore && reviewScore !== null ? getReviewScoreBonus(reviewScore) : 0;
+	const playtimeBonus = includePlaytime && isValidPlaytime(playtime) ? getPlaytimeBonus(playtime!) : 0;
 
 	const finalScore = Math.max(
 		0,
@@ -100,7 +103,7 @@ export async function getRarityAnalysis(
 		reviewBonus,
 		playtimeBonus,
 		finalScore,
-		reviewScore: reviewScore || undefined,
-		playtime: playtime || undefined,
+		reviewScore: reviewScore ?? undefined,
+		playtime: isValidPlaytime(playtime) ? playtime! : undefined,
 	};
 }
