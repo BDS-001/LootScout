@@ -1,4 +1,6 @@
-import { CombinedGameDataResponse, ApiError, SteamReviewsResponse } from '../shared/types';
+import { ApiError } from '../shared/types';
+import { CombinedGameDataResponse } from '../api/CombinedGameData';
+import { SteamReviewsResponse } from './SteamReviewProcessor';
 
 function validateSteamReviewData(steamReviewData: unknown): boolean {
 	if (!steamReviewData || typeof steamReviewData !== 'object') {

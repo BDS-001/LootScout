@@ -1,4 +1,4 @@
-import { GameData, ApiError, RegionCode } from '../shared/types';
+import { ProcessedGameData, ApiError, RegionCode } from '../shared/types';
 import { createLoadingContent, createErrorContent, createSuccessContent } from './LootScoutContent';
 import { getRegionInfo } from '../services/SettingsService';
 
@@ -12,7 +12,7 @@ const APP_NAME = 'LootScout';
 
 export interface ContainerState {
 	status: 'loading' | 'success' | 'error';
-	gameData?: GameData;
+	gameData?: ProcessedGameData;
 	error?: ApiError;
 	countryCode?: string;
 }

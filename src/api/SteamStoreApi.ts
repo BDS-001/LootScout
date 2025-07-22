@@ -1,5 +1,36 @@
-import { SteamApiParams, SteamApiResponse, SteamPriceOverview } from '../shared/types';
+import { RegionCode, ApiResponse } from '../shared/types';
 import { handleApiError } from '../utils/ErrorHandler';
+
+// Steam Store API types
+export interface SteamPriceOverview {
+	currency: string;
+	initial: number;
+	final: number;
+	discount_percent: number;
+	initial_formatted?: string;
+	final_formatted?: string;
+}
+
+export interface SteamAppData {
+	success: boolean;
+	data?: {
+		name: string;
+		steam_appid: number;
+		is_free: boolean;
+		price_overview?: SteamPriceOverview;
+		release_date?: {
+			coming_soon: boolean;
+			date: string;
+		};
+	};
+}
+
+export interface SteamApiParams {
+	appId: string;
+	region: RegionCode;
+}
+
+export type SteamApiResponse = ApiResponse<Record<string, SteamAppData>>;
 
 function normalizeSteamPriceOverview(priceOverview: SteamPriceOverview): SteamPriceOverview {
 	const normalized = { ...priceOverview };

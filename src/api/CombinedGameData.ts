@@ -1,14 +1,28 @@
-import fetchGgDealsData from './GgDealsApi';
-import fetchSteamStoreData from './SteamStoreApi';
+import fetchGgDealsData, { GgDealsApiResponse } from './GgDealsApi';
+import fetchSteamStoreData, { SteamApiResponse } from './SteamStoreApi';
 import fetchSteamReviewData from './SteamReviewsApi';
-import {
-	CombinedGameDataParams,
-	CombinedGameDataResponse,
-	GgDealsApiResponse,
-} from '../shared/types';
+import { RegionCode, ApiResponse } from '../shared/types';
 import { handleApiError } from '../utils/ErrorHandler';
 
-function getGameStatus(steamAppData: any): 'not_released' | 'free' | 'paid' {
+// Combined API types
+export interface CombinedGameDataParams {
+	appId: string;
+	apiKey: string;
+	region: RegionCode;
+}
+
+export interface RawCombinedGameData {
+	appId: string;
+	dealData: GgDealsApiResponse;
+	steamStoreData: SteamApiResponse;
+	steamReviewData: SteamApiResponse | null;
+}
+
+export type CombinedGameDataResponse = ApiResponse<RawCombinedGameData>;
+
+function getGameStatus(
+	steamAppData: { data?: { release_date?: { coming_soon: boolean }; is_free?: boolean } } | null
+): 'not_released' | 'free' | 'paid' {
 	if (steamAppData?.data?.release_date?.coming_soon) {
 		return 'not_released';
 	}

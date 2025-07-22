@@ -1,12 +1,9 @@
 import fetchSteamStoreData from '../api/SteamStoreApi';
 import fetchSteamReviewData from '../api/SteamReviewsApi';
-import fetchGgDealsData from '../api/GgDealsApi';
+import fetchGgDealsData, { GgDealsApiResponse } from '../api/GgDealsApi';
 import { normalizeResponse } from '../transformers/ResponseFormatter';
-import {
-	ProcessedSteamReviews,
-	CombinedGameDataResponse,
-	GgDealsApiResponse,
-} from '../shared/types';
+import { ProcessedSteamReviews } from '../transformers/SteamReviewProcessor';
+import { CombinedGameDataResponse } from '../api/CombinedGameData';
 import { getRegion } from '../services/SettingsService';
 import { getApiKeyWithFallback } from '../api/ApiKeyService';
 import { getCacheItemWithExpiry, setCacheItem } from '../services/CacheService';

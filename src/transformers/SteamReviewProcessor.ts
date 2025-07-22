@@ -1,7 +1,38 @@
-import { SteamReview, SteamReviewsResponse, ProcessedSteamReviews } from '../shared/types';
 import { removeOutliers, calculateMean } from '../utils/MathUtils';
 
-function calculatePlaytime(reviews: SteamReview[]): number {
+// Steam review processing types
+export interface SimplifiedSteamReview {
+	voted_up: boolean;
+	author: {
+		playtime_forever: number;
+	};
+}
+
+export interface SteamReviewQuerySummary {
+	num_reviews: number;
+	review_score: number;
+	review_score_desc: string;
+	total_positive: number;
+	total_negative: number;
+	total_reviews: number;
+}
+
+export interface SteamReviewsResponse {
+	success: number;
+	query_summary: SteamReviewQuerySummary;
+	reviews: SimplifiedSteamReview[];
+	cursor?: string;
+}
+
+export interface ProcessedSteamReviews {
+	totalReviews: number;
+	positivePercentage: number;
+	reviewSummary: string;
+	reviewScore: number;
+	averagePlaytime: number;
+}
+
+function calculatePlaytime(reviews: SimplifiedSteamReview[]): number {
 	if (reviews.length === 0) return -1;
 
 	const reviewPlayTimes = reviews

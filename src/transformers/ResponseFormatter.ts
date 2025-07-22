@@ -1,9 +1,6 @@
-import {
-	CombinedGameDataResponse,
-	GameDataResponse,
-	ProcessedSteamReviews,
-	CombinedGameData,
-} from '../shared/types';
+import { GameDataResponse } from '../shared/types';
+import { ProcessedSteamReviews } from './SteamReviewProcessor';
+import { CombinedGameDataResponse, RawCombinedGameData } from '../api/CombinedGameData';
 import { validateGameData } from './GameDataValidator';
 import { calculatePriceMetrics, calculateCostPerHour } from './PriceCalculator';
 import {
@@ -25,19 +22,25 @@ export function normalizeResponse(
 	}
 
 	const { steamAppData, ggDealsData, isFree, isComingSoon } = validation;
-	const combinedData = res.data as CombinedGameData;
+	const combinedData = res.data as RawCombinedGameData;
 	const appId = combinedData.appId;
 
 	if (isComingSoon) {
-		return buildComingSoonResponse(appId, steamAppData, null);
+		return {
+			success: true,
+			data: buildComingSoonResponse(appId, steamAppData as any, null),
+		};
 	}
 
 	if (isFree) {
-		return buildFreeGameResponse(appId, steamAppData, processedReviews);
+		return {
+			success: true,
+			data: buildFreeGameResponse(appId, steamAppData as any, processedReviews),
+		};
 	}
 
-	const steamApp = steamAppData as { data: { price_overview: unknown } };
-	const priceMetrics = calculatePriceMetrics(steamApp.data.price_overview, ggDealsData);
+	const steamApp = steamAppData as any;
+	const priceMetrics = calculatePriceMetrics(steamApp.data.price_overview, ggDealsData as any);
 
 	const costPerHour =
 		processedReviews?.averagePlaytime && processedReviews.averagePlaytime > 0
@@ -54,12 +57,15 @@ export function normalizeResponse(
 				}
 			: null;
 
-	return buildGameDataResponse(
-		appId,
-		steamApp,
-		ggDealsData,
-		priceMetrics,
-		processedReviews,
-		costPerHour
-	);
+	return {
+		success: true,
+		data: buildGameDataResponse(
+			appId,
+			steamApp as any,
+			ggDealsData as any,
+			priceMetrics,
+			processedReviews,
+			costPerHour
+		),
+	};
 }

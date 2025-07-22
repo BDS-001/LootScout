@@ -1,11 +1,55 @@
-import { GameDataResponse, ProcessedSteamReviews } from '../shared/types';
+import { ProcessedGameData } from '../shared/types';
+import { ProcessedSteamReviews } from './SteamReviewProcessor';
 import { getSteamDealStatus } from './PriceCalculator';
+
+// Local interfaces for response building
+interface SteamAppData {
+	data: {
+		name: string;
+		is_free?: boolean;
+		release_date?: {
+			coming_soon: boolean;
+			date?: string;
+		};
+		price_overview?: {
+			currency: string;
+			initial?: number;
+			final: number;
+			discount_percent: number;
+		};
+	};
+}
+
+interface GgDealsGameData {
+	title: string;
+	url: string;
+	prices: {
+		currentRetail: number;
+		historicalRetail: number;
+		currency: string;
+	};
+}
+
+interface PriceMetrics {
+	steamPrice: number;
+	steamOriginalPrice: number;
+	currentRetail: number;
+	historicalRetail: number;
+	currentRawDiscount: number;
+	historicalRawDiscount: number;
+	currentDiscount: number;
+	historicalDiscount: number;
+	currentSavings: number;
+	historicalSavings: number;
+	steamIsBestCurrent: boolean;
+	steamIsBestHistorical: boolean;
+}
 
 export function buildFreeGameResponse(
 	appId: string,
-	steamAppData: any,
+	steamAppData: SteamAppData,
 	processedReviews?: ProcessedSteamReviews | null
-): GameDataResponse {
+): ProcessedGameData {
 	return {
 		success: true,
 		title: steamAppData.data.name,
@@ -36,9 +80,9 @@ export function buildFreeGameResponse(
 
 export function buildComingSoonResponse(
 	appId: string,
-	steamAppData: any,
+	steamAppData: SteamAppData,
 	processedReviews?: ProcessedSteamReviews | null
-): GameDataResponse {
+): ProcessedGameData {
 	const releaseDate = steamAppData.data.release_date?.date || 'TBA';
 	return {
 		success: true,
@@ -71,13 +115,13 @@ export function buildComingSoonResponse(
 
 export function buildGameDataResponse(
 	appId: string,
-	steamAppData: any,
-	ggDealsData: any,
-	priceMetrics: any,
+	steamAppData: SteamAppData,
+	ggDealsData: GgDealsGameData,
+	priceMetrics: PriceMetrics,
 	processedReviews?: ProcessedSteamReviews | null,
 	costPerHour?: { steam: number; currentBest: number; historicalBest: number } | null
-): GameDataResponse {
-	const steamPriceOverview = steamAppData.data.price_overview;
+): ProcessedGameData {
+	const steamPriceOverview = steamAppData.data.price_overview!;
 	const steamStatus = getSteamDealStatus(
 		priceMetrics.steamIsBestCurrent,
 		priceMetrics.steamIsBestHistorical
@@ -95,7 +139,7 @@ export function buildGameDataResponse(
 		},
 		steam: {
 			currency: steamPriceOverview.currency,
-			initial: steamPriceOverview.initial,
+			initial: steamPriceOverview.initial ?? steamPriceOverview.final,
 			final: steamPriceOverview.final,
 			discount_percent: steamPriceOverview.discount_percent,
 			...(processedReviews && {

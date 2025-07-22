@@ -1,4 +1,4 @@
-import { SteamApiParams, SteamApiResponse, SteamPriceOverview } from '../shared/types';
+import { SteamApiParams, SteamApiResponse } from './SteamStoreApi';
 import { handleApiError } from '../utils/ErrorHandler';
 
 function getSteamReviewBaseUrl(appId: string): string {

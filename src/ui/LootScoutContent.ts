@@ -1,4 +1,4 @@
-import { GameData, ApiError } from '../shared/types';
+import { ProcessedGameData, ApiError } from '../shared/types';
 import { formatPrice } from '../utils/PriceUtils';
 import { createRarityComponent } from './RarityComponent';
 import { getYouTubeUrl } from '../helpers/youtube';
@@ -83,7 +83,7 @@ function createSpecialGameContent(
 }
 
 // Free game content
-export function createFreeGameContent(gameData: GameData): string {
+export function createFreeGameContent(gameData: ProcessedGameData): string {
 	return createSpecialGameContent(
 		'🎮 Free to Play',
 		'This game is free to play',
@@ -93,7 +93,7 @@ export function createFreeGameContent(gameData: GameData): string {
 }
 
 // Coming soon game content
-export function createComingSoonContent(gameData: GameData): string {
+export function createComingSoonContent(gameData: ProcessedGameData): string {
 	return createSpecialGameContent(
 		'📅 Coming Soon',
 		gameData.lootScout.steam.status.text,
@@ -103,7 +103,7 @@ export function createComingSoonContent(gameData: GameData): string {
 }
 
 // Success state content
-export async function createSuccessContent(gameData: GameData): Promise<string> {
+export async function createSuccessContent(gameData: ProcessedGameData): Promise<string> {
 	const { lootScout } = gameData;
 
 	// Check if deal data is missing (free or coming soon games)

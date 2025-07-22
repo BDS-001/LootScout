@@ -28,7 +28,7 @@ async function initializeContentScript(): Promise<void> {
 
 			await updateContainerState(container, {
 				status: 'success',
-				gameData: response,
+				gameData: response.data,
 				countryCode: currentCountry,
 			});
 		} else {

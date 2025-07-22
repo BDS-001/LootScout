@@ -1,5 +1,23 @@
 import { calculateDiscount, calculateSavings } from '../utils/PriceUtils';
 
+// Local interfaces for price calculation
+interface SteamPriceOverview {
+	initial?: number;
+	final: number;
+	currency: string;
+	discount_percent: number;
+}
+
+interface GgDealsGamePrices {
+	currentRetail: number;
+	historicalRetail: number;
+	currency: string;
+}
+
+interface GgDealsGameData {
+	prices: GgDealsGamePrices;
+}
+
 export function getSteamDealStatus(
 	steamIsBestCurrent: boolean,
 	steamIsBestHistorical: boolean
@@ -22,7 +40,10 @@ export function getSteamDealStatus(
 	}
 }
 
-export function calculatePriceMetrics(steamPriceOverview: any, ggDealsData: any) {
+export function calculatePriceMetrics(
+	steamPriceOverview: SteamPriceOverview,
+	ggDealsData: GgDealsGameData
+) {
 	const steamPrice = steamPriceOverview.final || 0;
 	const steamOriginalPrice = steamPriceOverview.initial || steamPriceOverview.final || 0;
 	const currentRetail = ggDealsData.prices.currentRetail;

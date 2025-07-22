@@ -6,6 +6,9 @@ export interface ApiError {
 	status: number;
 }
 
+// Generic API Response Type
+export type ApiResponse<T> = { success: true; data: T } | { success: false; data: ApiError };
+
 // Region Types
 export type RegionCode =
 	| 'au'
@@ -28,96 +31,8 @@ export type RegionCode =
 	| 'se'
 	| 'us';
 
-export interface RegionInfo {
-	name: string;
-	currency: string;
-	symbol: string;
-}
-
-// Steam App Parser
-export interface SteamAppUrlData {
-	appId: string | null;
-	appName: string | null;
-}
-
-// API Parameters
-export interface GgDealsApiParams {
-	appId: string;
-	apiKey: string;
-	region: RegionCode;
-}
-
-export interface SteamApiParams {
-	appId: string;
-	region: RegionCode;
-}
-
-// Combined interface - simpler approach
-export interface CombinedGameDataParams {
-	appId: string;
-	apiKey: string;
-	region: RegionCode;
-}
-
-// Steam Types
-export interface SteamPriceOverview {
-	currency: string;
-	initial: number;
-	final: number;
-	discount_percent: number;
-	initial_formatted?: string;
-	final_formatted?: string;
-}
-
-export interface SteamAppData {
-	success: boolean;
-	data?: {
-		name: string;
-		steam_appid: number;
-		is_free: boolean;
-		price_overview?: SteamPriceOverview;
-		release_date?: {
-			coming_soon: boolean;
-			date: string;
-		};
-	};
-}
-
-// GG.deals Game Data
-export interface GgDealsGameData {
-	title: string;
-	url: string;
-	prices: {
-		currentRetail: number;
-		currentKeyshops: number;
-		historicalRetail: number;
-		historicalKeyshops: number;
-		currency: string;
-	};
-}
-
-// API Response Types
-export type GgDealsApiResponse =
-	| { success: true; data: Record<string, GgDealsGameData | null> }
-	| { success: false; data: ApiError; error?: unknown };
-
-export type SteamApiResponse =
-	| { success: true; data: Record<string, SteamAppData> }
-	| { success: false; data: ApiError; error?: unknown };
-
-export interface CombinedGameData {
-	appId: string;
-	dealData: GgDealsApiResponse;
-	steamStoreData: SteamApiResponse;
-	steamReviewData: SteamApiResponse | null;
-}
-
-export type CombinedGameDataResponse =
-	| { success: true; data: CombinedGameData }
-	| { success: false; data: ApiError; error?: unknown };
-
-// Simple, consolidated GameData interface
-export interface GameData {
+// Processed GameData interface for UI consumption
+export interface ProcessedGameData {
 	success: true;
 	title: string;
 	appId: string;
@@ -171,60 +86,7 @@ export interface GameData {
 	};
 }
 
-export type GameDataResponse = GameData | { success: false; data: ApiError; error?: unknown };
-
-// Steam Review Types
-export interface SteamReviewAuthor {
-	steamid: string;
-	num_games_owned: number;
-	num_reviews: number;
-	playtime_forever: number;
-	playtime_last_two_weeks: number;
-	playtime_at_review: number;
-	last_played: number;
-}
-
-export interface SteamReview {
-	recommendationid: string;
-	author: SteamReviewAuthor;
-	language: string;
-	review: string;
-	timestamp_created: number;
-	timestamp_updated: number;
-	voted_up: boolean;
-	votes_up: number;
-	votes_funny: number;
-	weighted_vote_score: string;
-	comment_count: number;
-	steam_purchase: boolean;
-	received_for_free: boolean;
-	written_during_early_access: boolean;
-	primarily_steam_deck: boolean;
-}
-
-export interface SteamReviewQuerySummary {
-	num_reviews: number;
-	review_score: number;
-	review_score_desc: string;
-	total_positive: number;
-	total_negative: number;
-	total_reviews: number;
-}
-
-export interface SteamReviewsResponse {
-	success: number;
-	query_summary: SteamReviewQuerySummary;
-	reviews: SteamReview[];
-	cursor?: string;
-}
-
-export interface ProcessedSteamReviews {
-	totalReviews: number;
-	positivePercentage: number;
-	reviewSummary: string;
-	reviewScore: number;
-	averagePlaytime: number;
-}
+export type GameDataResponse = ApiResponse<ProcessedGameData>;
 
 // Settings Types
 export interface RaritySettings {

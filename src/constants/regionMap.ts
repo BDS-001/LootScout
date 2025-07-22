@@ -1,4 +1,11 @@
-import { RegionInfo, RegionCode } from '../shared/types';
+import { RegionCode } from '../shared/types';
+
+// Region info interface - only used here
+interface RegionInfo {
+	name: string;
+	currency: string;
+	symbol: string;
+}
 
 export const DEFAULT_REGION: RegionCode = 'us';
 

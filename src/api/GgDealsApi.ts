@@ -1,5 +1,26 @@
-import { GgDealsApiParams, GgDealsApiResponse } from '../shared/types';
+import { RegionCode, ApiResponse } from '../shared/types';
 import { handleApiError } from '../utils/ErrorHandler';
+
+// GG.deals specific types
+export interface GgDealsGameData {
+	title: string;
+	url: string;
+	prices: {
+		currentRetail: number;
+		currentKeyshops: number;
+		historicalRetail: number;
+		historicalKeyshops: number;
+		currency: string;
+	};
+}
+
+export interface GgDealsApiParams {
+	appId: string;
+	apiKey: string;
+	region: RegionCode;
+}
+
+export type GgDealsApiResponse = ApiResponse<Record<string, GgDealsGameData | null>>;
 
 const GG_DEALS_BASE_URL = 'https://api.gg.deals/v1/prices/by-steam-app-id/';
 const dealDataProxy = import.meta.env.VITE_PROXY_URL;
@@ -69,10 +90,13 @@ const fetchFromProxy = async (appId: string, region: string, retryCount = 0) => 
 	}
 };
 
-const processResponse = (data: any): GgDealsApiResponse => {
+const processResponse = (data: {
+	success?: boolean;
+	data?: Record<string, any>;
+}): GgDealsApiResponse => {
 	if (data.success && data.data) {
 		Object.keys(data.data).forEach((appId) => {
-			const gameData = data.data[appId];
+			const gameData = data.data![appId];
 			if (gameData?.prices) {
 				gameData.prices.currentRetail = Math.round(parseFloat(gameData.prices.currentRetail) * 100);
 				gameData.prices.historicalRetail = Math.round(
@@ -81,7 +105,7 @@ const processResponse = (data: any): GgDealsApiResponse => {
 			}
 		});
 	}
-	return data;
+	return data as GgDealsApiResponse;
 };
 
 export default async function fetchGgDealsData(
