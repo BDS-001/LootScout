@@ -1,8 +1,24 @@
 import { getRaritySettings } from '../services/SettingsService';
 import { RARITY_CHART } from '../constants/rarityChart';
 
+export interface RarityAnalysis {
+	name: string;
+	baseScore: number;
+	reviewBonus: number;
+	playtimeBonus: number;
+	finalScore: number;
+	reviewScore?: number;
+	playtime?: number;
+	reviewScoreUsed: boolean;
+	playtimeUsed: boolean;
+}
+
 const MAX_RARITY_INDEX = 6;
 const IRIDESCENT_RARITY_INDEX = 7;
+
+function isValidPlaytime(playtime: number | null): boolean {
+	return playtime !== null && playtime !== -1;
+}
 
 function getDiscountValue(percentage: number): number {
 	switch (true) {
@@ -36,8 +52,15 @@ function getReviewScoreBonus(reviewScore: number): number {
 	return 0;
 }
 
-function isValidPlaytime(playtime: number | null): boolean {
-	return playtime !== null && playtime !== -1;
+function getPlaytimeBonus(playtime: number): number {
+	const CRITICAL_BONUS = 80;
+	const BONUS = 30;
+	const PENALTY = 5;
+
+	if (playtime >= CRITICAL_BONUS) return 2;
+	if (playtime >= BONUS) return 1;
+	if (playtime <= PENALTY) return -1;
+	return 0;
 }
 
 function createIridescentAnalysis(): RarityAnalysis {
@@ -54,17 +77,6 @@ function createIridescentAnalysis(): RarityAnalysis {
 	};
 }
 
-function getPlaytimeBonus(playtime: number): number {
-	const CRITICAL_BONUS = 80;
-	const BONUS = 30;
-	const PENALTY = 5;
-
-	if (playtime >= CRITICAL_BONUS) return 2;
-	if (playtime >= BONUS) return 1;
-	if (playtime <= PENALTY) return -1;
-	return 0;
-}
-
 export async function getRarity(
 	percentage: number,
 	reviewScore: number | null = null,
@@ -72,18 +84,6 @@ export async function getRarity(
 ): Promise<string> {
 	const analysis = await getRarityAnalysis(percentage, reviewScore, playtime);
 	return analysis.name;
-}
-
-export interface RarityAnalysis {
-	name: string;
-	baseScore: number;
-	reviewBonus: number;
-	playtimeBonus: number;
-	finalScore: number;
-	reviewScore?: number;
-	playtime?: number;
-	reviewScoreUsed: boolean;
-	playtimeUsed: boolean;
 }
 
 export async function getRarityAnalysis(
