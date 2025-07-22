@@ -93,12 +93,20 @@ function generateAnalysisTooltipContent(analysis: RarityAnalysis): string {
 		return `<div><span class="breakdown-label">${label}:</span> <span class="modifier-text ${colorClass}">${modifier}</span> <span class="detail-text">(${description})</span></div>`;
 	};
 
-	const reviewScoreLine = shouldShowReviewScore(analysis) 
-		? formatModifierLine('Review Score', analysis.reviewBonus, getReviewDescription(analysis.reviewScore!)) 
+	const reviewScoreLine = shouldShowReviewScore(analysis)
+		? formatModifierLine(
+				'Review Score',
+				analysis.reviewBonus,
+				getReviewDescription(analysis.reviewScore!)
+			)
 		: '';
-	
-	const playtimeLine = shouldShowPlaytime(analysis) 
-		? formatModifierLine('Playtime', analysis.playtimeBonus, getPlaytimeDescription(analysis.playtimeBonus)) 
+
+	const playtimeLine = shouldShowPlaytime(analysis)
+		? formatModifierLine(
+				'Playtime',
+				analysis.playtimeBonus,
+				getPlaytimeDescription(analysis.playtimeBonus)
+			)
 		: '';
 
 	return `

@@ -98,8 +98,10 @@ export async function getRarityAnalysis(
 	const { includeReviewScore, includePlaytime } = await getRaritySettings();
 	const baseScore = getDiscountValue(percentage);
 
-	const reviewBonus = includeReviewScore && reviewScore !== null ? getReviewScoreBonus(reviewScore) : 0;
-	const playtimeBonus = includePlaytime && isValidPlaytime(playtime) ? getPlaytimeBonus(playtime!) : 0;
+	const reviewBonus =
+		includeReviewScore && reviewScore !== null ? getReviewScoreBonus(reviewScore) : 0;
+	const playtimeBonus =
+		includePlaytime && isValidPlaytime(playtime) ? getPlaytimeBonus(playtime!) : 0;
 
 	const finalScore = Math.max(
 		0,
