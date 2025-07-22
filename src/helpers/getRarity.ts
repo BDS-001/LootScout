@@ -70,6 +70,18 @@ export async function getRarityAnalysis(
 	reviewScore: number | null = null,
 	playtime: number | null = null
 ): Promise<RarityAnalysis> {
+	if (percentage >= 100) {
+		return {
+			name: RARITY_CHART[7].name,
+			baseScore: 7,
+			reviewBonus: 0,
+			playtimeBonus: 0,
+			finalScore: 7,
+			reviewScore: undefined,
+			playtime: undefined,
+		};
+	}
+
 	const { includeReviewScore, includePlaytime } = await getRaritySettings();
 	const baseScore = getDiscountValue(percentage);
 
