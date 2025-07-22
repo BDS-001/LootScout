@@ -2,6 +2,7 @@ import { getRaritySettings } from '../services/SettingsService';
 import { RARITY_CHART } from '../constants/rarityChart';
 
 const MAX_RARITY_INDEX = 6;
+const IRIDESCENT_RARITY_INDEX = 7;
 
 function getDiscountValue(percentage: number): number {
 	switch (true) {
@@ -39,6 +40,20 @@ function isValidPlaytime(playtime: number | null): boolean {
 	return playtime !== null && playtime !== -1;
 }
 
+function createIridescentAnalysis(): RarityAnalysis {
+	return {
+		name: RARITY_CHART[IRIDESCENT_RARITY_INDEX].name,
+		baseScore: IRIDESCENT_RARITY_INDEX,
+		reviewBonus: 0,
+		playtimeBonus: 0,
+		finalScore: IRIDESCENT_RARITY_INDEX,
+		reviewScore: undefined,
+		playtime: undefined,
+		reviewScoreUsed: false,
+		playtimeUsed: false,
+	};
+}
+
 function getPlaytimeBonus(playtime: number): number {
 	const CRITICAL_BONUS = 80;
 	const BONUS = 30;
@@ -67,6 +82,8 @@ export interface RarityAnalysis {
 	finalScore: number;
 	reviewScore?: number;
 	playtime?: number;
+	reviewScoreUsed: boolean;
+	playtimeUsed: boolean;
 }
 
 export async function getRarityAnalysis(
@@ -75,15 +92,7 @@ export async function getRarityAnalysis(
 	playtime: number | null = null
 ): Promise<RarityAnalysis> {
 	if (percentage >= 100) {
-		return {
-			name: RARITY_CHART[7].name,
-			baseScore: 7,
-			reviewBonus: 0,
-			playtimeBonus: 0,
-			finalScore: 7,
-			reviewScore: undefined,
-			playtime: undefined,
-		};
+		return createIridescentAnalysis();
 	}
 
 	const { includeReviewScore, includePlaytime } = await getRaritySettings();
@@ -103,7 +112,9 @@ export async function getRarityAnalysis(
 		reviewBonus,
 		playtimeBonus,
 		finalScore,
-		reviewScore: reviewScore ?? undefined,
+		reviewScore: reviewScore || undefined,
 		playtime: isValidPlaytime(playtime) ? playtime! : undefined,
+		reviewScoreUsed: includeReviewScore,
+		playtimeUsed: includePlaytime,
 	};
 }

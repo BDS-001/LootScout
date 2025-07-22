@@ -67,25 +67,48 @@ function getPlaytimeDescription(bonus: number): string {
 	return PLAYTIME_THRESHOLDS[bonus] || 'standard';
 }
 
+function getModifierColorClass(bonus: number): string {
+	if (bonus < 0) return 'modifier-negative';
+	if (bonus === 0) return 'modifier-neutral';
+	return 'modifier-positive';
+}
+
+function shouldShowReviewScore(analysis: RarityAnalysis): boolean {
+	return analysis.reviewScoreUsed && analysis.reviewScore !== undefined;
+}
+
+function shouldShowPlaytime(analysis: RarityAnalysis): boolean {
+	return analysis.playtimeUsed && analysis.playtime !== undefined;
+}
+
 function generateAnalysisTooltipContent(analysis: RarityAnalysis): string {
 	const startingRarity = RARITY_CHART[analysis.baseScore].name;
 	const range = RARITY_CHART[analysis.baseScore].range;
+	const startingRarityClass = startingRarity.toLowerCase();
+	const finalRarityClass = analysis.name.toLowerCase();
 
 	const formatModifierLine = (label: string, bonus: number, description: string) => {
 		const modifier = formatModifier(bonus);
-		const colorClass =
-			bonus < 0 ? 'modifier-negative' : bonus === 0 ? 'modifier-neutral' : 'modifier-positive';
+		const colorClass = getModifierColorClass(bonus);
 		return `<div><span class="breakdown-label">${label}:</span> <span class="modifier-text ${colorClass}">${modifier}</span> <span class="detail-text">(${description})</span></div>`;
 	};
 
+	const reviewScoreLine = shouldShowReviewScore(analysis) 
+		? formatModifierLine('Review Score', analysis.reviewBonus, getReviewDescription(analysis.reviewScore!)) 
+		: '';
+	
+	const playtimeLine = shouldShowPlaytime(analysis) 
+		? formatModifierLine('Playtime', analysis.playtimeBonus, getPlaytimeDescription(analysis.playtimeBonus)) 
+		: '';
+
 	return `
 		<div class="score-breakdown">
-			<div><span class="breakdown-label">Discount:</span> <span class="rarity-${startingRarity.toLowerCase()}">${startingRarity}</span> <span class="detail-text">(${range})</span></div>
-			${analysis.reviewScore ? formatModifierLine('Review Score', analysis.reviewBonus, getReviewDescription(analysis.reviewScore)) : ''}
-			${analysis.playtime ? formatModifierLine('Playtime', analysis.playtimeBonus, getPlaytimeDescription(analysis.playtimeBonus)) : ''}
+			<div><span class="breakdown-label">Discount:</span> <span class="rarity-${startingRarityClass}">${startingRarity}</span> <span class="detail-text">(${range})</span></div>
+			${reviewScoreLine}
+			${playtimeLine}
 		</div>
 		<div class="final-rarity">
-			<strong class="rarity-${analysis.name.toLowerCase()}">${analysis.name}</strong>
+			<strong class="rarity-${finalRarityClass}">${analysis.name}</strong>
 		</div>
 	`;
 }
