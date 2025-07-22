@@ -2,15 +2,15 @@ import { getRarityAnalysis, RarityAnalysis } from '../helpers/getRarity';
 import { RARITY_CHART } from '../constants/rarityChart';
 
 const REVIEW_DESCRIPTIONS = [
-  "Overwhelmingly Positive",
-  "Very Positive", 
-  "Positive",
-  "Mostly Positive",
-  "Mixed",
-  "Mostly Negative",
-  "Negative",
-  "Very Negative",
-  "Overwhelmingly Negative"
+	'Overwhelmingly Positive',
+	'Very Positive',
+	'Positive',
+	'Mostly Positive',
+	'Mixed',
+	'Mostly Negative',
+	'Negative',
+	'Very Negative',
+	'Overwhelmingly Negative',
 ];
 
 const PLAYTIME_THRESHOLDS: Record<number, string> = {
