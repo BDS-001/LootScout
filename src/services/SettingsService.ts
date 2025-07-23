@@ -11,8 +11,8 @@ import {
 const DEFAULT_SETTINGS: AppSettings = {
 	region: DEFAULT_REGION,
 	rarity: {
-		includePlaytime: false,
-		includeReviewScore: false,
+		includePlaytime: true,
+		includeReviewScore: true,
 	},
 };
 
