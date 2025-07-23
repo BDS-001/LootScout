@@ -1,0 +1,11 @@
+export const PLAYTIME_THRESHOLDS = {
+	CRITICAL_BONUS: 60,
+	BONUS: 30,
+	PENALTY: 5,
+};
+
+export const REVIEW_THRESHOLDS = {
+	BONUS: 9,
+	PENALTY: 4,
+	CRITICAL_PENALTY: 1,
+};

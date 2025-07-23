@@ -1,11 +1,6 @@
 import { getRarityAnalysis, RarityAnalysis } from '../helpers/getRarity';
 import { RARITY_CHART } from '../constants/rarityChart';
-
-const PLAYTIME_THRESHOLDS: Record<number, string> = {
-	2: '≥80 hours',
-	1: '≥30 hours',
-	[-1]: '≤5 hours',
-};
+import { PLAYTIME_THRESHOLDS } from '../constants/modifiers';
 
 function calculateTooltipPosition(rect: DOMRect, tooltipWidth: number, tooltipHeight: number) {
 	const windowWidth = window.innerWidth;
@@ -49,7 +44,16 @@ function formatModifier(bonus: number): string {
 	return `${sign}${bonus}${tierText}`;
 }
 function getPlaytimeDescription(bonus: number): string {
-	return PLAYTIME_THRESHOLDS[bonus] || 'standard';
+	switch (bonus) {
+		case 2:
+			return `≥${PLAYTIME_THRESHOLDS.CRITICAL_BONUS} hours`;
+		case 1:
+			return `≥${PLAYTIME_THRESHOLDS.BONUS} hours`;
+		case -1:
+			return `≤${PLAYTIME_THRESHOLDS.PENALTY} hours`;
+		default:
+			return 'standard';
+	}
 }
 
 function getModifierColorClass(bonus: number): string {

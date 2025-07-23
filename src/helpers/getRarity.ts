@@ -1,5 +1,6 @@
 import { getRaritySettings } from '../services/SettingsService';
 import { RARITY_CHART } from '../constants/rarityChart';
+import { PLAYTIME_THRESHOLDS, REVIEW_THRESHOLDS } from '../constants/modifiers';
 
 export interface RarityAnalysis {
 	name: string;
@@ -42,24 +43,16 @@ function getDiscountValue(percentage: number): number {
 }
 
 function getReviewScoreBonus(reviewScore: number): number {
-	const BONUS = 9;
-	const PENALTY = 4;
-	const CRITICAL_PENALTY = 1;
-
-	if (reviewScore >= BONUS) return 1;
-	if (reviewScore <= CRITICAL_PENALTY) return -2;
-	if (reviewScore <= PENALTY) return -1;
+	if (reviewScore >= REVIEW_THRESHOLDS.BONUS) return 1;
+	if (reviewScore <= REVIEW_THRESHOLDS.CRITICAL_PENALTY) return -2;
+	if (reviewScore <= REVIEW_THRESHOLDS.PENALTY) return -1;
 	return 0;
 }
 
 function getPlaytimeBonus(playtime: number): number {
-	const CRITICAL_BONUS = 80;
-	const BONUS = 30;
-	const PENALTY = 5;
-
-	if (playtime >= CRITICAL_BONUS) return 2;
-	if (playtime >= BONUS) return 1;
-	if (playtime <= PENALTY) return -1;
+	if (playtime >= PLAYTIME_THRESHOLDS.CRITICAL_BONUS) return 2;
+	if (playtime >= PLAYTIME_THRESHOLDS.BONUS) return 1;
+	if (playtime <= PLAYTIME_THRESHOLDS.PENALTY) return -1;
 	return 0;
 }
 
