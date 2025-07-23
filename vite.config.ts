@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import webExtension, { readJsonFile } from 'vite-plugin-web-extension';
 
@@ -23,4 +23,8 @@ export default defineConfig({
 			additionalInputs: ['src/about.html'],
 		}),
 	],
+	test: {
+		globals: true,
+		environment: 'node',
+	},
 });
