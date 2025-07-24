@@ -143,6 +143,16 @@
 	margin: 0;
 }
 
+.card a {
+	color: var(--link-color);
+	text-decoration: none;
+	transition: color 0.3s ease;
+}
+
+.card a:hover {
+	color: var(--link-hover);
+}
+
 /* Rarity Items */
 .rarity-item {
 	display: flex;
