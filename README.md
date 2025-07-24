@@ -40,13 +40,13 @@ The base rarity can be enhanced or reduced by additional factors:
 
 #### Review Score Modifier
 
-- **+1 Rarity**: Games with review scores ≥9/10 (exceptional quality)
-- **-1 Rarity**: Games with review scores ≤4/10 (poor quality)
-- **-2 Rarity**: Games with review scores ≤1/10 (critically poor)
+- **+1 Rarity**: Games with review scores ≥9/9 (exceptional quality)
+- **-1 Rarity**: Games with review scores ≤4/9 (poor quality)
+- **-2 Rarity**: Games with review scores ≤1/9 (critically poor)
 
 #### Playtime Modifier
 
-- **+2 Rarity**: Games with ≥80 hours average playtime (epic length games)
+- **+2 Rarity**: Games with ≥60 hours average playtime (epic length games)
 - **+1 Rarity**: Games with ≥30 hours average playtime (substantial games)
 - **-1 Rarity**: Games with ≤5 hours average playtime (very short games)
 
