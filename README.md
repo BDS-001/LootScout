@@ -50,7 +50,7 @@ The base rarity can be enhanced or reduced by additional factors:
 - **+1 Rarity**: Games with ≥30 hours average playtime (substantial games)
 - **-1 Rarity**: Games with ≤5 hours average playtime (very short games)
 
-_Note: Modifiers are user-configurable and can be toggled on/off in extension settings._
+_Note: Modifiers can be toggled on/off in extension settings._
 
 ## Installation
 
