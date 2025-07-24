@@ -1,4 +1,7 @@
-# LootScout 🎮
+<div align="center">
+  <img src="public/icon/lootscout128.png" alt="LootScout Logo" width="128" height="128">
+  <h1>LootScout 🎮</h1>
+</div>
 
 A browser extension that enhances your Steam browsing experience by providing real-time game deal information and pricing comparisons directly on Steam store pages.
 
@@ -10,6 +13,28 @@ A browser extension that enhances your Steam browsing experience by providing re
 - **Steam Deal Analysis**: See how Steam's current discount compares to the best available deals
 - **Clean UI Integration**: Seamlessly integrates with Steam's existing interface
 - **Smart Caching**: 30-minute cache system for optimal performance
+
+## Screenshots
+
+<div align="center">
+  <img src="screenshots/lootScout.png" alt="LootScout in action on Steam" width="600">
+  <p><em>LootScout showing deal information on a Steam game page</em></p>
+</div>
+
+<div align="center">
+  <img src="screenshots/rarity.png" alt="Rarity system display" width="600">
+  <p><em>Deal rarity system with color-coded indicators</em></p>
+</div>
+
+<div align="center">
+  <img src="screenshots/popup.png" alt="Extension popup" width="300">
+  <p><em>Extension popup with settings and API key configuration</em></p>
+</div>
+
+<div align="center">
+  <img src="screenshots/lootScoutAbout.png" alt="About page" width="600">
+  <p><em>Extension about page with detailed information</em></p>
+</div>
 
 ## How It Works
 
