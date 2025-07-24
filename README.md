@@ -1,6 +1,6 @@
 <div align="center">
   <img src="public/icon/lootscout128.png" alt="LootScout Logo" width="128" height="128">
-  <h1>LootScout 🎮</h1>
+  <h1>LootScout</h1>
 </div>
 
 A browser extension that enhances your Steam browsing experience by providing real-time game deal information and pricing comparisons directly on Steam store pages.
