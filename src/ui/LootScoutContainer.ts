@@ -30,7 +30,6 @@ function createContainerElements(): ContainerElements {
 	const header = document.createElement('div');
 	header.className = 'block responsive_apppage_details_right heading lootscout-header';
 	header.id = ELEMENT_IDS.HEADER;
-	header.innerHTML = `<span class="header-title">${APP_NAME}</span>`;
 
 	const content = document.createElement('div');
 	content.className = 'block responsive_apppage_details_right recommendation_noinfo';
@@ -73,11 +72,20 @@ function createGameTitleSection(title: string, averagePlaytime?: number): string
 }
 
 function updateHeader(header: HTMLElement, countryCode?: string): void {
-	const regionInfo = countryCode ? createRegionDisplay(countryCode) : '';
-	header.innerHTML = `
-		<span class="header-title">${APP_NAME}</span>
-		${regionInfo ? `<span class="header-region">${regionInfo}</span>` : ''}
-	`;
+	header.innerHTML = '';
+
+	const titleSpan = document.createElement('span');
+	titleSpan.className = 'header-title';
+	titleSpan.textContent = APP_NAME;
+	header.appendChild(titleSpan);
+
+	if (countryCode) {
+		const regionInfo = createRegionDisplay(countryCode);
+		const regionSpan = document.createElement('span');
+		regionSpan.className = 'header-region';
+		regionSpan.textContent = regionInfo;
+		header.appendChild(regionSpan);
+	}
 }
 
 function createRegionDisplay(countryCode: string): string {

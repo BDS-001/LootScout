@@ -2,216 +2,67 @@ import './Popup.css';
 import { useState, useEffect } from 'react';
 import regionMap from '../constants/regionMap';
 import { loadApiKey, validateAndSaveApiKey } from '../api/ApiKeyService';
-import {
-	getRegion,
-	updateRegion,
-	getRaritySettings,
-	updateRaritySettings,
-} from '../services/SettingsService';
-import { RegionCode, RaritySettings } from '../shared/types';
+import { getRegion, getRaritySettings, updateRaritySettings } from '../services/SettingsService';
+import { RaritySettings } from '../shared/types';
 import browser from 'webextension-polyfill';
 
-const VERSION = '0.0.0';
+const VERSION = '1.0.0';
 const GITHUB_URL = 'https://github.com/BDS-001/LootScout';
 
-const useSettings = () => {
-	const [selectedCountry, setSelectedCountry] = useState<string>('us');
-	const [apiKey, setApiKey] = useState<string>('');
+export default function Popup() {
+	const [selectedCountry, setSelectedCountry] = useState('us');
+	const [apiKey, setApiKey] = useState('');
 	const [raritySettings, setRaritySettings] = useState<RaritySettings>({
 		includePlaytime: false,
 		includeReviewScore: false,
 	});
+	const [testStatus, setTestStatus] = useState('');
+	const [isTestingKey, setIsTestingKey] = useState(false);
 
 	useEffect(() => {
-		const loadSettings = async () => {
-			try {
-				const [countryCode, savedApiKey, savedRaritySettings] = await Promise.all([
-					getRegion(),
-					loadApiKey(),
-					getRaritySettings(),
-				]);
-				setSelectedCountry(countryCode);
-				if (savedApiKey) setApiKey(savedApiKey);
-				setRaritySettings(savedRaritySettings);
-			} catch (error) {
-				console.error('Error loading settings:', error);
-			}
-		};
-		loadSettings();
+		Promise.all([getRegion(), loadApiKey(), getRaritySettings()])
+			.then(([country, key, settings]) => {
+				setSelectedCountry(country);
+				if (key) setApiKey(key);
+				setRaritySettings(settings);
+			})
+			.catch(console.error);
 	}, []);
-
-	return {
-		selectedCountry,
-		setSelectedCountry,
-		apiKey,
-		setApiKey,
-		raritySettings,
-		setRaritySettings,
-	};
-};
-
-const useApiKeyValidation = (apiKey: string) => {
-	const [testStatus, setTestStatus] = useState<string>('');
-	const [isTestingKey, setIsTestingKey] = useState<boolean>(false);
 
 	const testApiKey = async () => {
 		setIsTestingKey(true);
 		setTestStatus('Checking...');
-
 		try {
 			const result = await validateAndSaveApiKey(apiKey);
 			setTestStatus(result.message);
-		} catch (error) {
+		} catch {
 			setTestStatus('Failed to verify API key');
 		} finally {
 			setIsTestingKey(false);
 		}
 	};
 
-	return { testStatus, isTestingKey, testApiKey };
-};
-
-const CountrySelector = ({
-	selectedCountry,
-	onChange,
-}: {
-	selectedCountry: string;
-	onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-}) => (
-	<div className="setting-item">
-		<label htmlFor="country-select" className="setting-label">
-			Change Country
-		</label>
-		<select
-			id="country-select"
-			value={selectedCountry}
-			onChange={onChange}
-			className="country-select"
-		>
-			{Object.entries(regionMap).map(([code, info]) => (
-				<option key={code} value={code}>
-					{info.name} ({info.currency})
-				</option>
-			))}
-		</select>
-	</div>
-);
-
-const ApiKeySection = ({
-	apiKey,
-	setApiKey,
-	testStatus,
-	isTestingKey,
-	testApiKey,
-}: {
-	apiKey: string;
-	setApiKey: (value: string) => void;
-	testStatus: string;
-	isTestingKey: boolean;
-	testApiKey: () => void;
-}) => (
-	<div className="setting-item">
-		<label htmlFor="api-key-input" className="setting-label">
-			Add API Key
-		</label>
-		<p className="setting-description">
-			Reduce rate limits by adding your own GG.deals API key (get one at gg.deals/api)
-		</p>
-		<div className="api-key-input-group">
-			<input
-				id="api-key-input"
-				type="password"
-				value={apiKey}
-				onChange={(e) => setApiKey(e.target.value)}
-				placeholder="Enter your GG.deals API key"
-				disabled={isTestingKey}
-				className="api-key-input"
-			/>
-			<button onClick={testApiKey} disabled={isTestingKey} className="apply-button">
-				{isTestingKey ? 'Testing...' : 'Apply'}
-			</button>
-		</div>
-		{testStatus && <p className="test-status">{testStatus}</p>}
-	</div>
-);
-
-const RaritySettingsSection = ({
-	raritySettings,
-	onSettingsChange,
-}: {
-	raritySettings: RaritySettings;
-	onSettingsChange: (newSettings: Partial<RaritySettings>) => void;
-}) => {
-	const handleToggle = (key: keyof RaritySettings) => {
-		onSettingsChange({ [key]: !raritySettings[key] });
-	};
-
-	return (
-		<div className="setting-item">
-			<label className="setting-label">Rarity Modifiers</label>
-			<p className="setting-description">
-				Adjust how rarity is calculated by including additional factors
-			</p>
-			<div className="toggle-group">
-				<div className="toggle-item">
-					<label className="toggle-label">
-						<input
-							type="checkbox"
-							checked={raritySettings.includePlaytime}
-							onChange={() => handleToggle('includePlaytime')}
-							className="toggle-checkbox"
-						/>
-						<span className="toggle-switch"></span>
-						<span className="toggle-text">Include Playtime</span>
-					</label>
-				</div>
-				<div className="toggle-item">
-					<label className="toggle-label">
-						<input
-							type="checkbox"
-							checked={raritySettings.includeReviewScore}
-							onChange={() => handleToggle('includeReviewScore')}
-							className="toggle-checkbox"
-						/>
-						<span className="toggle-switch"></span>
-						<span className="toggle-text">Include Review Score</span>
-					</label>
-				</div>
-			</div>
-		</div>
-	);
-};
-
-export default function Popup() {
-	const {
-		selectedCountry,
-		setSelectedCountry,
-		apiKey,
-		setApiKey,
-		raritySettings,
-		setRaritySettings,
-	} = useSettings();
-	const { testStatus, isTestingKey, testApiKey } = useApiKeyValidation(apiKey);
-
-	const handleCountryChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
-		const newCountryCode = event.target.value;
-		setSelectedCountry(newCountryCode);
-
+	const handleCountryChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+		const country = e.target.value;
+		setSelectedCountry(country);
 		try {
-			await updateRegion(newCountryCode as RegionCode);
+			await browser.runtime.sendMessage({
+				action: 'updateCountryCode',
+				countryCode: country,
+			});
 		} catch (error) {
-			console.error('Error updating country code:', error);
+			console.error('Error updating country:', error);
 		}
 	};
 
-	const handleRaritySettingsChange = async (newSettings: Partial<RaritySettings>) => {
-		setRaritySettings({ ...raritySettings, ...newSettings });
+	const togglePlaytime = (checked: boolean) => {
+		setRaritySettings((prev) => ({ ...prev, includePlaytime: checked }));
+		updateRaritySettings({ includePlaytime: checked });
+	};
 
-		try {
-			await updateRaritySettings(newSettings);
-		} catch (error) {
-			console.error('Error updating rarity settings:', error);
-		}
+	const toggleReviewScore = (checked: boolean) => {
+		setRaritySettings((prev) => ({ ...prev, includeReviewScore: checked }));
+		updateRaritySettings({ includeReviewScore: checked });
 	};
 
 	return (
@@ -227,18 +78,80 @@ export default function Popup() {
 			</div>
 
 			<div className="settings-section">
-				<CountrySelector selectedCountry={selectedCountry} onChange={handleCountryChange} />
-				<RaritySettingsSection
-					raritySettings={raritySettings}
-					onSettingsChange={handleRaritySettingsChange}
-				/>
-				<ApiKeySection
-					apiKey={apiKey}
-					setApiKey={setApiKey}
-					testStatus={testStatus}
-					isTestingKey={isTestingKey}
-					testApiKey={testApiKey}
-				/>
+				<div className="setting-item">
+					<label htmlFor="country-select" className="setting-label">
+						Change Country
+					</label>
+					<select
+						id="country-select"
+						value={selectedCountry}
+						onChange={handleCountryChange}
+						className="country-select"
+					>
+						{Object.entries(regionMap).map(([code, info]) => (
+							<option key={code} value={code}>
+								{info.name} ({info.currency})
+							</option>
+						))}
+					</select>
+				</div>
+
+				<div className="setting-item">
+					<label className="setting-label">Rarity Modifiers</label>
+					<p className="setting-description">
+						Adjust how rarity is calculated by including additional factors
+					</p>
+					<div className="toggle-group">
+						<div className="toggle-item">
+							<label className="toggle-label">
+								<input
+									type="checkbox"
+									checked={raritySettings.includePlaytime}
+									onChange={(e) => togglePlaytime(e.target.checked)}
+									className="toggle-checkbox"
+								/>
+								<span className="toggle-switch"></span>
+								<span className="toggle-text">Include Playtime</span>
+							</label>
+						</div>
+						<div className="toggle-item">
+							<label className="toggle-label">
+								<input
+									type="checkbox"
+									checked={raritySettings.includeReviewScore}
+									onChange={(e) => toggleReviewScore(e.target.checked)}
+									className="toggle-checkbox"
+								/>
+								<span className="toggle-switch"></span>
+								<span className="toggle-text">Include Review Score</span>
+							</label>
+						</div>
+					</div>
+				</div>
+
+				<div className="setting-item">
+					<label htmlFor="api-key-input" className="setting-label">
+						Add API Key
+					</label>
+					<p className="setting-description">
+						Reduce rate limits by adding your own GG.deals API key (get one at gg.deals/api)
+					</p>
+					<div className="api-key-input-group">
+						<input
+							id="api-key-input"
+							type="password"
+							value={apiKey}
+							onChange={(e) => setApiKey(e.target.value)}
+							placeholder="Enter your GG.deals API key"
+							disabled={isTestingKey}
+							className="api-key-input"
+						/>
+						<button onClick={testApiKey} disabled={isTestingKey} className="apply-button">
+							{isTestingKey ? 'Testing...' : 'Apply'}
+						</button>
+					</div>
+					{testStatus && <p className="test-status">{testStatus}</p>}
+				</div>
 			</div>
 
 			<div className="footer">

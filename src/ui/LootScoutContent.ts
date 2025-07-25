@@ -34,12 +34,48 @@ export function createErrorContent(error?: ApiError): string {
 	`;
 }
 
+function createFooter(): string {
+	return `<div class="loot_scout_footer"><span class="footer_info">Powered by&nbsp;<a href="https://gg.deals/" target="_blank">GG.deals</a>&nbsp;and&nbsp;<a href="https://store.steampowered.com/" target="_blank">Steam</a>.<br>Not affiliated with GG.deals or Valve Corporation.</span></div>`;
+}
+
 function createSimpleFooter(): string {
-	return `
-		<div class="loot_scout_footer">
-			<span class="footer_info">Powered by&nbsp;<a href="https://store.steampowered.com/" target="_blank">Steam</a>.<br>Not affiliated with Valve Corporation.</span>
-		</div>
-	`;
+	return `<div class="loot_scout_footer"><span class="footer_info">Powered by&nbsp;<a href="https://store.steampowered.com/" target="_blank">Steam</a>.<br>Not affiliated with Valve Corporation.</span></div>`;
+}
+
+interface DealSectionData {
+	header: string;
+	price: number;
+	currency: string;
+	discount: number;
+	status?: any;
+	costPerHour?: number;
+	comparison?: string;
+	rarity: string;
+}
+
+function createDealSection(data: DealSectionData): string {
+	const valueMetric = data.costPerHour ? createValueMetric(data.costPerHour, data.currency) : '';
+	const statusDiv = data.status
+		? `<div class="deal_status"><span class="${data.status.className}">${data.status.text}</span></div>`
+		: '';
+	return `<div class="deal_section"><div class="deal_header">${data.header}</div><div class="price_container"><div class="deal_price">${formatPrice(data.price, data.currency)} <span class="raw_discount">(${data.discount}% off)</span></div>${valueMetric}</div>${statusDiv}${data.comparison || ''}${data.rarity}</div>`;
+}
+
+function createComparisonText(
+	steamPrice: number,
+	dealPrice: number,
+	savings: number,
+	currency: string,
+	discount: number,
+	url: string
+): string {
+	const comparisonText =
+		steamPrice === dealPrice
+			? '<span class="steam_comparison">Equal to Steam</span>'
+			: savings < 0
+				? '<span class="steam_comparison">Worse than Steam</span>'
+				: `<span class="deal_text">Save extra <span class="highlight_green">${formatPrice(Math.abs(savings), currency)}</span></span>`;
+	return `<div class="deal_discount"><span class="highlight_green">${discount}%</span> off Steam</div><div class="deal_comparison">${comparisonText}</div><div class="deal_button"><a href="${url}" target="_blank" class="btnv6_blue_hoverfade btn_medium"><span>View Deals</span></a></div>`;
 }
 
 function createValueMetric(costValue: number, currency: string): string {
@@ -106,98 +142,90 @@ export function createComingSoonContent(gameData: ProcessedGameData): string {
 export async function createSuccessContent(gameData: ProcessedGameData): Promise<string> {
 	const { lootScout } = gameData;
 
-	// Check if deal data is missing (free or coming soon games)
+	// Handle special cases
 	if (!gameData.deal || !lootScout.currentBest || !lootScout.historicalBest) {
-		// Check if it's a free game
 		if (lootScout.steam.status.className === 'steam_free_game') {
 			return createFreeGameContent(gameData);
 		}
-		// Check if it's a coming soon game
 		if (lootScout.steam.status.className === 'steam_coming_soon') {
 			return createComingSoonContent(gameData);
 		}
 	}
 
-	const reviewScore = gameData.steam.reviewScore;
-	const playtime = gameData.steam.averagePlaytime;
-	const reviewSummary = gameData.steam.reviewSummary;
-
-	// Regular game with pricing data
-	const [steamRarity, currentRarity, historicalRarity] = await Promise.all([
-		createRarityComponent(gameData.steam.discount_percent, reviewScore, playtime, reviewSummary),
-		createRarityComponent(lootScout.currentBest!.rawDiscount, reviewScore, playtime, reviewSummary),
+	// Create rarity components
+	const rarities = await Promise.all([
+		createRarityComponent(
+			gameData.steam.discount_percent,
+			gameData.steam.reviewScore,
+			gameData.steam.averagePlaytime,
+			gameData.steam.reviewSummary
+		),
+		createRarityComponent(
+			lootScout.currentBest!.rawDiscount,
+			gameData.steam.reviewScore,
+			gameData.steam.averagePlaytime,
+			gameData.steam.reviewSummary
+		),
 		createRarityComponent(
 			lootScout.historicalBest!.rawDiscount,
-			reviewScore,
-			playtime,
-			reviewSummary
+			gameData.steam.reviewScore,
+			gameData.steam.averagePlaytime,
+			gameData.steam.reviewSummary
 		),
 	]);
 
-	return `
-		
-		<div class="deal_section">
-			<div class="deal_header">Steam Discount Rating</div>
-			<div class="price_container">
-				<div class="deal_price">${formatPrice(gameData.steam.final, gameData.steam.currency)} <span class="raw_discount">(${gameData.steam.discount_percent}% off)</span></div>
-				${lootScout.costPerHour ? createValueMetric(lootScout.costPerHour.steam, gameData.steam.currency) : ''}
-			</div>
-			<div class="deal_status">
-				<span class="${lootScout.steam.status.className}">${lootScout.steam.status.text}</span>
-			</div>
-			${steamRarity}
-		</div>
-		
-		<div class="deal_section">
-			<div class="deal_header">Current Best Deal</div>
-			<div class="price_container">
-				<div class="deal_price">${formatPrice(gameData.deal!.currentBest, gameData.deal!.currency)} <span class="raw_discount">(${lootScout.currentBest!.rawDiscount}% off)</span></div>
-				${lootScout.costPerHour ? createValueMetric(lootScout.costPerHour.currentBest, gameData.deal!.currency) : ''}
-			</div>
-			<div class="deal_discount"><span class="highlight_green">${lootScout.currentBest!.discount}%</span> off Steam</div>
-			<div class="deal_comparison">
-				${
-					gameData.steam.final === gameData.deal!.currentBest
-						? '<span class="steam_comparison">Equal to Steam</span>'
-						: lootScout.currentBest!.savings < 0
-							? '<span class="steam_comparison">Worse than Steam</span>'
-							: `<span class="deal_text">Save extra <span class="highlight_green">${formatPrice(Math.abs(lootScout.currentBest!.savings), gameData.deal!.currency)}</span></span>`
-				}
-			</div>
-			<div class="deal_button">
-				<a href="${gameData.deal!.url}" target="_blank" class="btnv6_blue_hoverfade btn_medium"><span>View Deals</span></a>
-			</div>
-			${currentRarity}
-		</div>
-		
-		<div class="deal_section">
-			<div class="deal_header">Historical Low</div>
-			<div class="price_container">
-				<div class="deal_price">${formatPrice(gameData.deal!.historicalBest, gameData.deal!.currency)} <span class="raw_discount">(${lootScout.historicalBest!.rawDiscount}% off)</span></div>
-				${lootScout.costPerHour ? createValueMetric(lootScout.costPerHour.historicalBest, gameData.deal!.currency) : ''}
-			</div>
-			<div class="deal_discount"><span class="highlight_green">${lootScout.historicalBest!.discount}%</span> off Steam</div>
-			<div class="deal_comparison">
-				${
-					gameData.steam.final === gameData.deal!.historicalBest
-						? '<span class="steam_comparison">Equal to Steam</span>'
-						: lootScout.historicalBest!.savings < 0
-							? '<span class="steam_comparison">Worse than Steam</span>'
-							: `<span class="deal_text">Save extra <span class="highlight_green">${formatPrice(Math.abs(lootScout.historicalBest!.savings), gameData.deal!.currency)}</span></span>`
-				}
-			</div>
-			<div class="deal_button">
-				<a href="${gameData.deal!.url}" target="_blank" class="btnv6_blue_hoverfade btn_medium"><span>View Deals</span></a>
-			</div>
-			${historicalRarity}
-		</div>
-		
-		${createResourcesSection(gameData.title)}
-		
-		<div class="loot_scout_footer">
-			<span class="footer_info">Powered by&nbsp;<a href="https://gg.deals/" target="_blank">GG.deals</a>&nbsp;and&nbsp;<a href="https://store.steampowered.com/" target="_blank">Steam</a>.<br>Not affiliated with GG.deals or Valve Corporation.</span>
-		</div>
-	`;
+	// Create deal sections
+	const steamSection = createDealSection({
+		header: 'Steam Discount Rating',
+		price: gameData.steam.final,
+		currency: gameData.steam.currency,
+		discount: gameData.steam.discount_percent,
+		status: lootScout.steam.status,
+		costPerHour: lootScout.costPerHour?.steam,
+		rarity: rarities[0],
+	});
+
+	const currentSection = createDealSection({
+		header: 'Current Best Deal',
+		price: gameData.deal!.currentBest,
+		currency: gameData.deal!.currency,
+		discount: lootScout.currentBest!.rawDiscount,
+		costPerHour: lootScout.costPerHour?.currentBest,
+		comparison: createComparisonText(
+			gameData.steam.final,
+			gameData.deal!.currentBest,
+			lootScout.currentBest!.savings,
+			gameData.deal!.currency,
+			lootScout.currentBest!.discount,
+			gameData.deal!.url
+		),
+		rarity: rarities[1],
+	});
+
+	const historicalSection = createDealSection({
+		header: 'Historical Low',
+		price: gameData.deal!.historicalBest,
+		currency: gameData.deal!.currency,
+		discount: lootScout.historicalBest!.rawDiscount,
+		costPerHour: lootScout.costPerHour?.historicalBest,
+		comparison: createComparisonText(
+			gameData.steam.final,
+			gameData.deal!.historicalBest,
+			lootScout.historicalBest!.savings,
+			gameData.deal!.currency,
+			lootScout.historicalBest!.discount,
+			gameData.deal!.url
+		),
+		rarity: rarities[2],
+	});
+
+	return (
+		steamSection +
+		currentSection +
+		historicalSection +
+		createResourcesSection(gameData.title) +
+		createFooter()
+	);
 }
 
 // Helper function for error details

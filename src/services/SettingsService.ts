@@ -16,6 +16,8 @@ const DEFAULT_SETTINGS: AppSettings = {
 	},
 };
 
+const REGION_MANUALLY_SET_KEY = 'region_manually_set';
+
 const SETTINGS_KEY = 'lootscout_settings';
 
 export const getSettings = async (): Promise<AppSettings> => {
@@ -48,14 +50,12 @@ export const updateRaritySettings = async (
 // Region-specific functions with auto-detection
 export const getRegion = async (): Promise<RegionCode> => {
 	const settings = await getSettings();
+	const isManuallySet = await getStorageItem<boolean>(REGION_MANUALLY_SET_KEY);
 
-	// If region is still default, try auto-detection
-	if (settings.region === DEFAULT_REGION) {
+	if (!isManuallySet && settings.region === DEFAULT_REGION) {
 		const detectedRegion = await detectRegion();
-		if (detectedRegion !== DEFAULT_REGION) {
-			await updateRegion(detectedRegion);
-			return detectedRegion;
-		}
+		await updateSettings({ region: detectedRegion });
+		return detectedRegion;
 	}
 
 	return settings.region;
@@ -66,9 +66,8 @@ export const updateRegion = async (region: RegionCode): Promise<void> => {
 		throw new Error(`Invalid region code: ${region}`);
 	}
 
-	const currentSettings = await getSettings();
-	const updatedSettings = { ...currentSettings, region };
-	await setStorageItem(SETTINGS_KEY, updatedSettings);
+	await updateSettings({ region });
+	await setStorageItem(REGION_MANUALLY_SET_KEY, true);
 };
 
 const detectRegion = async (): Promise<RegionCode> => {
