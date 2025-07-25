@@ -5,6 +5,14 @@
 
 A browser extension that enhances your Steam browsing experience by providing real-time game deal information and pricing comparisons directly on Steam store pages.
 
+## Download
+
+<div align="center">
+  <a href="https://addons.mozilla.org/firefox/downloads/file/4541822/9e438c8d4da34b418816-1.0.0.xpi">
+    <img src="https://img.shields.io/badge/Firefox-Download-FF7139?style=for-the-badge&logo=firefox-browser&logoColor=white" alt="Download for Firefox">
+  </a>
+</div>
+
 ## Features
 
 - **Real-time Deal Comparison**: Compare current Steam prices with the best deals available across multiple platforms
