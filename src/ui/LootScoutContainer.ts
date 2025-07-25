@@ -1,6 +1,12 @@
 import { ProcessedGameData, ApiError, RegionCode } from '../shared/types';
-import { createLoadingContent, createErrorContent, createSuccessContent } from './LootScoutContent';
+import {
+	createLoadingContent,
+	createErrorContent,
+	createSuccessContent,
+} from './SecureContentBuilder';
+import { createGameTitleSection } from './GameTitleBuilder';
 import { getRegionInfo } from '../services/SettingsService';
+import * as dom from '../utils/DomBuilder';
 
 const ELEMENT_IDS = {
 	CONTAINER: 'lootscout-container',
@@ -24,19 +30,22 @@ interface ContainerElements {
 }
 
 function createContainerElements(): ContainerElements {
-	const container = document.createElement('div');
-	container.id = ELEMENT_IDS.CONTAINER;
+	const container = dom.setAttribute(dom.createElement('div'), 'id', ELEMENT_IDS.CONTAINER);
 
-	const header = document.createElement('div');
-	header.className = 'block responsive_apppage_details_right heading lootscout-header';
-	header.id = ELEMENT_IDS.HEADER;
+	const header = dom.setAttribute(
+		dom.createElement('div', 'block responsive_apppage_details_right heading lootscout-header'),
+		'id',
+		ELEMENT_IDS.HEADER
+	);
 
-	const content = document.createElement('div');
-	content.className = 'block responsive_apppage_details_right recommendation_noinfo';
-	content.id = ELEMENT_IDS.CONTENT;
+	const content = dom.setAttribute(
+		dom.createElement('div', 'block responsive_apppage_details_right recommendation_noinfo'),
+		'id',
+		ELEMENT_IDS.CONTENT
+	);
 
-	container.appendChild(header);
-	container.appendChild(content);
+	dom.addChild(container, header);
+	dom.addChild(container, content);
 
 	return { container, header, content };
 }
@@ -60,31 +69,16 @@ function getContainerElements(container: HTMLElement): ContainerElements | null 
 	return { container, header, content };
 }
 
-function createGameTitleSection(title: string, averagePlaytime?: number): string {
-	const playtimeDisplay =
-		averagePlaytime && averagePlaytime > 0
-			? `<div class="game-playtime">Average playtime: ${averagePlaytime.toFixed(1)} hours</div>`
-			: '';
-	return `<div class="game-title-section">
-		<div class="game-title">${title}</div>
-		${playtimeDisplay}
-	</div>`;
-}
-
 function updateHeader(header: HTMLElement, countryCode?: string): void {
-	header.innerHTML = '';
+	dom.clearElement(header);
 
-	const titleSpan = document.createElement('span');
-	titleSpan.className = 'header-title';
-	titleSpan.textContent = APP_NAME;
-	header.appendChild(titleSpan);
+	const titleSpan = dom.setText(dom.createElement('span', 'header-title'), APP_NAME);
+	dom.addChild(header, titleSpan);
 
 	if (countryCode) {
 		const regionInfo = createRegionDisplay(countryCode);
-		const regionSpan = document.createElement('span');
-		regionSpan.className = 'header-region';
-		regionSpan.textContent = regionInfo;
-		header.appendChild(regionSpan);
+		const regionSpan = dom.setText(dom.createElement('span', 'header-region'), regionInfo);
+		dom.addChild(header, regionSpan);
 	}
 }
 
@@ -104,21 +98,28 @@ export async function updateContainerState(
 
 	switch (state.status) {
 		case 'loading':
-			elements.content.innerHTML = createLoadingContent();
+			dom.replaceElementContent(elements.content, createLoadingContent());
 			break;
 
 		case 'success':
 			if (state.gameData) {
-				const gameTitle = state.gameData.title
-					? createGameTitleSection(state.gameData.title, state.gameData.steam.averagePlaytime)
-					: '';
+				const children: HTMLElement[] = [];
+
+				if (state.gameData.title) {
+					children.push(
+						createGameTitleSection(state.gameData.title, state.gameData.steam.averagePlaytime)
+					);
+				}
+
 				const successContent = await createSuccessContent(state.gameData);
-				elements.content.innerHTML = gameTitle + successContent;
+				children.push(successContent);
+
+				dom.replaceElementContent(elements.content, ...children);
 			}
 			break;
 
 		case 'error':
-			elements.content.innerHTML = createErrorContent(state.error);
+			dom.replaceElementContent(elements.content, createErrorContent(state.error));
 			break;
 	}
 }
