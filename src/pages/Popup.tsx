@@ -131,7 +131,7 @@ export default function Popup() {
 
 				<div className="setting-item">
 					<label htmlFor="api-key-input" className="setting-label">
-						Add API Key
+						Add API Key (Optional)
 					</label>
 					<p className="setting-description">
 						Reduce rate limits by adding your own GG.deals API key (get one at gg.deals/api)
