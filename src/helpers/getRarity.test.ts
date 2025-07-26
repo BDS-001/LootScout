@@ -205,16 +205,27 @@ describe('getRarity', () => {
 		});
 	});
 
-	describe('edge cases', () => {
-		it('should not go below Common tier', async () => {
+	describe('broken rarity', () => {
+		it('should return Broken for low discount with severe negative modifiers', async () => {
 			const result = await getRarity(
-				0,
+				20,
 				TEST_SCENARIOS.reviews.terrible,
 				TEST_SCENARIOS.playtime.minimal
 			);
-			expect(result).toBe('Common');
+			expect(result).toBe('Broken');
 		});
 
+		it('should return Broken for common discount with multiple negative modifiers', async () => {
+			const result = await getRarity(
+				5,
+				TEST_SCENARIOS.reviews.poor,
+				TEST_SCENARIOS.playtime.minimal
+			);
+			expect(result).toBe('Broken');
+		});
+	});
+
+	describe('edge cases', () => {
 		it('should cap at Exotic tier (excluding Iridescent)', async () => {
 			const result = await getRarity(
 				TEST_SCENARIOS.discounts.extreme,
@@ -222,7 +233,7 @@ describe('getRarity', () => {
 				TEST_SCENARIOS.playtime.exceptional
 			);
 			const resultIndex = RARITY_CHART.findIndex((r) => r.name === result);
-			expect(resultIndex).toBeLessThanOrEqual(6);
+			expect(resultIndex).toBeLessThanOrEqual(7);
 		});
 
 		it('should always return Iridescent for 100%+ regardless of modifiers', async () => {

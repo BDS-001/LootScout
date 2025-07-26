@@ -14,8 +14,8 @@ export interface RarityAnalysis {
 	playtimeUsed: boolean;
 }
 
-const MAX_RARITY_INDEX = 6;
-const IRIDESCENT_RARITY_INDEX = 7;
+const MAX_RARITY_INDEX = 7;
+const IRIDESCENT_RARITY_INDEX = 8;
 
 function isValidPlaytime(playtime: number | null): boolean {
 	return playtime !== null && playtime !== -1;
@@ -24,21 +24,21 @@ function isValidPlaytime(playtime: number | null): boolean {
 function getDiscountValue(percentage: number): number {
 	switch (true) {
 		case percentage >= 100:
-			return 7;
+			return 8;
 		case percentage >= 90:
-			return 6;
+			return 7;
 		case percentage >= 80:
-			return 5;
+			return 6;
 		case percentage >= 60:
-			return 4;
+			return 5;
 		case percentage >= 45:
-			return 3;
+			return 4;
 		case percentage >= 30:
-			return 2;
+			return 3;
 		case percentage >= 15:
-			return 1;
+			return 2;
 		default:
-			return 0;
+			return 1;
 	}
 }
 

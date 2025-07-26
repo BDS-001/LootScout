@@ -58,6 +58,7 @@ LootScout automatically activates when you visit a Steam game page (`store.steam
 
 Deals are categorized using a rarity system based on discount percentages:
 
+- **Broken** (N/A): Poor deals with negative factors
 - **Common** (0–14%): Small or early discounts
 - **Uncommon** (15–29%): Light deal
 - **Rare** (30–44%): Solid discount

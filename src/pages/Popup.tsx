@@ -72,7 +72,7 @@ export default function Popup() {
 				<div className="header-text">
 					<h1 className="popup-title">LootScout</h1>
 					<p className="popup-description">
-						Compares Steam prices with current & historical best deals - rated with 8 rarity levels
+						Compares Steam prices with current & historical best deals - rated with 9 rarity levels
 					</p>
 				</div>
 			</div>

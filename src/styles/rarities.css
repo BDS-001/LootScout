@@ -1,5 +1,8 @@
 /* RPG Rarity Colors for Steam Extension */
 :root {
+	/* Broken/Damaged - Dark brownish-gray */
+	--rarity-broken: #6b5b47;
+
 	/* Common - Light gray */
 	--rarity-common: #9da5b4;
 
@@ -27,6 +30,10 @@
 }
 
 /* Usage classes */
+.rarity-broken {
+	color: var(--rarity-broken);
+}
+
 .rarity-common {
 	color: var(--rarity-common);
 }
@@ -107,6 +114,10 @@
 }
 
 /* Background variants - darker versions for badges */
+.rarity-broken-bg {
+	background-color: #2a251e;
+}
+
 .rarity-common-bg {
 	background-color: #2a2f3a;
 }
@@ -140,6 +151,10 @@
 }
 
 /* Border variants */
+.rarity-broken-border {
+	border: var(--border-width) solid var(--rarity-broken);
+}
+
 .rarity-common-border {
 	border: var(--border-width) solid var(--rarity-common);
 }

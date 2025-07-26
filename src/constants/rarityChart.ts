@@ -1,4 +1,5 @@
 export const RARITY_CHART = [
+	{ name: 'Broken', range: 'N/A', description: 'Poor deals with negative factors' },
 	{ name: 'Common', range: '0–14%', description: 'Small or early discounts' },
 	{ name: 'Uncommon', range: '15–29%', description: 'Light deal' },
 	{ name: 'Rare', range: '30–44%', description: 'Solid discount' },
