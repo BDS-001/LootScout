@@ -6,7 +6,7 @@ import { getRegion, getRaritySettings, updateRaritySettings } from '../services/
 import { RaritySettings } from '../shared/types';
 import browser from 'webextension-polyfill';
 
-const VERSION = '1.0.0';
+const VERSION = '1.1.0';
 const GITHUB_URL = 'https://github.com/BDS-001/LootScout';
 
 export default function Popup() {
