@@ -3,7 +3,7 @@
   <h1>LootScout</h1>
 </div>
 
-A browser extension that enhances your Steam browsing experience by providing real-time game deal information and pricing comparisons directly on Steam store pages.
+A browser extension that enhances your Steam browsing experience by providing real-time game deal information and pricing comparisons directly on Steam store pages. Data is sourced from Steam's official API and GG.deals to ensure accurate, up-to-date pricing across multiple platforms.
 
 ## Download
 
@@ -88,13 +88,50 @@ _Note: Modifiers can be toggled on/off in extension settings._
 
 ## Installation
 
-### Prerequisites
+### 🚀 Quick Install (Recommended)
+
+#### Firefox Users
+- **Official Store**: [Install from Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/lootscout/)
+- **Manual Install**: Download `lootscout_firefox_build_v1.1.0.zip` from releases *(temporary installation only)*
+
+#### Chrome/Edge/Chromium Users
+Currently requires manual installation:
+- Download `lootscout_chrome_build_v1.1.0.zip` from releases
+- Follow Chrome manual installation steps below
+
+### 📖 Manual Installation Instructions
+
+#### Firefox
+1. Download `lootscout_firefox_build_v1.1.0.zip` from the [latest release](https://github.com/BDS-001/LootScout/releases)
+2. Extract the zip file to a folder
+3. Open Firefox and navigate to `about:debugging`
+4. Click "This Firefox" in the sidebar
+5. Click "Load Temporary Add-on"
+6. Select the `manifest.json` file from the extracted folder
+7. The extension will be installed temporarily until Firefox is restarted
+
+**Note**: Manual installation in Firefox is temporary and will be removed when Firefox restarts. For permanent installation, use the [Firefox Add-ons store](https://addons.mozilla.org/en-US/firefox/addon/lootscout/).
+
+#### Chrome/Edge/Chromium
+1. Download `lootscout_chrome_build_v1.1.0.zip` from the [latest release](https://github.com/BDS-001/LootScout/releases)
+2. Extract the zip file to a folder
+3. Open Chrome and navigate to `chrome://extensions/`
+4. Enable "Developer mode" in the top right corner
+5. Click "Load unpacked" button
+6. Select the extracted folder containing the extension files
+7. The extension will be installed and ready to use
+
+**Note**: Chrome may show warnings about developer mode extensions. This is normal for manually installed extensions.
+
+### 🛠️ Development Setup
+
+#### Prerequisites
 
 - Node.js and npm installed
 - Modern web browser (Chrome, Firefox, Edge, etc.)
 - GG.deals API key (optional, for personal use)
 
-### Development Setup
+#### Setup Steps
 
 1. Clone the repository:
 
