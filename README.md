@@ -8,7 +8,7 @@ A browser extension that enhances your Steam browsing experience by providing re
 ## Download
 
 <div align="center">
-  <a href="https://addons.mozilla.org/firefox/downloads/file/4541822/9e438c8d4da34b418816-1.0.0.xpi">
+  <a href="https://addons.mozilla.org/en-US/firefox/addon/lootscout/">
     <img src="https://img.shields.io/badge/Firefox-Download-FF7139?style=for-the-badge&logo=firefox-browser&logoColor=white" alt="Download for Firefox">
   </a>
 </div>
