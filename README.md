@@ -5,6 +5,30 @@
 
 A browser extension that enhances your Steam browsing experience by providing real-time game deal information and pricing comparisons directly on Steam store pages. Data is sourced from Steam's official API and GG.deals to ensure accurate, up-to-date pricing across multiple platforms.
 
+## Table of Contents
+
+- [Download](#download)
+- [Features](#features)
+- [Screenshots](#screenshots)
+- [How It Works](#how-it-works)
+- [Deal Rarity System](#deal-rarity-system)
+  - [Rarity Modifiers](#rarity-modifiers)
+- [Installation](#installation)
+  - [🚀 Quick Install (Recommended)](#-quick-install-recommended)
+  - [📖 Manual Installation Instructions](#-manual-installation-instructions)
+  - [🛠️ Development Setup](#️-development-setup)
+  - [Production Build](#production-build)
+- [API Integration](#api-integration)
+  - [API Key Configuration](#api-key-configuration)
+  - [Proxy Server Setup](#proxy-server-setup)
+- [Project Structure](#project-structure)
+- [Scripts](#scripts)
+- [Architecture](#architecture)
+- [Technologies Used](#technologies-used)
+- [Contributing](#contributing)
+- [License](#license)
+- [Acknowledgments](#acknowledgments)
+
 ## Download
 
 <div align="center">
