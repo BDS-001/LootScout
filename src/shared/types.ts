@@ -36,6 +36,7 @@ export interface ProcessedGameData {
 	success: true;
 	title: string;
 	appId: string;
+	releaseDate?: string;
 	deal?: {
 		currentBest: number;
 		historicalBest: number;

@@ -131,6 +131,7 @@ export function buildGameDataResponse(
 		success: true,
 		title: ggDealsData.title,
 		appId: appId,
+		releaseDate: steamAppData.data.release_date?.date,
 		deal: {
 			currentBest: priceMetrics.currentRetail,
 			historicalBest: priceMetrics.historicalRetail,

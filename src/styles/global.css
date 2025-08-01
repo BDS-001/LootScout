@@ -130,3 +130,11 @@
 		content: '';
 	}
 }
+
+/* Recently Released Playtime Asterisk */
+.playtime-asterisk {
+	color: var(--color-steam-orange);
+	margin-left: var(--spacing-xs);
+	cursor: help;
+	font-weight: var(--font-weight-bold);
+}

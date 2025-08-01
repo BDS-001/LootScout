@@ -108,7 +108,11 @@ export async function updateContainerState(
 
 				if (state.gameData.title) {
 					children.push(
-						createGameTitleSection(state.gameData.title, state.gameData.steam.averagePlaytime)
+						createGameTitleSection(
+							state.gameData.title,
+							state.gameData.steam.averagePlaytime,
+							state.gameData.releaseDate
+						)
 					);
 				}
 
