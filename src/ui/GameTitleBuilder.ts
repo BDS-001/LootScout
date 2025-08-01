@@ -1,7 +1,6 @@
 import * as dom from '../utils/DomBuilder';
 
 const RECENT_RELEASE_THRESHOLD_DAYS = 14;
-const TOOLTIP_ATTACHMENT_DELAY_MS = 100;
 
 function isRecentlyReleased(releaseDate: string): boolean {
 	try {
@@ -14,34 +13,24 @@ function isRecentlyReleased(releaseDate: string): boolean {
 	}
 }
 
-function attachAsteriskTooltip(asteriskId: string): void {
-	setTimeout(() => {
-		const asterisk = document.querySelector(`#${asteriskId}`) as HTMLElement;
-		const tooltip = document.querySelector(`#${asteriskId} .rarity-tooltip`) as HTMLElement;
-		if (!asterisk || !tooltip) return;
+function attachAsteriskTooltip(asterisk: HTMLElement, tooltip: HTMLElement): void {
+	asterisk.addEventListener('mouseenter', () => {
+		const rect = asterisk.getBoundingClientRect();
+		const x = Math.min(rect.left, window.innerWidth - tooltip.offsetWidth - 10);
+		const y = rect.top - tooltip.offsetHeight - 5;
 
-		asterisk.addEventListener('mouseenter', () => {
-			const rect = asterisk.getBoundingClientRect();
-			tooltip.style.left = Math.min(rect.left, window.innerWidth - tooltip.offsetWidth - 10) + 'px';
-			tooltip.style.top = rect.top - tooltip.offsetHeight - 5 + 'px';
-			tooltip.style.visibility = 'visible';
-			tooltip.style.opacity = '1';
-		});
+		tooltip.style.setProperty('--tooltip-x', `${x}px`);
+		tooltip.style.setProperty('--tooltip-y', `${y}px`);
+		tooltip.classList.add('show');
+	});
 
-		asterisk.addEventListener('mouseleave', () => {
-			tooltip.style.visibility = 'hidden';
-			tooltip.style.opacity = '0';
-		});
-	}, TOOLTIP_ATTACHMENT_DELAY_MS);
+	asterisk.addEventListener('mouseleave', () => {
+		tooltip.classList.remove('show');
+	});
 }
 
 function createPlaytimeAsterisk(): HTMLElement {
-	const id = `playtime-asterisk-${Date.now()}`;
-	const asterisk = dom.setAttribute(
-		dom.setText(dom.createElement('span', 'playtime-asterisk'), '*'),
-		'id',
-		id
-	);
+	const asterisk = dom.setText(dom.createElement('span', 'playtime-asterisk'), '*');
 
 	const tooltip = dom.createElement('div', 'rarity-tooltip');
 	const line1 = dom.setText(
@@ -52,7 +41,7 @@ function createPlaytimeAsterisk(): HTMLElement {
 
 	dom.addChild(tooltip, line1, line2);
 	dom.addChild(asterisk, tooltip);
-	attachAsteriskTooltip(id);
+	attachAsteriskTooltip(asterisk, tooltip);
 	return asterisk;
 }
 

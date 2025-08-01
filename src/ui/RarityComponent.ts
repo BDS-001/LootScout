@@ -4,24 +4,19 @@ import { PLAYTIME_THRESHOLDS } from '../constants/modifiers';
 import * as dom from '../utils/DomBuilder';
 
 // Simplified tooltip positioning
-function setTooltipPosition(tooltip: HTMLElement, rect: DOMRect) {
-	tooltip.style.left = Math.min(rect.left, window.innerWidth - tooltip.offsetWidth - 10) + 'px';
-	tooltip.style.top = rect.top - tooltip.offsetHeight - 5 + 'px';
-}
-
-function attachTooltipEvents(componentId: string) {
-	const badge = document.querySelector(`#${componentId} .rarity-badge`) as HTMLElement;
-	const tooltip = document.querySelector(`#${componentId} .rarity-tooltip`) as HTMLElement;
-	if (!badge || !tooltip) return;
-
+function attachTooltipEvents(badge: HTMLElement, tooltip: HTMLElement) {
 	badge.addEventListener('mouseenter', () => {
-		setTooltipPosition(tooltip, badge.getBoundingClientRect());
-		tooltip.style.visibility = 'visible';
-		tooltip.style.opacity = '1';
+		const rect = badge.getBoundingClientRect();
+		const x = Math.min(rect.left, window.innerWidth - tooltip.offsetWidth - 10);
+		const y = rect.top - tooltip.offsetHeight - 5;
+
+		tooltip.style.setProperty('--tooltip-x', `${x}px`);
+		tooltip.style.setProperty('--tooltip-y', `${y}px`);
+		tooltip.classList.add('show');
 	});
+
 	badge.addEventListener('mouseleave', () => {
-		tooltip.style.visibility = 'hidden';
-		tooltip.style.opacity = '0';
+		tooltip.classList.remove('show');
 	});
 }
 
@@ -140,7 +135,7 @@ export async function createRarityComponent(
 
 	dom.addChild(container, badge, tooltip);
 
-	setTimeout(() => attachTooltipEvents(id), 100);
+	attachTooltipEvents(badge, tooltip);
 
 	return container;
 }

@@ -31,6 +31,13 @@ export type RegionCode =
 	| 'se'
 	| 'us';
 
+// Deal analysis (simplified - removed unused isEqualToSteam)
+export interface DealAnalysis {
+	rawDiscount: number;
+	discount: number;
+	savings: number;
+}
+
 // Processed GameData interface for UI consumption
 export interface ProcessedGameData {
 	success: true;
@@ -61,28 +68,12 @@ export interface ProcessedGameData {
 				className: string;
 			};
 		};
-		currentBest?: {
-			rawDiscount: number;
-			discount: number;
-			savings: number;
-			isEqualToSteam: boolean;
-		};
-		historicalBest?: {
-			rawDiscount: number;
-			discount: number;
-			savings: number;
-			isEqualToSteam: boolean;
-		};
+		currentBest?: DealAnalysis;
+		historicalBest?: DealAnalysis;
 		costPerHour?: {
 			steam: number;
 			currentBest: number;
 			historicalBest: number;
-		};
-		reviews?: {
-			totalReviews: number;
-			positivePercentage: number;
-			reviewSummary: string;
-			reviewScore: number;
 		};
 	};
 }

@@ -86,7 +86,7 @@ export class DataCoordinator {
 			let processedReviews = cachedProcessedReviews;
 			if (!processedReviews && steamReviewData?.success) {
 				try {
-					processedReviews = processSteamReviews(steamReviewData.data as any);
+					processedReviews = processSteamReviews(steamReviewData.data);
 					await this.setCachedProcessedReviews(appId, processedReviews);
 				} catch (error) {
 					debug.warn('Failed to process reviews:', error);

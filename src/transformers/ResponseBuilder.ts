@@ -159,13 +159,11 @@ export function buildGameDataResponse(
 				rawDiscount: priceMetrics.currentRawDiscount,
 				discount: priceMetrics.currentDiscount,
 				savings: priceMetrics.currentSavings,
-				isEqualToSteam: priceMetrics.steamIsBestCurrent,
 			},
 			historicalBest: {
 				rawDiscount: priceMetrics.historicalRawDiscount,
 				discount: priceMetrics.historicalDiscount,
 				savings: priceMetrics.historicalSavings,
-				isEqualToSteam: priceMetrics.steamIsBestHistorical,
 			},
 			...(costPerHour && {
 				costPerHour: {

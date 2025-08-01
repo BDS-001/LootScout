@@ -23,9 +23,14 @@ async function initializeContentScript(): Promise<void> {
 		debug.log('API Response:', response);
 
 		if (response.success) {
-			const currentCountry = await browser.runtime.sendMessage({
-				action: 'getCountryCode',
-			});
+			let currentCountry: string | undefined;
+			try {
+				currentCountry = await browser.runtime.sendMessage({
+					action: 'getCountryCode',
+				});
+			} catch (error) {
+				debug.warn('Failed to get country code:', error);
+			}
 
 			await updateContainerState(container, {
 				status: 'success',

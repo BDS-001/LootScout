@@ -1,6 +1,6 @@
 import fetchGgDealsData, { GgDealsApiResponse } from './GgDealsApi';
 import fetchSteamStoreData, { SteamApiResponse } from './SteamStoreApi';
-import fetchSteamReviewData from './SteamReviewsApi';
+import fetchSteamReviewData, { SteamReviewApiResponse } from './SteamReviewsApi';
 import { RegionCode, ApiResponse } from '../shared/types';
 import { handleApiError } from '../utils/ErrorHandler';
 
@@ -15,7 +15,7 @@ export interface RawCombinedGameData {
 	appId: string;
 	dealData: GgDealsApiResponse;
 	steamStoreData: SteamApiResponse;
-	steamReviewData: SteamApiResponse | null;
+	steamReviewData: SteamReviewApiResponse | null;
 }
 
 export type CombinedGameDataResponse = ApiResponse<RawCombinedGameData>;

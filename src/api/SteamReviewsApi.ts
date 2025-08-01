@@ -1,5 +1,9 @@
-import { SteamApiParams, SteamApiResponse } from './SteamStoreApi';
+import { SteamApiParams } from './SteamStoreApi';
+import { ApiResponse } from '../shared/types';
+import { SteamReviewsResponse } from '../transformers/SteamReviewProcessor';
 import { handleApiError } from '../utils/ErrorHandler';
+
+export type SteamReviewApiResponse = ApiResponse<SteamReviewsResponse>;
 
 function getSteamReviewBaseUrl(appId: string): string {
 	return `https://store.steampowered.com/appreviews/${appId}`;
@@ -7,7 +11,7 @@ function getSteamReviewBaseUrl(appId: string): string {
 
 export default async function fetchSteamReviewData(
 	params: SteamApiParams
-): Promise<SteamApiResponse> {
+): Promise<SteamReviewApiResponse> {
 	const { appId } = params;
 
 	const url = new URL(getSteamReviewBaseUrl(appId));
