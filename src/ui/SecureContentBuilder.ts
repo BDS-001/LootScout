@@ -213,6 +213,11 @@ export async function createSuccessContent(gameData: ProcessedGameData): Promise
 		),
 	]);
 
+	const steamStatusElement = addChild(
+		dom.div('steam_comparison'),
+		setText(dom.span(lootScout.steam.status.className), lootScout.steam.status.text)
+	);
+
 	const sections = [
 		createDealSection(
 			'Steam Discount Rating',
@@ -220,7 +225,7 @@ export async function createSuccessContent(gameData: ProcessedGameData): Promise
 			gameData.steam.currency,
 			gameData.steam.discount_percent,
 			lootScout.costPerHour?.steam,
-			undefined,
+			steamStatusElement,
 			rarities[0]
 		),
 		createDealSection(

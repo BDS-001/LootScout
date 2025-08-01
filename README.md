@@ -115,17 +115,21 @@ _Note: Modifiers can be toggled on/off in extension settings._
 ### 🚀 Quick Install (Recommended)
 
 #### Firefox Users
+
 - **Official Store**: [Install from Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/lootscout/)
-- **Manual Install**: Download `lootscout_firefox_build_v1.1.0.zip` from releases *(temporary installation only)*
+- **Manual Install**: Download `lootscout_firefox_build_v1.1.0.zip` from releases _(temporary installation only)_
 
 #### Chrome/Edge/Chromium Users
+
 Currently requires manual installation:
+
 - Download `lootscout_chrome_build_v1.1.0.zip` from releases
 - Follow Chrome manual installation steps below
 
 ### 📖 Manual Installation Instructions
 
 #### Firefox
+
 1. Download `lootscout_firefox_build_v1.1.0.zip` from the [latest release](https://github.com/BDS-001/LootScout/releases)
 2. Extract the zip file to a folder
 3. Open Firefox and navigate to `about:debugging`
@@ -137,6 +141,7 @@ Currently requires manual installation:
 **Note**: Manual installation in Firefox is temporary and will be removed when Firefox restarts. For permanent installation, use the [Firefox Add-ons store](https://addons.mozilla.org/en-US/firefox/addon/lootscout/).
 
 #### Chrome/Edge/Chromium
+
 1. Download `lootscout_chrome_build_v1.1.0.zip` from the [latest release](https://github.com/BDS-001/LootScout/releases)
 2. Extract the zip file to a folder
 3. Open Chrome and navigate to `chrome://extensions/`

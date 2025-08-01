@@ -18,7 +18,8 @@
 	},
 
 	"background": {
-		"scripts": ["src/background.ts"]
+		"scripts": ["src/background.ts"],
+		"service_worker": "src/background.js"
 	},
 	"content_scripts": [
 		{
