@@ -28,7 +28,7 @@
 			"run_at": "document_idle"
 		}
 	],
-	"permissions": ["activeTab", "storage", "cookies"],
+	"permissions": ["activeTab", "storage", "cookies", "alarms"],
 	"host_permissions": ["*://store.steampowered.com/*", "https://api.gg.deals/*"],
 	"content_security_policy": {
 		"extension_pages": "script-src 'self'; object-src 'self'"

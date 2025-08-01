@@ -13,6 +13,7 @@ All notable changes to LootScout will be documented in this file.
 
 - Steam deal status message now displays correctly
 - Improved extension stability and error handling
+- Fixed storage leaks by implementing automatic cleanup of expired cache data
 
 ### Changed
 

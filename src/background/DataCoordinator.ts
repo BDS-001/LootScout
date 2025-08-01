@@ -13,7 +13,6 @@ import { getGameStatus, shouldFetchReviews, shouldFetchDeals } from '../services
 
 export class DataCoordinator {
 	private static readonly CACHE_DURATION = 30 * 60 * 1000;
-	private static readonly ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
 
 	private getReviewCacheKey(appId: string): string {
 		return `processed_reviews_${appId}`;
@@ -22,7 +21,7 @@ export class DataCoordinator {
 	private async getCachedProcessedReviews(appId: string): Promise<ProcessedSteamReviews | null> {
 		const cached = await getCacheItemWithExpiry(
 			this.getReviewCacheKey(appId),
-			DataCoordinator.ONE_WEEK
+			DataCoordinator.CACHE_DURATION
 		);
 
 		if (cached) {
