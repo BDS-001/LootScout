@@ -1,0 +1,41 @@
+{
+	"manifest_version": 3,
+	"name": "LootScout",
+	"version": "1.1.0",
+	"description": "Enhanced Steam game browsing with pricing data, rarity information, and game details from multiple sources",
+	"short_name": "LootScout",
+	"author": "BDS-001",
+	"homepage_url": "https://github.com/BDS-001/LootScout",
+	"icons": {
+		"16": "icon/lootscout16.png",
+		"32": "icon/lootscout32.png",
+		"48": "icon/lootscout48.png",
+		"96": "icon/lootscout96.png",
+		"128": "icon/lootscout128.png"
+	},
+	"action": {
+		"default_popup": "src/popup.html"
+	},
+	"background": {
+		"scripts": ["src/background.js"],
+		"persistent": false
+	},
+	"content_scripts": [
+		{
+			"matches": ["*://store.steampowered.com/app/*"],
+			"js": ["src/content.js"],
+			"run_at": "document_idle"
+		}
+	],
+	"permissions": ["activeTab", "storage", "cookies"],
+	"host_permissions": ["*://store.steampowered.com/*", "https://api.gg.deals/*"],
+	"content_security_policy": {
+		"extension_pages": "script-src 'self'; object-src 'self'"
+	},
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "lootscout@bds-001.local",
+			"strict_min_version": "109.0"
+		}
+	}
+}
