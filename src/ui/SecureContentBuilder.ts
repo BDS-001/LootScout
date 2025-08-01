@@ -15,7 +15,7 @@ export function createLoadingContent(): HTMLElement {
 }
 
 export function createErrorContent(error?: ApiError): HTMLElement {
-	const errorMessage = error?.message || 'Unknown error occurred';
+	const errorMessage = error?.message || 'Unknown error occurred, please try again later.';
 	const errorDetails = getErrorDetails(error);
 
 	const section = addChild(
