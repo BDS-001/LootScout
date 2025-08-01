@@ -16,7 +16,7 @@ function isRecentlyReleased(releaseDate: string): boolean {
 function attachAsteriskTooltip(asterisk: HTMLElement, tooltip: HTMLElement): void {
 	asterisk.addEventListener('mouseenter', () => {
 		const rect = asterisk.getBoundingClientRect();
-		const x = Math.min(rect.left, window.innerWidth - tooltip.offsetWidth - 10);
+		const x = Math.min(rect.left, window.innerWidth - (tooltip.offsetWidth || 280) - 10);
 		const y = rect.top - tooltip.offsetHeight - 5;
 
 		tooltip.style.setProperty('--tooltip-x', `${x}px`);

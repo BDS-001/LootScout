@@ -12,9 +12,8 @@ All notable changes to LootScout will be documented in this file.
 ### Fixed
 
 - Steam deal status message now displays correctly
-- Improved data logging: Replaced console logs with custom debug utility to prevent data exposure in production builds
+- Improved extension stability and error handling
 
 ### Changed
 
-- Code quality improvements and cleanup throughout the codebase
-- Enhanced error handling and user-friendly messaging
+- Enhanced error handling with more user-friendly error messages

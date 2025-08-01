@@ -7,7 +7,7 @@ import * as dom from '../utils/DomBuilder';
 function attachTooltipEvents(badge: HTMLElement, tooltip: HTMLElement) {
 	badge.addEventListener('mouseenter', () => {
 		const rect = badge.getBoundingClientRect();
-		const x = Math.min(rect.left, window.innerWidth - tooltip.offsetWidth - 10);
+		const x = Math.min(rect.left, window.innerWidth - (tooltip.offsetWidth || 280) - 10);
 		const y = rect.top - tooltip.offsetHeight - 5;
 
 		tooltip.style.setProperty('--tooltip-x', `${x}px`);

@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Page Title</title>
+		<style>
+			.load {
+				visibility: hidden;
+				position: relative;
+			}
+
+			.load:after {
+				content: '';
+				visibility: visible;
+				position: absolute;
+				left: 0;
+				animation: load 1.5s infinite;
+			}
+
+			@keyframes load {
+				0% {
+					content: '';
+				}
+
+				25% {
+					content: '.';
+				}
+
+				50% {
+					content: '..';
+				}
+
+				75% {
+					content: '...';
+				}
+
+				100% {
+					content: '';
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<span>Loading</span><span class="load">...</span><span>stuff</span>
+	</body>
+</html>
