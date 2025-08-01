@@ -15,14 +15,25 @@ export function createLoadingContent(): HTMLElement {
 }
 
 export function createErrorContent(error?: ApiError): HTMLElement {
-	const errorMessage = error?.message || 'Unknown error occurred, please try again later.';
+	let userFriendlyMessage =
+		'There was an error getting the pricing information. Please try again in a few minutes.';
+
+	//more specific guidance for certain errors
+	if (error?.code === 429) {
+		userFriendlyMessage =
+			'Rate limit reached. Add your own GG.deals API key in the extension settings to avoid this, or try again in a few minutes.';
+	} else if (error?.name?.includes('GG.deals') && !error.code) {
+		userFriendlyMessage =
+			'Unable to connect to pricing service. Adding your own GG.deals API key may help avoid connection issues.';
+	}
+
 	const errorDetails = getErrorDetails(error);
 
 	const section = addChild(
 		dom.div('deal_section'),
 		setText(dom.div('deal_header'), '❌ Expedition Failed'),
 		setText(dom.div('deal_status error'), 'Unable to scout for deals'),
-		setText(dom.div('error_message'), errorMessage)
+		setText(dom.div('error_message'), userFriendlyMessage)
 	);
 
 	if (errorDetails) {
