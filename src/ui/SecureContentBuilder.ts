@@ -7,9 +7,15 @@ import { dom, setText, addChild, onClick, setAttribute } from '../utils/DomBuild
 import { createStandardFooter, createSimpleFooter, getErrorDetails } from './ContentHelpers';
 
 export function createLoadingContent(): HTMLElement {
+	const loadingText = addChild(
+		dom.span(),
+		'🔍 Scouting for deals',
+		setText(dom.span('load'), '...')
+	);
+
 	return addChild(
 		dom.div('deal_section'),
-		setText(dom.div('deal_header'), '🔍 Scouting for deals...'),
+		addChild(dom.div('deal_header'), loadingText),
 		setText(dom.div('deal_status'), 'Running expedition to find the best prices')
 	);
 }
