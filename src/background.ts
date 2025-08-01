@@ -1,7 +1,8 @@
 import { ExtensionLifecycle } from './background/ExtensionLifecycle';
 import { MessageRouter } from './background/MessageRouter';
+import { debug } from './utils/debug';
 
-console.log('Hello from the background!');
+debug.log('Background script initialized');
 
 const extensionLifecycle = new ExtensionLifecycle();
 const messageRouter = new MessageRouter();

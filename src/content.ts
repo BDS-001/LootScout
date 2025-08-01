@@ -3,6 +3,7 @@ import parseSteamPageUrl from './parsers/SteamParser';
 import { injectLootScoutContainer, updateContainerState } from './ui/LootScoutContainer';
 import { GameDataResponse, ApiError } from './shared/types';
 import injectCSS from './utils/injectCSS';
+import { debug } from './utils/debug';
 
 async function initializeContentScript(): Promise<void> {
 	injectCSS();
@@ -19,7 +20,7 @@ async function initializeContentScript(): Promise<void> {
 			appId,
 		})) as GameDataResponse;
 
-		console.log('LootScout API Response:', response);
+		debug.log('API Response:', response);
 
 		if (response.success) {
 			const currentCountry = await browser.runtime.sendMessage({

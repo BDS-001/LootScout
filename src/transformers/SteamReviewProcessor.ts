@@ -1,4 +1,5 @@
 import { removeOutliers, calculateMean } from '../utils/MathUtils';
+import { debug } from '../utils/debug';
 
 // Steam review processing types
 export interface SimplifiedSteamReview {
@@ -48,7 +49,7 @@ function calculatePlaytime(reviews: SimplifiedSteamReview[]): number {
 	const averageMinutes = calculateMean(filteredPlaytimes);
 	const averageHours = averageMinutes / 60;
 
-	console.log(
+	debug.log(
 		`Average playtime: ${averageMinutes.toFixed(2)} minutes (${averageHours.toFixed(2)} hours)`
 	);
 

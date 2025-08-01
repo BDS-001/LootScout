@@ -8,6 +8,7 @@ import { getRegion } from '../services/SettingsService';
 import { getApiKeyWithFallback } from '../api/ApiKeyService';
 import { getCacheItemWithExpiry, setCacheItem } from '../services/CacheService';
 import { processSteamReviews } from '../transformers/SteamReviewProcessor';
+import { debug } from '../utils/debug';
 import { getGameStatus, shouldFetchReviews, shouldFetchDeals } from '../services/GameStatusService';
 
 export class DataCoordinator {
@@ -25,7 +26,7 @@ export class DataCoordinator {
 		);
 
 		if (cached) {
-			console.log('LootScout: Using cached processed reviews');
+			debug.log('Using cached processed reviews');
 		}
 
 		return cached as ProcessedSteamReviews | null;
@@ -44,7 +45,7 @@ export class DataCoordinator {
 		const cachedData = await getCacheItemWithExpiry(cacheKey, DataCoordinator.CACHE_DURATION);
 
 		if (cachedData) {
-			console.log('LootScout: Using cached data');
+			debug.log('Using cached data');
 			return cachedData;
 		}
 

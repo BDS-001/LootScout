@@ -1,5 +1,6 @@
 import { RegionCode, ApiResponse } from '../shared/types';
 import { handleApiError } from '../utils/ErrorHandler';
+import { debug } from '../utils/debug';
 
 // GG.deals specific types
 export interface GgDealsGameData {
@@ -69,8 +70,8 @@ const fetchFromProxy = async (appId: string, region: string, retryCount = 0) => 
 
 		if (isRetryableError(response) && retryCount < MAX_RETRIES) {
 			const delay = calculateDelay(retryCount, BASE_DELAY);
-			console.log(
-				`LootScout: Proxy error ${response.status}, retrying in ${delay}ms... (${retryCount + 1}/${MAX_RETRIES})`
+			debug.log(
+				`Proxy error ${response.status}, retrying in ${delay}ms... (${retryCount + 1}/${MAX_RETRIES})`
 			);
 			await sleep(delay);
 			return fetchFromProxy(appId, region, retryCount + 1);
@@ -80,9 +81,7 @@ const fetchFromProxy = async (appId: string, region: string, retryCount = 0) => 
 	} catch (error) {
 		if (retryCount < MAX_RETRIES) {
 			const delay = calculateDelay(retryCount, BASE_DELAY);
-			console.log(
-				`LootScout: Network error, retrying in ${delay}ms... (${retryCount + 1}/${MAX_RETRIES})`
-			);
+			debug.log(`Network error, retrying in ${delay}ms... (${retryCount + 1}/${MAX_RETRIES})`);
 			await sleep(delay);
 			return fetchFromProxy(appId, region, retryCount + 1);
 		}
@@ -116,10 +115,10 @@ export default async function fetchGgDealsData(
 	try {
 		let result;
 		if (apiKey) {
-			console.log('LootScout: Fetching data via direct API (user key)');
+			debug.log('Fetching data via direct API (user key)');
 			result = await fetchFromApi(appId, apiKey, region);
 		} else if (dealDataProxy) {
-			console.log('LootScout: Fetching data via proxy server');
+			debug.log('Fetching data via proxy server');
 			result = await fetchFromProxy(appId, region);
 		} else {
 			throw new Error('No API key provided and no proxy configured');
