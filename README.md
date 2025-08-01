@@ -117,20 +117,20 @@ _Note: Modifiers can be toggled on/off in extension settings._
 #### Firefox Users
 
 - **Official Store**: [Install from Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/lootscout/)
-- **Manual Install**: Download `lootscout_firefox_build_v1.1.0.zip` from releases _(temporary installation only)_
+- **Manual Install**: Download `lootscout_firefox_build_v1.1.1.zip` from releases _(temporary installation only)_
 
 #### Chrome/Edge/Chromium Users
 
 Currently requires manual installation:
 
-- Download `lootscout_chrome_build_v1.1.0.zip` from releases
+- Download `lootscout_chrome_build_v1.1.1.zip` from releases
 - Follow Chrome manual installation steps below
 
 ### 📖 Manual Installation Instructions
 
 #### Firefox
 
-1. Download `lootscout_firefox_build_v1.1.0.zip` from the [latest release](https://github.com/BDS-001/LootScout/releases)
+1. Download `lootscout_firefox_build_v1.1.1.zip` from the [latest release](https://github.com/BDS-001/LootScout/releases)
 2. Extract the zip file to a folder
 3. Open Firefox and navigate to `about:debugging`
 4. Click "This Firefox" in the sidebar
@@ -142,7 +142,7 @@ Currently requires manual installation:
 
 #### Chrome/Edge/Chromium
 
-1. Download `lootscout_chrome_build_v1.1.0.zip` from the [latest release](https://github.com/BDS-001/LootScout/releases)
+1. Download `lootscout_chrome_build_v1.1.1.zip` from the [latest release](https://github.com/BDS-001/LootScout/releases)
 2. Extract the zip file to a folder
 3. Open Chrome and navigate to `chrome://extensions/`
 4. Enable "Developer mode" in the top right corner
