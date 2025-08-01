@@ -7,6 +7,7 @@ import {
 import { createGameTitleSection } from './GameTitleBuilder';
 import { getRegionInfo } from '../services/SettingsService';
 import * as dom from '../utils/DomBuilder';
+import { debug } from '../utils/debug';
 
 const ELEMENT_IDS = {
 	CONTAINER: 'lootscout-container',
@@ -127,7 +128,7 @@ export async function updateContainerState(
 export function injectLootScoutContainer(): HTMLElement | null {
 	const rightCol = document.querySelector('.rightcol.game_meta_data');
 	if (!rightCol) {
-		console.error('LootScout: .rightcol.game_meta_data element not found on Steam page');
+		debug.error('.rightcol.game_meta_data element not found on Steam page');
 		return null;
 	}
 

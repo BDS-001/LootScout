@@ -1,6 +1,7 @@
 import { ApiError } from '../shared/types';
 import { CombinedGameDataResponse } from '../api/CombinedGameData';
 import { SteamReviewsResponse } from './SteamReviewProcessor';
+import { debug } from '../utils/debug';
 
 function validateSteamReviewData(steamReviewData: unknown): boolean {
 	if (!steamReviewData || typeof steamReviewData !== 'object') {
@@ -51,7 +52,7 @@ interface ValidationResult {
 
 export function validateGameData(res: CombinedGameDataResponse): ValidationResult {
 	if (!res.success) {
-		console.error('LootScout: CombinedGameDataResponse not successful:', res);
+		debug.error('CombinedGameDataResponse not successful:', res);
 		return {
 			isValid: false,
 			error: {
@@ -64,7 +65,7 @@ export function validateGameData(res: CombinedGameDataResponse): ValidationResul
 	}
 
 	if (!res.data.steamStoreData.success) {
-		console.error('LootScout: Steam API failed:', res.data.steamStoreData);
+		debug.error('Steam API failed:', res.data.steamStoreData);
 		return {
 			isValid: false,
 			error: {
@@ -93,7 +94,7 @@ export function validateGameData(res: CombinedGameDataResponse): ValidationResul
 	}
 
 	if (!res.data.dealData.success) {
-		console.error('LootScout: GG.deals API failed:', res.data.dealData);
+		debug.error('GG.deals API failed:', res.data.dealData);
 		return {
 			isValid: false,
 			error: {

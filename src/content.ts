@@ -49,7 +49,7 @@ async function initializeContentScript(): Promise<void> {
 			},
 		});
 
-		console.error('LootScout: Error communicating with background script:', error);
+		debug.error('Error communicating with background script:', error);
 	}
 }
 

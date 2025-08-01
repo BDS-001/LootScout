@@ -89,7 +89,7 @@ export class DataCoordinator {
 					processedReviews = processSteamReviews(steamReviewData.data as any);
 					await this.setCachedProcessedReviews(appId, processedReviews);
 				} catch (error) {
-					console.warn('Failed to process reviews:', error);
+					debug.warn('Failed to process reviews:', error);
 					processedReviews = null;
 				}
 			}

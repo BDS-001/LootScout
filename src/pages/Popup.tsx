@@ -5,6 +5,7 @@ import { loadApiKey, validateAndSaveApiKey } from '../api/ApiKeyService';
 import { getRegion, getRaritySettings, updateRaritySettings } from '../services/SettingsService';
 import { RaritySettings } from '../shared/types';
 import browser from 'webextension-polyfill';
+import { debug } from '../utils/debug';
 
 const VERSION = '1.1.0';
 const GITHUB_URL = 'https://github.com/BDS-001/LootScout';
@@ -26,7 +27,7 @@ export default function Popup() {
 				if (key) setApiKey(key);
 				setRaritySettings(settings);
 			})
-			.catch(console.error);
+			.catch(debug.error);
 	}, []);
 
 	const testApiKey = async () => {
@@ -51,7 +52,7 @@ export default function Popup() {
 				countryCode: country,
 			});
 		} catch (error) {
-			console.error('Error updating country:', error);
+			debug.error('Error updating country:', error);
 		}
 	};
 

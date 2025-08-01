@@ -7,6 +7,7 @@ import {
 	getBrowserLanguageRegion,
 	isValidRegion,
 } from '../parsers/LanguageParser';
+import { debug } from '../utils/debug';
 
 const DEFAULT_SETTINGS: AppSettings = {
 	region: DEFAULT_REGION,
@@ -82,7 +83,7 @@ const detectRegion = async (): Promise<RegionCode> => {
 			return steamRegion;
 		}
 	} catch (error) {
-		console.warn('Steam region detection failed:', error);
+		debug.warn('Steam region detection failed:', error);
 	}
 
 	return getBrowserLanguageRegion();

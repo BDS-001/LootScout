@@ -2,6 +2,7 @@ import browser from 'webextension-polyfill';
 import { updateRegion, getRegion } from '../services/SettingsService';
 import { RegionCode } from '../shared/types';
 import { DataCoordinator } from './DataCoordinator';
+import { debug } from '../utils/debug';
 
 export class MessageRouter {
 	private dataCoordinator: DataCoordinator;
@@ -29,7 +30,7 @@ export class MessageRouter {
 			await updateRegion(countryCode as RegionCode);
 			return { success: true };
 		} catch (error) {
-			console.error('Error updating country code:', error);
+			debug.error('Error updating country code:', error);
 			return { success: false, error };
 		}
 	}

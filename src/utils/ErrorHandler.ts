@@ -1,3 +1,5 @@
+import { debug } from './debug';
+
 interface ApiErrorResponse {
 	success: false;
 	data: {
@@ -10,7 +12,7 @@ interface ApiErrorResponse {
 }
 
 export const handleApiError = (error: unknown, serviceName: string): ApiErrorResponse => {
-	console.error(`${serviceName} API error:`, error);
+	debug.error(`${serviceName} API error:`, error);
 
 	let errorMessage = `Error fetching data from ${serviceName}`;
 	let errorCode = 0;
