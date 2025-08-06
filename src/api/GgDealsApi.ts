@@ -26,7 +26,7 @@ export type GgDealsApiResponse = ApiResponse<Record<string, GgDealsGameData | nu
 const GG_DEALS_BASE_URL = 'https://api.gg.deals/v1/prices/by-steam-app-id/';
 const dealDataProxy = import.meta.env.VITE_PROXY_URL;
 
-debug.log('Proxy URL: ', dealDataProxy)
+debug.log('Proxy URL: ', dealDataProxy);
 
 const fetchFromApi = async (appId: string, apiKey: string, region: string) => {
 	const url = `${GG_DEALS_BASE_URL}?ids=${appId}&key=${apiKey}&region=${region}`;
