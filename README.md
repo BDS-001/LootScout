@@ -228,12 +228,28 @@ LootScout offers flexible API key management:
 
 ### Proxy Server Setup
 
-The included Vercel proxy server (`vercel-proxy/`) allows shared API access:
+LootScout includes two proxy server options for shared API access:
 
-1. Deploy the proxy to Vercel
-2. Set `GG_DEALS_API_KEY` environment variable on Vercel
-3. Update `VITE_PROXY_URL` in your extension's `.env` file
-4. The proxy validates requests from browser extensions only
+#### Option 1: Cloudflare Worker (Recommended)
+
+The Cloudflare Worker proxy (`proxies/cloudflare-worker/`) provides fast, global edge computing:
+
+1. Navigate to the `proxies/cloudflare-worker/` directory
+2. Install dependencies: `npm install`
+3. Configure your API key in `wrangler.jsonc` or set as environment variable
+4. Deploy to Cloudflare: `npm run deploy`
+5. Update `VITE_PROXY_URL` in your extension's `.env` file with the worker URL
+6. The proxy validates requests from browser extensions only
+
+#### Option 2: Vercel Proxy
+
+The Vercel proxy server (`proxies/vercel-proxy/`) offers serverless edge functions:
+
+1. Navigate to the `proxies/vercel-proxy/` directory
+2. Deploy the proxy to Vercel
+3. Set `GG_DEALS_API_KEY` environment variable on Vercel
+4. Update `VITE_PROXY_URL` in your extension's `.env` file with the Vercel function URL
+5. The proxy validates requests from browser extensions only
 
 ## Project Structure
 
@@ -289,10 +305,18 @@ src/
 ├── content.ts           # Content script for Steam pages
 └── manifest.json        # Extension manifest
 
-vercel-proxy/             # Proxy server for shared API access
-├── api/
-│   └── ggdeals-proxy.js  # Vercel serverless function
-└── vercel.json          # Vercel deployment configuration
+proxies/                  # Proxy server options for shared API access
+├── cloudflare-worker/    # Cloudflare Worker proxy (recommended)
+│   ├── src/
+│   │   └── index.ts      # Worker main function
+│   ├── test/             # Test files
+│   ├── package.json      # Worker dependencies
+│   ├── wrangler.jsonc    # Cloudflare configuration
+│   └── tsconfig.json     # TypeScript configuration
+└── vercel-proxy/         # Vercel serverless proxy
+    ├── api/
+    │   └── ggdeals-proxy.js # Vercel serverless function
+    └── vercel.json       # Vercel deployment configuration
 ```
 
 ## Scripts
@@ -317,7 +341,8 @@ vercel-proxy/             # Proxy server for shared API access
 - **React** - UI components (for popup)
 - **Vite** - Build tool and development server
 - **Web Extensions API** - Cross-browser extension functionality
-- **Vercel** - Serverless proxy deployment
+- **Cloudflare Workers** - Edge computing for proxy deployment
+- **Vercel** - Serverless proxy deployment (alternative option)
 - **CSS** - Styling and animations
 
 ## Contributing

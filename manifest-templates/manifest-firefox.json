@@ -1,7 +1,7 @@
 {
 	"manifest_version": 3,
 	"name": "LootScout",
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"description": "Enhanced Steam game browsing with pricing data, rarity information, and game details from multiple sources",
 	"short_name": "LootScout",
 	"author": "BDS-001",
