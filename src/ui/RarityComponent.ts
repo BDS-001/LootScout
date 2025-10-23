@@ -82,7 +82,8 @@ function createTooltipContent(
 
 	// Playtime line
 	if (analysis.playtimeUsed && analysis.playtime !== undefined) {
-		const playtimeDiv = dom.createElement('div');
+		const playtimeClass = analysis.isRecentlyReleased ? 'lootscout-disabled' : '';
+		const playtimeDiv = dom.createElement('div', playtimeClass);
 		dom.addChild(
 			playtimeDiv,
 			dom.setText(dom.createElement('span', 'breakdown-label'), 'Playtime:'),
@@ -112,9 +113,10 @@ export async function createRarityComponent(
 	percentage: number,
 	reviewScore: number | null = null,
 	playtime: number | null = null,
-	reviewSummary: string | null = null
+	reviewSummary: string | null = null,
+	isRecentlyReleased: boolean = false
 ): Promise<HTMLElement> {
-	const analysis = await getRarityAnalysis(percentage, reviewScore, playtime);
+	const analysis = await getRarityAnalysis(percentage, reviewScore, playtime, isRecentlyReleased);
 	const id = `rarity-${Math.random().toString(36).substring(2, 9)}`;
 	const rarity = analysis.name.toLowerCase();
 

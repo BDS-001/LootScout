@@ -1,17 +1,5 @@
 import * as dom from '../utils/DomBuilder';
-
-const RECENT_RELEASE_THRESHOLD_DAYS = 14;
-
-function isRecentlyReleased(releaseDate: string): boolean {
-	try {
-		const releaseTime = new Date(releaseDate).getTime();
-		const now = Date.now();
-		const thresholdMs = RECENT_RELEASE_THRESHOLD_DAYS * 24 * 60 * 60 * 1000;
-		return now - releaseTime <= thresholdMs;
-	} catch {
-		return false;
-	}
-}
+import { isRecentlyReleased, RECENT_RELEASE_THRESHOLD_DAYS } from '../helpers/gameAge';
 
 function attachAsteriskTooltip(asterisk: HTMLElement, tooltip: HTMLElement): void {
 	asterisk.addEventListener('mouseenter', () => {
@@ -34,7 +22,7 @@ function attachAsteriskTooltip(asterisk: HTMLElement, tooltip: HTMLElement): voi
 	});
 }
 
-function createPlaytimeAsterisk(): HTMLElement {
+function createPlaytimeAsterisk(includePlaytime: boolean): HTMLElement {
 	const asterisk = dom.setText(dom.createElement('span', 'playtime-asterisk'), '*');
 
 	const tooltip = dom.createElement('div', 'rarity-tooltip');
@@ -45,6 +33,14 @@ function createPlaytimeAsterisk(): HTMLElement {
 	const line2 = dom.setText(dom.createElement('div'), 'Playtime data may be limited.');
 
 	dom.addChild(tooltip, line1, line2);
+	if (includePlaytime) {
+		const line3 = dom.setText(
+			dom.createElement('div'),
+			'Playtime is not affecting the deal rarity'
+		);
+		dom.addChild(tooltip, line3);
+	}
+
 	attachAsteriskTooltip(asterisk, tooltip);
 	return asterisk;
 }
@@ -52,7 +48,8 @@ function createPlaytimeAsterisk(): HTMLElement {
 export function createGameTitleSection(
 	title: string,
 	averagePlaytime?: number,
-	releaseDate?: string
+	releaseDate?: string,
+	includePlaytime: boolean = true
 ): HTMLElement {
 	const titleSection = dom.createElement('div', 'game-title-section');
 	const titleDiv = dom.setText(dom.createElement('div', 'game-title'), title);
@@ -63,7 +60,7 @@ export function createGameTitleSection(
 		dom.setText(playtimeDiv, `Average playtime: ${averagePlaytime.toFixed(1)} hours`);
 
 		if (releaseDate && isRecentlyReleased(releaseDate)) {
-			dom.addChild(playtimeDiv, createPlaytimeAsterisk());
+			dom.addChild(playtimeDiv, createPlaytimeAsterisk(includePlaytime));
 		}
 
 		dom.addChild(titleSection, playtimeDiv);

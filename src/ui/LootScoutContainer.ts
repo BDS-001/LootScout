@@ -5,7 +5,7 @@ import {
 	createSuccessContent,
 } from './SecureContentBuilder';
 import { createGameTitleSection } from './GameTitleBuilder';
-import { getRegionInfo } from '../services/SettingsService';
+import { getRegionInfo, getRaritySettings } from '../services/SettingsService';
 import * as dom from '../utils/DomBuilder';
 import { debug } from '../utils/debug';
 
@@ -105,13 +105,15 @@ export async function updateContainerState(
 		case 'success':
 			if (state.gameData) {
 				const children: HTMLElement[] = [];
+				const raritySettings = await getRaritySettings();
 
 				if (state.gameData.title) {
 					children.push(
 						createGameTitleSection(
 							state.gameData.title,
 							state.gameData.steam.averagePlaytime,
-							state.gameData.releaseDate
+							state.gameData.releaseDate,
+							raritySettings.includePlaytime
 						)
 					);
 				}

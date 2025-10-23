@@ -5,6 +5,7 @@ import { getYouTubeUrl } from '../helpers/youtube';
 import { getHltbUrl } from '../helpers/hltb';
 import { dom, setText, addChild, onClick, setAttribute } from '../utils/DomBuilder';
 import { createStandardFooter, createSimpleFooter, getErrorDetails } from './ContentHelpers';
+import { isRecentlyReleased } from '../helpers/gameAge';
 
 export function createLoadingContent(): HTMLElement {
 	const loadingText = addChild(
@@ -209,24 +210,29 @@ export async function createSuccessContent(gameData: ProcessedGameData): Promise
 		}
 	}
 
+	const isRecent = gameData.releaseDate ? isRecentlyReleased(gameData.releaseDate) : false;
+
 	const rarities = await Promise.all([
 		createRarityComponent(
 			gameData.steam.discount_percent,
 			gameData.steam.reviewScore,
 			gameData.steam.averagePlaytime,
-			gameData.steam.reviewSummary
+			gameData.steam.reviewSummary,
+			isRecent
 		),
 		createRarityComponent(
 			lootScout.currentBest!.rawDiscount,
 			gameData.steam.reviewScore,
 			gameData.steam.averagePlaytime,
-			gameData.steam.reviewSummary
+			gameData.steam.reviewSummary,
+			isRecent
 		),
 		createRarityComponent(
 			lootScout.historicalBest!.rawDiscount,
 			gameData.steam.reviewScore,
 			gameData.steam.averagePlaytime,
-			gameData.steam.reviewSummary
+			gameData.steam.reviewSummary,
+			isRecent
 		),
 	]);
 

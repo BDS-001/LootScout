@@ -105,3 +105,9 @@
 	color: var(--color-steam-blue);
 	font-weight: var(--font-weight-semibold);
 }
+
+.lootscout-disabled {
+	opacity: 0.5;
+	text-decoration: line-through;
+	color: var(--color-steam-gray);
+}
