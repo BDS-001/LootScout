@@ -3,9 +3,12 @@ import { RARITY_CHART } from '../constants/rarityChart';
 import { PLAYTIME_THRESHOLDS } from '../constants/modifiers';
 import * as dom from '../utils/DomBuilder';
 
-// Simplified tooltip positioning
 function attachTooltipEvents(badge: HTMLElement, tooltip: HTMLElement) {
 	badge.addEventListener('mouseenter', () => {
+		if (!tooltip.parentElement) {
+			document.body.appendChild(tooltip);
+		}
+
 		const rect = badge.getBoundingClientRect();
 		const x = Math.min(rect.left, window.innerWidth - (tooltip.offsetWidth || 280) - 10);
 		const y = rect.top - tooltip.offsetHeight - 5;
@@ -17,10 +20,10 @@ function attachTooltipEvents(badge: HTMLElement, tooltip: HTMLElement) {
 
 	badge.addEventListener('mouseleave', () => {
 		tooltip.classList.remove('show');
+		tooltip.remove();
 	});
 }
 
-// Simplified helper functions
 function formatModifier(bonus: number): string {
 	return `${bonus >= 0 ? '+' : ''}${bonus} tier${Math.abs(bonus) === 1 ? '' : 's'}`;
 }
@@ -133,7 +136,7 @@ export async function createRarityComponent(
 		createTooltipContent(analysis, reviewSummary)
 	);
 
-	dom.addChild(container, badge, tooltip);
+	dom.addChild(container, badge);
 
 	attachTooltipEvents(badge, tooltip);
 

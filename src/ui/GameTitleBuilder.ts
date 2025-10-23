@@ -15,6 +15,10 @@ function isRecentlyReleased(releaseDate: string): boolean {
 
 function attachAsteriskTooltip(asterisk: HTMLElement, tooltip: HTMLElement): void {
 	asterisk.addEventListener('mouseenter', () => {
+		if (!tooltip.parentElement) {
+			document.body.appendChild(tooltip);
+		}
+
 		const rect = asterisk.getBoundingClientRect();
 		const x = Math.min(rect.left, window.innerWidth - (tooltip.offsetWidth || 280) - 10);
 		const y = rect.top - tooltip.offsetHeight - 5;
@@ -26,6 +30,7 @@ function attachAsteriskTooltip(asterisk: HTMLElement, tooltip: HTMLElement): voi
 
 	asterisk.addEventListener('mouseleave', () => {
 		tooltip.classList.remove('show');
+		tooltip.remove();
 	});
 }
 
@@ -40,7 +45,6 @@ function createPlaytimeAsterisk(): HTMLElement {
 	const line2 = dom.setText(dom.createElement('div'), 'Playtime data may be limited.');
 
 	dom.addChild(tooltip, line1, line2);
-	dom.addChild(asterisk, tooltip);
 	attachAsteriskTooltip(asterisk, tooltip);
 	return asterisk;
 }
