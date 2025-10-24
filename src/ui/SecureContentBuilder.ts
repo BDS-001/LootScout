@@ -6,6 +6,43 @@ import { getHltbUrl } from '../helpers/hltb';
 import { dom, setText, addChild, onClick, setAttribute } from '../utils/DomBuilder';
 import { createStandardFooter, createSimpleFooter, getErrorDetails } from './ContentHelpers';
 import { isRecentlyReleased } from '../helpers/gameAge';
+import { STEAM_PERMISSION_INSTRUCTIONS } from '../constants/messages';
+
+const DEFAULT_ERROR_MESSAGE =
+	'There was an error getting the pricing information. Please try again in a few minutes.';
+
+function getUserFriendlyError(error?: ApiError): string {
+	if (!error) return DEFAULT_ERROR_MESSAGE;
+
+	if (error.code === 429) {
+		return 'Rate limit reached. Add your own GG.deals API key in the extension settings to avoid this, or try again in a few minutes.';
+	}
+
+	if (error.name === 'MissingSteamPermission') {
+		return STEAM_PERMISSION_INSTRUCTIONS;
+	}
+
+	if (error.name?.includes('GG.deals') && !error.code) {
+		return 'Unable to connect to pricing service. Adding your own GG.deals API key may help avoid connection issues.';
+	}
+
+	return error.message || DEFAULT_ERROR_MESSAGE;
+}
+
+function createMissingPermissionContent(): HTMLElement {
+	const section = addChild(
+		dom.div('deal_section'),
+		setText(dom.div('deal_header'), 'Permission Required'),
+		setText(dom.div('deal_status'), 'LootScout needs access to store.steampowered.com.'),
+		setText(dom.div('error_message'), STEAM_PERMISSION_INSTRUCTIONS),
+		setText(
+			dom.div('error_details'),
+			'Open the LootScout toolbar icon and choose Always allow on store.steampowered.com.'
+		)
+	);
+
+	return section;
+}
 
 export function createLoadingContent(): HTMLElement {
 	const loadingText = addChild(
@@ -22,17 +59,11 @@ export function createLoadingContent(): HTMLElement {
 }
 
 export function createErrorContent(error?: ApiError): HTMLElement {
-	let userFriendlyMessage =
-		'There was an error getting the pricing information. Please try again in a few minutes.';
-
-	//more specific guidance for certain errors
-	if (error?.code === 429) {
-		userFriendlyMessage =
-			'Rate limit reached. Add your own GG.deals API key in the extension settings to avoid this, or try again in a few minutes.';
-	} else if (error?.name?.includes('GG.deals') && !error.code) {
-		userFriendlyMessage =
-			'Unable to connect to pricing service. Adding your own GG.deals API key may help avoid connection issues.';
+	if (error?.name === 'MissingSteamPermission') {
+		return createMissingPermissionContent();
 	}
+
+	const userFriendlyMessage = getUserFriendlyError(error);
 
 	const errorDetails = getErrorDetails(error);
 

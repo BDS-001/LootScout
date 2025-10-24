@@ -2,13 +2,13 @@
 
 .popup-container {
 	width: 100%;
-	height: 100vh;
 	background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 	color: var(--text-primary);
 	display: flex;
 	flex-direction: column;
-	overflow: hidden;
+	height: fit-content;
+	min-height: 100%;
 }
 
 .header {
@@ -44,6 +44,66 @@
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
+}
+
+.permission-warning {
+	background: var(--bg-elevated);
+	border: 1px solid var(--fantasy-amber);
+	border-radius: var(--border-radius);
+	color: var(--text-primary);
+	font-size: 12px;
+	line-height: 1.4;
+	padding: 10px 12px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.settings-loading {
+	text-align: center;
+	font-size: 13px;
+	color: var(--text-muted);
+	padding: 20px 0;
+}
+
+.settings-locked {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.settings-locked-description {
+	font-size: 12px;
+	color: var(--text-secondary);
+	line-height: 1.4;
+}
+
+.permission-actions {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.grant-permission-button {
+	padding: 10px 12px;
+	border: 1px solid var(--fantasy-amber);
+	border-radius: var(--border-radius);
+	background: var(--fantasy-amber);
+	color: var(--bg-primary);
+	font-size: 13px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: var(--transition);
+}
+
+.grant-permission-button:hover:not(:disabled) {
+	background: var(--fantasy-amber-bright);
+}
+
+.grant-permission-button:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+	background: var(--fantasy-slate);
+	border-color: var(--fantasy-slate);
+	color: var(--text-muted);
 }
 
 .setting-item {

@@ -6,15 +6,27 @@ import injectCSS from './utils/injectCSS';
 import { debug } from './utils/debug';
 
 async function initializeContentScript(): Promise<void> {
+	debug.log('Content script bootstrap');
+
 	injectCSS();
 
 	const { appId } = parseSteamPageUrl();
-	if (!appId) return;
+	if (!appId) {
+		debug.log('No appId detected, aborting');
+		return;
+	}
+
+	debug.log('Detected appId', appId);
 
 	const container = injectLootScoutContainer();
-	if (!container) return;
+	if (!container) {
+		debug.warn('Failed to inject LootScout container');
+		return;
+	}
 
 	try {
+		await updateContainerState(container, { status: 'loading' });
+
 		const response = (await browser.runtime.sendMessage({
 			action: 'getAppData',
 			appId,

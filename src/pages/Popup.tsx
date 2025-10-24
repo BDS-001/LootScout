@@ -1,14 +1,18 @@
 import './Popup.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react';
 import regionMap from '../constants/regionMap';
 import { loadApiKey, validateAndSaveApiKey } from '../api/ApiKeyService';
 import { getRegion, getRaritySettings, updateRaritySettings } from '../services/SettingsService';
 import { RaritySettings } from '../shared/types';
 import browser from 'webextension-polyfill';
 import { debug } from '../utils/debug';
+import { STEAM_ORIGINS } from '../constants/steamOrigins';
+import { STEAM_PERMISSION_INSTRUCTIONS } from '../constants/messages';
 
 const VERSION = '1.1.2';
 const GITHUB_URL = 'https://github.com/BDS-001/LootScout';
+const FALLBACK_PERMISSION_ERROR =
+	'Could not confirm Steam permissions. Grant access from the extension menu to enable enhancements.';
 
 export default function Popup() {
 	const [selectedCountry, setSelectedCountry] = useState('us');
@@ -19,15 +23,123 @@ export default function Popup() {
 	});
 	const [testStatus, setTestStatus] = useState('');
 	const [isTestingKey, setIsTestingKey] = useState(false);
+	const [permissionWarning, setPermissionWarning] = useState('');
+	const [hasSteamPermission, setHasSteamPermission] = useState<boolean | null>(null);
+	const [isRequestingPermission, setIsRequestingPermission] = useState(false);
+	const isMountedRef = useRef(true);
 
 	useEffect(() => {
-		Promise.all([getRegion(), loadApiKey(), getRaritySettings()])
-			.then(([country, key, settings]) => {
+		const loadInitialSettings = async () => {
+			try {
+				const [country, key, settings] = await Promise.all([
+					getRegion(),
+					loadApiKey(),
+					getRaritySettings(),
+				]);
+
+				if (!isMountedRef.current) {
+					return;
+				}
+
 				setSelectedCountry(country);
-				if (key) setApiKey(key);
+				if (key) {
+					setApiKey(key);
+				}
 				setRaritySettings(settings);
-			})
-			.catch(debug.error);
+			} catch (error) {
+				debug.error(error);
+			}
+		};
+
+		void loadInitialSettings();
+	}, []);
+
+	useEffect(
+		() => () => {
+			isMountedRef.current = false;
+		},
+		[]
+	);
+
+	useEffect(() => {
+		const checkSteamPermission = async () => {
+			try {
+				const hasPermission = await browser.permissions.contains({ origins: STEAM_ORIGINS });
+				if (!isMountedRef.current) {
+					return;
+				}
+
+				setHasSteamPermission(hasPermission);
+				setPermissionWarning(hasPermission ? '' : STEAM_PERMISSION_INSTRUCTIONS);
+			} catch (error) {
+				debug.error('Error checking Steam permissions', error);
+				if (!isMountedRef.current) {
+					return;
+				}
+
+				setHasSteamPermission(false);
+				setPermissionWarning(FALLBACK_PERMISSION_ERROR);
+			}
+		};
+
+		void checkSteamPermission();
+	}, []);
+
+	const requestSteamPermission = useCallback(async () => {
+		if (isRequestingPermission) {
+			return;
+		}
+
+		setIsRequestingPermission(true);
+		try {
+			const granted = await browser.permissions.request({ origins: STEAM_ORIGINS });
+
+			if (!isMountedRef.current) {
+				return;
+			}
+
+			setHasSteamPermission(granted);
+			setPermissionWarning(granted ? '' : STEAM_PERMISSION_INSTRUCTIONS);
+		} catch (error) {
+			debug.error('Error requesting Steam permissions', error);
+			if (!isMountedRef.current) {
+				return;
+			}
+
+			setHasSteamPermission(false);
+			setPermissionWarning(FALLBACK_PERMISSION_ERROR);
+		} finally {
+			if (isMountedRef.current) {
+				setIsRequestingPermission(false);
+			}
+		}
+	}, [isRequestingPermission]);
+
+	useLayoutEffect(() => {
+		const container = document.querySelector('.popup-container');
+
+		if (!container || typeof ResizeObserver === 'undefined') {
+			return;
+		}
+
+		const maxPopupHeight = 600;
+		const updateSize = () => {
+			const height = Math.min(container.scrollHeight, maxPopupHeight);
+			const width = Math.max(container.scrollWidth, 320);
+
+			if (typeof window.resizeTo === 'function') {
+				window.resizeTo(width, height);
+			}
+		};
+
+		updateSize();
+
+		const observer = new ResizeObserver(updateSize);
+		observer.observe(container);
+
+		return () => {
+			observer.disconnect();
+		};
 	}, []);
 
 	const testApiKey = async () => {
@@ -79,80 +191,106 @@ export default function Popup() {
 			</div>
 
 			<div className="settings-section">
-				<div className="setting-item">
-					<label htmlFor="country-select" className="setting-label">
-						Change Country
-					</label>
-					<select
-						id="country-select"
-						value={selectedCountry}
-						onChange={handleCountryChange}
-						className="country-select"
-					>
-						{Object.entries(regionMap).map(([code, info]) => (
-							<option key={code} value={code}>
-								{info.name} ({info.currency})
-							</option>
-						))}
-					</select>
-				</div>
-
-				<div className="setting-item">
-					<label className="setting-label">Rarity Modifiers</label>
-					<p className="setting-description">
-						Adjust how rarity is calculated by including additional factors
-					</p>
-					<div className="toggle-group">
-						<div className="toggle-item">
-							<label className="toggle-label">
-								<input
-									type="checkbox"
-									checked={raritySettings.includePlaytime}
-									onChange={(e) => togglePlaytime(e.target.checked)}
-									className="toggle-checkbox"
-								/>
-								<span className="toggle-switch"></span>
-								<span className="toggle-text">Include Playtime</span>
+				{hasSteamPermission === null ? (
+					<div className="settings-loading">Checking permissions...</div>
+				) : hasSteamPermission ? (
+					<>
+						<div className="setting-item">
+							<label htmlFor="country-select" className="setting-label">
+								Change Country
 							</label>
+							<select
+								id="country-select"
+								value={selectedCountry}
+								onChange={handleCountryChange}
+								className="country-select"
+							>
+								{Object.entries(regionMap).map(([code, info]) => (
+									<option key={code} value={code}>
+										{info.name} ({info.currency})
+									</option>
+								))}
+							</select>
 						</div>
-						<div className="toggle-item">
-							<label className="toggle-label">
-								<input
-									type="checkbox"
-									checked={raritySettings.includeReviewScore}
-									onChange={(e) => toggleReviewScore(e.target.checked)}
-									className="toggle-checkbox"
-								/>
-								<span className="toggle-switch"></span>
-								<span className="toggle-text">Include Review Score</span>
+
+						<div className="setting-item">
+							<label className="setting-label">Rarity Modifiers</label>
+							<p className="setting-description">
+								Adjust how rarity is calculated by including additional factors
+							</p>
+							<div className="toggle-group">
+								<div className="toggle-item">
+									<label className="toggle-label">
+										<input
+											type="checkbox"
+											checked={raritySettings.includePlaytime}
+											onChange={(e) => togglePlaytime(e.target.checked)}
+											className="toggle-checkbox"
+										/>
+										<span className="toggle-switch"></span>
+										<span className="toggle-text">Include Playtime</span>
+									</label>
+								</div>
+								<div className="toggle-item">
+									<label className="toggle-label">
+										<input
+											type="checkbox"
+											checked={raritySettings.includeReviewScore}
+											onChange={(e) => toggleReviewScore(e.target.checked)}
+											className="toggle-checkbox"
+										/>
+										<span className="toggle-switch"></span>
+										<span className="toggle-text">Include Review Score</span>
+									</label>
+								</div>
+							</div>
+						</div>
+
+						<div className="setting-item">
+							<label htmlFor="api-key-input" className="setting-label">
+								Add API Key (Optional)
 							</label>
+							<p className="setting-description">
+								Reduce rate limits by adding your own GG.deals API key (get one at gg.deals/api)
+							</p>
+							<div className="api-key-input-group">
+								<input
+									id="api-key-input"
+									type="password"
+									value={apiKey}
+									onChange={(e) => setApiKey(e.target.value)}
+									placeholder="Enter your GG.deals API key"
+									disabled={isTestingKey}
+									className="api-key-input"
+								/>
+								<button onClick={testApiKey} disabled={isTestingKey} className="apply-button">
+									{isTestingKey ? 'Testing...' : 'Apply'}
+								</button>
+							</div>
+							{testStatus && <p className="test-status">{testStatus}</p>}
+						</div>
+					</>
+				) : (
+					<div className="settings-locked">
+						<div className="permission-warning">
+							{permissionWarning || STEAM_PERMISSION_INSTRUCTIONS}
+						</div>
+						<p className="settings-locked-description">
+							Grant access to store.steampowered.com in the extension settings to unlock
+							configuration options.
+						</p>
+						<div className="permission-actions">
+							<button
+								type="button"
+								onClick={requestSteamPermission}
+								disabled={isRequestingPermission}
+								className="grant-permission-button"
+							>
+								{isRequestingPermission ? 'Requesting...' : 'Grant Steam Permission'}
+							</button>
 						</div>
 					</div>
-				</div>
-
-				<div className="setting-item">
-					<label htmlFor="api-key-input" className="setting-label">
-						Add API Key (Optional)
-					</label>
-					<p className="setting-description">
-						Reduce rate limits by adding your own GG.deals API key (get one at gg.deals/api)
-					</p>
-					<div className="api-key-input-group">
-						<input
-							id="api-key-input"
-							type="password"
-							value={apiKey}
-							onChange={(e) => setApiKey(e.target.value)}
-							placeholder="Enter your GG.deals API key"
-							disabled={isTestingKey}
-							className="api-key-input"
-						/>
-						<button onClick={testApiKey} disabled={isTestingKey} className="apply-button">
-							{isTestingKey ? 'Testing...' : 'Apply'}
-						</button>
-					</div>
-					{testStatus && <p className="test-status">{testStatus}</p>}
-				</div>
+				)}
 			</div>
 
 			<div className="footer">

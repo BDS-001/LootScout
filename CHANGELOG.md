@@ -9,3 +9,4 @@
 
 - Playtime line in rarity tooltip appears greyed out with strikethrough for recently released games
 - Playtime modifier exclusion for recently released games in rarity calculations
+- Popup settings page now asks for Steam permission, shows a warning until granted, and resizes dynamically to fit the content

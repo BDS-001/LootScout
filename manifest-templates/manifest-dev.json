@@ -23,13 +23,13 @@
 	},
 	"content_scripts": [
 		{
-			"matches": ["*://store.steampowered.com/app/*"],
+			"matches": ["https://store.steampowered.com/app/*"],
 			"js": ["src/content.ts"],
 			"run_at": "document_idle"
 		}
 	],
 	"permissions": ["activeTab", "storage", "cookies", "alarms"],
-	"host_permissions": ["*://store.steampowered.com/*", "https://api.gg.deals/*"],
+	"host_permissions": ["https://store.steampowered.com/*", "https://api.gg.deals/*"],
 	"content_security_policy": {
 		"extension_pages": "script-src 'self'; object-src 'self'"
 	},
