@@ -9,7 +9,7 @@ import { debug } from '../utils/debug';
 import { STEAM_ORIGINS } from '../constants/steamOrigins';
 import { STEAM_PERMISSION_INSTRUCTIONS } from '../constants/messages';
 
-const VERSION = '1.1.2';
+const VERSION = '1.1.3';
 const GITHUB_URL = 'https://github.com/BDS-001/LootScout';
 const FALLBACK_PERMISSION_ERROR =
 	'Could not confirm Steam permissions. Grant access from the extension menu to enable enhancements.';
