@@ -310,6 +310,16 @@ export default function Popup() {
 						href="#"
 						onClick={(e) => {
 							e.preventDefault();
+							browser.tabs.create({ url: browser.runtime.getURL('src/settings.html') });
+						}}
+						className="github-link"
+					>
+						Settings
+					</a>
+					<a
+						href="#"
+						onClick={(e) => {
+							e.preventDefault();
 							browser.tabs.create({ url: browser.runtime.getURL('src/about.html') });
 						}}
 						className="github-link"

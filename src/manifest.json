@@ -16,6 +16,10 @@
 	"action": {
 		"default_popup": "src/popup.html"
 	},
+	"options_ui": {
+		"page": "src/settings.html",
+		"open_in_tab": true
+	},
 
 	"background": {
 		"scripts": ["src/background.ts"],
