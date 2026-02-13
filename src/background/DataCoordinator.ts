@@ -1,6 +1,6 @@
 import fetchSteamStoreData from '../api/SteamStoreApi';
 import fetchSteamReviewData from '../api/SteamReviewsApi';
-import fetchGgDealsData, { GgDealsApiResponse } from '../api/GgDealsApi';
+import fetchGgDealsData from '../api/GgDealsApi';
 import { normalizeResponse } from '../transformers/ResponseFormatter';
 import { ProcessedSteamReviews } from '../transformers/SteamReviewProcessor';
 import { CombinedGameDataResponse } from '../api/CombinedGameData';
