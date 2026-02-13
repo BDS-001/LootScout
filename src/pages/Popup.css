@@ -158,6 +158,10 @@
 	cursor: pointer;
 }
 
+.reload-hint {
+	color: var(--fantasy-amber-bright);
+}
+
 .country-select option {
 	background: var(--bg-elevated);
 	color: var(--text-primary);

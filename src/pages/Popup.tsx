@@ -27,6 +27,7 @@ export default function Popup() {
 	const [hasSteamPermission, setHasSteamPermission] = useState<boolean | null>(null);
 	const [isRequestingPermission, setIsRequestingPermission] = useState(false);
 	const isMountedRef = useRef(true);
+	const initialCountry = useRef<string>();
 
 	useEffect(() => {
 		const loadInitialSettings = async () => {
@@ -42,6 +43,7 @@ export default function Popup() {
 				}
 
 				setSelectedCountry(country);
+				initialCountry.current = country;
 				if (key) {
 					setApiKey(key);
 				}
@@ -197,7 +199,13 @@ export default function Popup() {
 					<>
 						<div className="setting-item">
 							<label htmlFor="country-select" className="setting-label">
-								Change Country
+								Change Country{' '}
+								{initialCountry.current && selectedCountry !== initialCountry.current && (
+									<>
+										{' '}
+										- <span className="reload-hint">reload page to update</span>
+									</>
+								)}
 							</label>
 							<select
 								id="country-select"
