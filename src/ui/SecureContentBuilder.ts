@@ -3,6 +3,7 @@ import { formatPrice } from '../utils/PriceUtils';
 import { createRarityComponent } from './RarityComponent';
 import { getYouTubeUrl } from '../helpers/youtube';
 import { getHltbUrl } from '../helpers/hltb';
+import { getSteamDbUrl } from '../helpers/steamDb';
 import { dom, setText, addChild, onClick, setAttribute } from '../utils/DomBuilder';
 import { createStandardFooter, createSimpleFooter, getErrorDetails } from './ContentHelpers';
 import { isRecentlyReleased } from '../helpers/gameAge';
@@ -175,10 +176,11 @@ function createComparison(
 	return container;
 }
 
-function createResourcesSection(gameTitle: string): HTMLElement {
+function createResourcesSection(gameTitle: string, appId: string): HTMLElement {
 	const links = [
 		{ url: getHltbUrl(gameTitle), text: 'How Long to Beat' },
 		{ url: getYouTubeUrl(gameTitle), text: 'YouTube' },
+		{ url: getSteamDbUrl(appId), text: 'SteamDB' },
 	];
 
 	const resourcesContainer = dom.div('additional_resources');
@@ -203,7 +205,8 @@ function createResourcesSection(gameTitle: string): HTMLElement {
 function createSpecialGameContent(
 	header: string,
 	statusText: string,
-	gameTitle: string
+	gameTitle: string,
+	appId: string
 ): HTMLElement {
 	return addChild(
 		dom.div(),
@@ -212,20 +215,26 @@ function createSpecialGameContent(
 			setText(dom.div('deal_header'), header),
 			addChild(dom.div('deal_status'), setText(dom.span(), statusText))
 		),
-		createResourcesSection(gameTitle),
+		createResourcesSection(gameTitle, appId),
 		createSimpleFooter()
 	);
 }
 
 export function createFreeGameContent(gameData: ProcessedGameData): HTMLElement {
-	return createSpecialGameContent('🎮 Free to Play', 'This game is free to play', gameData.title);
+	return createSpecialGameContent(
+		'🎮 Free to Play',
+		'This game is free to play',
+		gameData.title,
+		gameData.appId
+	);
 }
 
 export function createComingSoonContent(gameData: ProcessedGameData): HTMLElement {
 	return createSpecialGameContent(
 		'📅 Coming Soon',
 		gameData.lootScout.steam.status.text,
-		gameData.title
+		gameData.title,
+		gameData.appId
 	);
 }
 
@@ -314,7 +323,7 @@ export async function createSuccessContent(gameData: ProcessedGameData): Promise
 			),
 			rarities[2]
 		),
-		createResourcesSection(gameData.title),
+		createResourcesSection(gameData.title, gameData.appId),
 		createStandardFooter(),
 	];
 
