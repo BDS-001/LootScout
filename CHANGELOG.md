@@ -1,12 +1,13 @@
 # Changelog
 
-### Fixed
+### Added
 
-- Fixed hover tooltips not displaying in Firefox due to position:fixed incompatibility with transformed parent elements
-- Fixed tooltip positioning inconsistency on first hover by measuring dimensions after DOM insertion
+- SteamDB link to additional resources quick links
+- Reload page hint in popup when updating country
+- Dedicated settings page accessible from popup and Steam page
+- Settings gear icon on Steam page module for quick access to settings
+- Two-step API key removal with confirmation to prevent accidental deletion
 
 ### Updated
 
-- Playtime line in rarity tooltip appears greyed out with strikethrough for recently released games
-- Playtime modifier exclusion for recently released games in rarity calculations
-- Popup settings page now asks for Steam permission, shows a warning until granted, and resizes dynamically to fit the content
+- API key input hides when a key is saved, replaced with a remove button for cleaner UX
