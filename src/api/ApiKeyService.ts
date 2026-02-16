@@ -1,22 +1,20 @@
 import fetchGgDealsData from './GgDealsApi';
-import { getStorageItem, setStorageItem } from '../services/StorageService';
+import { getApiKey, updateApiKey } from '../services/SettingsService';
 
 export interface ApiKeyTestResult {
 	success: boolean;
 	message: string;
 }
 
-const STORAGE_KEY = 'apiKey';
 const TEST_APP_ID = '620'; // Portal 2 Steam Id
 const TEST_REGION = 'us';
 
 export const loadApiKey = async (): Promise<string> => {
-	const apiKey = await getStorageItem<string>(STORAGE_KEY);
-	return apiKey || '';
+	return await getApiKey();
 };
 
 export const saveApiKey = async (apiKey: string): Promise<void> => {
-	await setStorageItem(STORAGE_KEY, apiKey);
+	await updateApiKey(apiKey);
 };
 
 export const testApiKey = async (apiKey: string): Promise<ApiKeyTestResult> => {

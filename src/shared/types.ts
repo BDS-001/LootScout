@@ -89,4 +89,5 @@ export interface RaritySettings {
 export interface AppSettings {
 	region: RegionCode;
 	rarity: RaritySettings;
+	apiKey: string;
 }

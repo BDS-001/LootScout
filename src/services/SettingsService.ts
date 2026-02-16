@@ -1,5 +1,5 @@
 import browser from 'webextension-polyfill';
-import { getStorageItem, setStorageItem } from './StorageService';
+import { getStorageItem, setStorageItem, removeStorageItem } from './StorageService';
 import { RegionCode, AppSettings, RaritySettings } from '../shared/types';
 import regionMap, { DEFAULT_REGION } from '../constants/regionMap';
 import {
@@ -15,15 +15,31 @@ const DEFAULT_SETTINGS: AppSettings = {
 		includePlaytime: true,
 		includeReviewScore: true,
 	},
+	apiKey: '',
 };
 
 const REGION_MANUALLY_SET_KEY = 'region_manually_set';
 
 const SETTINGS_KEY = 'lootscout_settings';
+const LEGACY_API_KEY = 'apiKey';
+
+let legacyApiKeyMigrated = false;
 
 export const getSettings = async (): Promise<AppSettings> => {
 	const settings = await getStorageItem<AppSettings>(SETTINGS_KEY);
-	return settings || DEFAULT_SETTINGS;
+	const merged = { ...DEFAULT_SETTINGS, ...settings };
+
+	if (!legacyApiKeyMigrated && !merged.apiKey) {
+		legacyApiKeyMigrated = true;
+		const legacyKey = await getStorageItem<string>(LEGACY_API_KEY);
+		if (legacyKey) {
+			merged.apiKey = legacyKey;
+			await setStorageItem(SETTINGS_KEY, merged);
+			await removeStorageItem(LEGACY_API_KEY);
+		}
+	}
+
+	return merged;
 };
 
 export const updateSettings = async (newSettings: Partial<AppSettings>): Promise<void> => {
@@ -46,6 +62,15 @@ export const updateRaritySettings = async (
 		rarity: { ...currentSettings.rarity, ...raritySettings },
 	};
 	await setStorageItem(SETTINGS_KEY, updatedSettings);
+};
+
+export const getApiKey = async (): Promise<string> => {
+	const settings = await getSettings();
+	return settings.apiKey;
+};
+
+export const updateApiKey = async (apiKey: string): Promise<void> => {
+	await updateSettings({ apiKey });
 };
 
 // Region-specific functions with auto-detection
