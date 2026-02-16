@@ -1,5 +1,5 @@
-import { cleanupExpiredCache } from '../services/CacheService';
-import { debug } from '../utils/debug';
+import { cleanupExpiredCache } from '../lib/services/CacheService';
+import { debug } from '../lib/utils/debug';
 import browser from 'webextension-polyfill';
 
 export class AlarmManager {

@@ -1,15 +1,19 @@
-import fetchSteamStoreData from '../api/SteamStoreApi';
-import fetchSteamReviewData from '../api/SteamReviewsApi';
-import fetchGgDealsData from '../api/GgDealsApi';
-import { normalizeResponse } from '../transformers/ResponseFormatter';
-import { ProcessedSteamReviews } from '../transformers/SteamReviewProcessor';
-import { CombinedGameDataResponse } from '../api/CombinedGameData';
-import { getRegion } from '../services/SettingsService';
-import { getApiKeyWithFallback } from '../api/ApiKeyService';
-import { getCacheItemWithExpiry, setCacheItem } from '../services/CacheService';
-import { processSteamReviews } from '../transformers/SteamReviewProcessor';
-import { debug } from '../utils/debug';
-import { getGameStatus, shouldFetchReviews, shouldFetchDeals } from '../services/GameStatusService';
+import fetchSteamStoreData from '../lib/api/SteamStoreApi';
+import fetchSteamReviewData from '../lib/api/SteamReviewsApi';
+import fetchGgDealsData from '../lib/api/GgDealsApi';
+import { normalizeResponse } from '../lib/transformers/ResponseFormatter';
+import { ProcessedSteamReviews } from '../lib/transformers/SteamReviewProcessor';
+import { CombinedGameDataResponse } from '../lib/api/CombinedGameData';
+import { getRegion } from '../lib/services/SettingsService';
+import { getApiKeyWithFallback } from '../lib/api/ApiKeyService';
+import { getCacheItemWithExpiry, setCacheItem } from '../lib/services/CacheService';
+import { processSteamReviews } from '../lib/transformers/SteamReviewProcessor';
+import { debug } from '../lib/utils/debug';
+import {
+	getGameStatus,
+	shouldFetchReviews,
+	shouldFetchDeals,
+} from '../lib/services/GameStatusService';
 
 export class DataCoordinator {
 	private static readonly CACHE_DURATION = 30 * 60 * 1000;

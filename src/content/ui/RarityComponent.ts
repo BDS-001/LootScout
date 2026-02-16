@@ -1,6 +1,6 @@
-import { getRarityAnalysis, RarityAnalysis } from '../utils/getRarity';
-import { RARITY_CHART } from '../constants/rarityChart';
-import { PLAYTIME_THRESHOLDS } from '../constants/modifiers';
+import { getRarityAnalysis, RarityAnalysis } from '../../lib/utils/getRarity';
+import { RARITY_CHART } from '../../lib/constants/rarityChart';
+import { PLAYTIME_THRESHOLDS } from '../../lib/constants/modifiers';
 import * as dom from '../utils/DomBuilder';
 
 function attachTooltipEvents(badge: HTMLElement, tooltip: HTMLElement) {

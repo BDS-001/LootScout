@@ -1,6 +1,6 @@
 import './Settings.css';
-import CountrySelect from '../components/CountrySelect';
-import ApiKeyInput from '../components/ApiKeyInput';
+import CountrySelect from '../../lib/components/CountrySelect';
+import ApiKeyInput from '../../lib/components/ApiKeyInput';
 
 export default function Settings() {
 	return (

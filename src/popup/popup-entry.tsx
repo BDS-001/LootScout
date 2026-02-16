@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Settings from './pages/Settings';
+import PopupView from './PopupView';
 
 ReactDOM.createRoot(document.body).render(
 	<React.StrictMode>
-		<Settings />
+		<PopupView />
 	</React.StrictMode>
 );

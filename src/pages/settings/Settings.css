@@ -1,4 +1,4 @@
-@import '../styles/lootscout-theme.css';
+@import '../../lib/styles/lootscout-theme.css';
 
 .settings-page {
 	max-width: 600px;

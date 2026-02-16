@@ -1,9 +1,9 @@
 import browser from 'webextension-polyfill';
 import parseSteamPageUrl from './parsers/SteamParser';
 import { injectLootScoutContainer, updateContainerState } from './ui/LootScoutContainer';
-import { GameDataResponse, ApiError } from './shared/types';
-import injectCSS from './utils/injectCSS';
-import { debug } from './utils/debug';
+import { GameDataResponse, ApiError } from '../lib/shared/types';
+import injectCSS from './injectCSS';
+import { debug } from '../lib/utils/debug';
 
 async function initializeContentScript(): Promise<void> {
 	debug.log('Content script bootstrap');

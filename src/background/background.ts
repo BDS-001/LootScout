@@ -1,7 +1,7 @@
-import { MessageRouter } from './background/MessageRouter';
-import { AlarmManager } from './background/AlarmHandler';
-import { getRegion } from './services/SettingsService';
-import { debug } from './utils/debug';
+import { MessageRouter } from './MessageRouter';
+import { AlarmManager } from './AlarmHandler';
+import { getRegion } from '../lib/services/SettingsService';
+import { debug } from '../lib/utils/debug';
 import browser from 'webextension-polyfill';
 
 debug.log('Background script initialized');

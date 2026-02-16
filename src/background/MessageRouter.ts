@@ -1,10 +1,11 @@
 import browser from 'webextension-polyfill';
-import { updateRegion, getRegion } from '../services/SettingsService';
-import { RegionCode } from '../shared/types';
+import { updateRegion, getRegion } from '../lib/services/SettingsService';
+import { RegionCode } from '../lib/shared/types';
 import { DataCoordinator } from './DataCoordinator';
-import { debug } from '../utils/debug';
-import { STEAM_ORIGINS } from '../constants/steamOrigins';
-import { STEAM_PERMISSION_INSTRUCTIONS } from '../constants/messages';
+import { debug } from '../lib/utils/debug';
+import { STEAM_ORIGINS } from '../lib/constants/steamOrigins';
+import { STEAM_PERMISSION_INSTRUCTIONS } from '../lib/constants/messages';
+import { EXTENSION_PAGES } from '../lib/constants/extensionPages';
 
 export class MessageRouter {
 	private dataCoordinator: DataCoordinator;
@@ -79,6 +80,6 @@ export class MessageRouter {
 
 	private handleOpenSettings(): void {
 		debug.log('openSettings request received');
-		browser.tabs.create({ url: browser.runtime.getURL('src/settings.html') });
+		browser.tabs.create({ url: browser.runtime.getURL(EXTENSION_PAGES.settings) });
 	}
 }

@@ -14,21 +14,21 @@
 		"128": "icon/lootscout128.png"
 	},
 	"action": {
-		"default_popup": "src/popup.html"
+		"default_popup": "src/popup/popup.html"
 	},
 	"options_ui": {
-		"page": "src/settings.html",
+		"page": "src/pages/templates/settings.html",
 		"open_in_tab": true
 	},
 
 	"background": {
-		"scripts": ["src/background.ts"],
-		"service_worker": "src/background.js"
+		"scripts": ["src/background/background.ts"],
+		"service_worker": "src/background/background.js"
 	},
 	"content_scripts": [
 		{
 			"matches": ["https://store.steampowered.com/app/*"],
-			"js": ["src/content.ts"],
+			"js": ["src/content/content.ts"],
 			"run_at": "document_idle"
 		}
 	],

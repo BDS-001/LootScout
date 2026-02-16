@@ -1,13 +1,13 @@
-import { ProcessedGameData, ApiError, RegionCode } from '../shared/types';
+import { ProcessedGameData, ApiError, RegionCode } from '../../lib/shared/types';
 import {
 	createLoadingContent,
 	createErrorContent,
 	createSuccessContent,
 } from './SecureContentBuilder';
 import { createGameTitleSection } from './GameTitleBuilder';
-import { getRegionInfo, getRaritySettings } from '../services/SettingsService';
+import { getRegionInfo, getRaritySettings } from '../../lib/services/SettingsService';
 import * as dom from '../utils/DomBuilder';
-import { debug } from '../utils/debug';
+import { debug } from '../../lib/utils/debug';
 import browser from 'webextension-polyfill';
 
 const ELEMENT_IDS = {

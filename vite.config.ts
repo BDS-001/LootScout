@@ -20,7 +20,7 @@ export default defineConfig({
 		webExtension({
 			manifest: generateManifest,
 			disableAutoLaunch: true,
-			additionalInputs: ['src/about.html', 'src/settings.html'],
+			additionalInputs: ['src/pages/templates/about.html', 'src/pages/templates/settings.html'],
 		}),
 	],
 	test: {

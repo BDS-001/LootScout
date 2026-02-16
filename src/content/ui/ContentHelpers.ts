@@ -1,5 +1,5 @@
 import { dom, setText, addChild, setAttribute } from '../utils/DomBuilder';
-import { ApiError } from '../shared/types';
+import { ApiError } from '../../lib/shared/types';
 
 export function createFooter(
 	links: Array<{ url: string; text: string }>,

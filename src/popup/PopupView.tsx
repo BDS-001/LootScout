@@ -1,13 +1,14 @@
-import './Popup.css';
+import './popup-view.css';
 import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react';
-import { getRaritySettings, updateRaritySettings } from '../services/SettingsService';
-import { RaritySettings } from '../shared/types';
+import { getRaritySettings, updateRaritySettings } from '../lib/services/SettingsService';
+import { RaritySettings } from '../lib/shared/types';
 import browser from 'webextension-polyfill';
-import { debug } from '../utils/debug';
-import { STEAM_ORIGINS } from '../constants/steamOrigins';
-import { STEAM_PERMISSION_INSTRUCTIONS } from '../constants/messages';
-import CountrySelect from '../components/CountrySelect';
-import ApiKeyInput from '../components/ApiKeyInput';
+import { debug } from '../lib/utils/debug';
+import { STEAM_ORIGINS } from '../lib/constants/steamOrigins';
+import { STEAM_PERMISSION_INSTRUCTIONS } from '../lib/constants/messages';
+import { EXTENSION_PAGES } from '../lib/constants/extensionPages';
+import CountrySelect from '../lib/components/CountrySelect';
+import ApiKeyInput from '../lib/components/ApiKeyInput';
 
 const VERSION = '1.1.3';
 const GITHUB_URL = 'https://github.com/BDS-001/LootScout';
@@ -230,7 +231,9 @@ export default function Popup() {
 						href="#"
 						onClick={(e) => {
 							e.preventDefault();
-							browser.tabs.create({ url: browser.runtime.getURL('src/settings.html') });
+							browser.tabs.create({
+								url: browser.runtime.getURL(EXTENSION_PAGES.settings),
+							});
 						}}
 						className="github-link"
 					>
@@ -240,7 +243,9 @@ export default function Popup() {
 						href="#"
 						onClick={(e) => {
 							e.preventDefault();
-							browser.tabs.create({ url: browser.runtime.getURL('src/about.html') });
+							browser.tabs.create({
+								url: browser.runtime.getURL(EXTENSION_PAGES.about),
+							});
 						}}
 						className="github-link"
 					>
