@@ -21,6 +21,8 @@ export class MessageRouter {
 				return this.handleGetAppData(msg.appId);
 			} else if (msg.action === 'getCountryCode') {
 				return this.handleGetCountryCode();
+			} else if (msg.action === 'openSettings') {
+				return this.handleOpenSettings();
 			}
 		});
 	}
@@ -73,5 +75,10 @@ export class MessageRouter {
 				},
 			};
 		}
+	}
+
+	private handleOpenSettings(): void {
+		debug.log('openSettings request received');
+		browser.tabs.create({ url: browser.runtime.getURL('src/settings.html') });
 	}
 }
