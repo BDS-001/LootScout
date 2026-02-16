@@ -1,5 +1,5 @@
 import * as dom from '../utils/DomBuilder';
-import { isRecentlyReleased, RECENT_RELEASE_THRESHOLD_DAYS } from '../helpers/gameAge';
+import { isRecentlyReleased, RECENT_RELEASE_THRESHOLD_DAYS } from '../utils/gameAge';
 
 function attachAsteriskTooltip(asterisk: HTMLElement, tooltip: HTMLElement): void {
 	asterisk.addEventListener('mouseenter', () => {

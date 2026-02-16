@@ -1,4 +1,4 @@
-import { getRarityAnalysis, RarityAnalysis } from '../helpers/getRarity';
+import { getRarityAnalysis, RarityAnalysis } from '../utils/getRarity';
 import { RARITY_CHART } from '../constants/rarityChart';
 import { PLAYTIME_THRESHOLDS } from '../constants/modifiers';
 import * as dom from '../utils/DomBuilder';

@@ -86,8 +86,27 @@ export interface RaritySettings {
 	includeReviewScore: boolean;
 }
 
+export interface ModifierCategory {
+	effect: number;
+	threshold: number;
+	active: boolean;
+}
+
+export interface ModifierConfig {
+	criticalBonus: ModifierCategory;
+	bonus: ModifierCategory;
+	penalty: ModifierCategory;
+	criticalPenalty: ModifierCategory;
+}
+
+export interface ModifierSettings {
+	playtime: ModifierConfig;
+	review: ModifierConfig;
+}
+
 export interface AppSettings {
 	region: RegionCode;
 	rarity: RaritySettings;
 	apiKey: string;
+	modifiers: ModifierSettings;
 }

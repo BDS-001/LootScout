@@ -1,12 +1,12 @@
 import { ProcessedGameData, ApiError } from '../shared/types';
 import { formatPrice } from '../utils/PriceUtils';
 import { createRarityComponent } from './RarityComponent';
-import { getYouTubeUrl } from '../helpers/youtube';
-import { getHltbUrl } from '../helpers/hltb';
-import { getSteamDbUrl } from '../helpers/steamDb';
+import { getYouTubeUrl } from '../utils/youtube';
+import { getHltbUrl } from '../utils/hltb';
+import { getSteamDbUrl } from '../utils/steamDb';
 import { dom, setText, addChild, onClick, setAttribute } from '../utils/DomBuilder';
 import { createStandardFooter, createSimpleFooter, getErrorDetails } from './ContentHelpers';
-import { isRecentlyReleased } from '../helpers/gameAge';
+import { isRecentlyReleased } from '../utils/gameAge';
 import { STEAM_PERMISSION_INSTRUCTIONS } from '../constants/messages';
 
 const DEFAULT_ERROR_MESSAGE =
