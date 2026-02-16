@@ -1,5 +1,6 @@
 import './Settings.css';
 import CountrySelect from '../components/CountrySelect';
+import ApiKeyInput from '../components/ApiKeyInput';
 
 export default function Settings() {
 	return (
@@ -21,10 +22,7 @@ export default function Settings() {
 			</div>
 
 			<div className="settings-section">
-				<h2 className="settings-section-title">API Key</h2>
-				<p className="settings-section-description">
-					Reduce rate limits by adding your own GG.deals API key.
-				</p>
+				<ApiKeyInput />
 			</div>
 		</div>
 	);

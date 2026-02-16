@@ -1,6 +1,5 @@
 import './Popup.css';
 import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react';
-import { loadApiKey, validateAndSaveApiKey } from '../api/ApiKeyService';
 import { getRaritySettings, updateRaritySettings } from '../services/SettingsService';
 import { RaritySettings } from '../shared/types';
 import browser from 'webextension-polyfill';
@@ -8,6 +7,7 @@ import { debug } from '../utils/debug';
 import { STEAM_ORIGINS } from '../constants/steamOrigins';
 import { STEAM_PERMISSION_INSTRUCTIONS } from '../constants/messages';
 import CountrySelect from '../components/CountrySelect';
+import ApiKeyInput from '../components/ApiKeyInput';
 
 const VERSION = '1.1.3';
 const GITHUB_URL = 'https://github.com/BDS-001/LootScout';
@@ -15,13 +15,10 @@ const FALLBACK_PERMISSION_ERROR =
 	'Could not confirm Steam permissions. Grant access from the extension menu to enable enhancements.';
 
 export default function Popup() {
-	const [apiKey, setApiKey] = useState('');
 	const [raritySettings, setRaritySettings] = useState<RaritySettings>({
 		includePlaytime: false,
 		includeReviewScore: false,
 	});
-	const [testStatus, setTestStatus] = useState('');
-	const [isTestingKey, setIsTestingKey] = useState(false);
 	const [permissionWarning, setPermissionWarning] = useState('');
 	const [hasSteamPermission, setHasSteamPermission] = useState<boolean | null>(null);
 	const [isRequestingPermission, setIsRequestingPermission] = useState(false);
@@ -30,15 +27,12 @@ export default function Popup() {
 	useEffect(() => {
 		const loadInitialSettings = async () => {
 			try {
-				const [key, settings] = await Promise.all([loadApiKey(), getRaritySettings()]);
+				const settings = await getRaritySettings();
 
 				if (!isMountedRef.current) {
 					return;
 				}
 
-				if (key) {
-					setApiKey(key);
-				}
 				setRaritySettings(settings);
 			} catch (error) {
 				debug.error(error);
@@ -136,19 +130,6 @@ export default function Popup() {
 		};
 	}, []);
 
-	const testApiKey = async () => {
-		setIsTestingKey(true);
-		setTestStatus('Checking...');
-		try {
-			const result = await validateAndSaveApiKey(apiKey);
-			setTestStatus(result.message);
-		} catch {
-			setTestStatus('Failed to verify API key');
-		} finally {
-			setIsTestingKey(false);
-		}
-	};
-
 	const togglePlaytime = (checked: boolean) => {
 		setRaritySettings((prev) => ({ ...prev, includePlaytime: checked }));
 		updateRaritySettings({ includePlaytime: checked });
@@ -214,27 +195,7 @@ export default function Popup() {
 						</div>
 
 						<div className="setting-item">
-							<label htmlFor="api-key-input" className="setting-label">
-								Add API Key (Optional)
-							</label>
-							<p className="setting-description">
-								Reduce rate limits by adding your own GG.deals API key (get one at gg.deals/api)
-							</p>
-							<div className="api-key-input-group">
-								<input
-									id="api-key-input"
-									type="password"
-									value={apiKey}
-									onChange={(e) => setApiKey(e.target.value)}
-									placeholder="Enter your GG.deals API key"
-									disabled={isTestingKey}
-									className="form-input api-key-input"
-								/>
-								<button onClick={testApiKey} disabled={isTestingKey} className="apply-button">
-									{isTestingKey ? 'Testing...' : 'Apply'}
-								</button>
-							</div>
-							{testStatus && <p className="test-status">{testStatus}</p>}
+							<ApiKeyInput />
 						</div>
 					</>
 				) : (
