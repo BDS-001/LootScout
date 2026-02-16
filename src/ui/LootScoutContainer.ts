@@ -8,6 +8,7 @@ import { createGameTitleSection } from './GameTitleBuilder';
 import { getRegionInfo, getRaritySettings } from '../services/SettingsService';
 import * as dom from '../utils/DomBuilder';
 import { debug } from '../utils/debug';
+import browser from 'webextension-polyfill';
 
 const ELEMENT_IDS = {
 	CONTAINER: 'lootscout-container',
@@ -79,7 +80,18 @@ function updateHeader(header: HTMLElement, countryCode?: string): void {
 	if (countryCode) {
 		const regionInfo = createRegionDisplay(countryCode);
 		const regionSpan = dom.setText(dom.createElement('span', 'header-region'), regionInfo);
-		dom.addChild(header, regionSpan);
+
+		const gearIcon = dom.onClick(
+			dom.setText(dom.createElement('span', 'header-settings-icon'), '\u2699'),
+			() => browser.runtime.sendMessage({ action: 'openSettings' })
+		);
+
+		const regionGroup = dom.addChild(
+			dom.createElement('span', 'header-region-group'),
+			regionSpan,
+			gearIcon
+		);
+		dom.addChild(header, regionGroup);
 	}
 }
 

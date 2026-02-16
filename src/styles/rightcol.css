@@ -19,6 +19,22 @@
 	font-weight: var(--font-weight-normal);
 }
 
+.header-region-group {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.header-settings-icon {
+	cursor: pointer;
+	font-size: 16px;
+	color: var(--color-steam-gray);
+}
+
+.header-settings-icon:hover {
+	color: var(--color-steam-blue);
+}
+
 .game-title-section {
 	text-align: center;
 	margin-bottom: var(--spacing-lg);
