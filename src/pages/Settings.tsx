@@ -15,14 +15,14 @@ export default function Settings() {
 			</div>
 
 			<div className="settings-section">
+				<ApiKeyInput />
+			</div>
+
+			<div className="settings-section">
 				<h2 className="settings-section-title">Rarity Modifiers</h2>
 				<p className="settings-section-description">
 					Adjust how rarity is calculated by including additional factors.
 				</p>
-			</div>
-
-			<div className="settings-section">
-				<ApiKeyInput />
 			</div>
 		</div>
 	);
