@@ -55,3 +55,20 @@ body {
 	color: var(--text-primary);
 	line-height: 1.6;
 }
+
+/* Shared form input styles */
+.form-input {
+	padding: 8px 12px;
+	border: 1px solid var(--border-subtle);
+	border-radius: var(--border-radius);
+	background: var(--bg-primary);
+	color: var(--text-primary);
+	font-size: 13px;
+	transition: var(--transition);
+}
+
+.form-input:focus {
+	outline: none;
+	border-color: var(--fantasy-amber);
+	background: var(--bg-secondary);
+}

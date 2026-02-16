@@ -1,4 +1,5 @@
 import './Settings.css';
+import CountrySelect from '../components/CountrySelect';
 
 export default function Settings() {
 	return (
@@ -9,10 +10,7 @@ export default function Settings() {
 			</div>
 
 			<div className="settings-section">
-				<h2 className="settings-section-title">Region</h2>
-				<p className="settings-section-description">
-					Choose your country to see prices in your local currency.
-				</p>
+				<CountrySelect />
 			</div>
 
 			<div className="settings-section">

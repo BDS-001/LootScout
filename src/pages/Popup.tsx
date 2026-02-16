@@ -1,13 +1,13 @@
 import './Popup.css';
 import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react';
-import regionMap from '../constants/regionMap';
 import { loadApiKey, validateAndSaveApiKey } from '../api/ApiKeyService';
-import { getRegion, getRaritySettings, updateRaritySettings } from '../services/SettingsService';
+import { getRaritySettings, updateRaritySettings } from '../services/SettingsService';
 import { RaritySettings } from '../shared/types';
 import browser from 'webextension-polyfill';
 import { debug } from '../utils/debug';
 import { STEAM_ORIGINS } from '../constants/steamOrigins';
 import { STEAM_PERMISSION_INSTRUCTIONS } from '../constants/messages';
+import CountrySelect from '../components/CountrySelect';
 
 const VERSION = '1.1.3';
 const GITHUB_URL = 'https://github.com/BDS-001/LootScout';
@@ -15,7 +15,6 @@ const FALLBACK_PERMISSION_ERROR =
 	'Could not confirm Steam permissions. Grant access from the extension menu to enable enhancements.';
 
 export default function Popup() {
-	const [selectedCountry, setSelectedCountry] = useState('us');
 	const [apiKey, setApiKey] = useState('');
 	const [raritySettings, setRaritySettings] = useState<RaritySettings>({
 		includePlaytime: false,
@@ -27,23 +26,16 @@ export default function Popup() {
 	const [hasSteamPermission, setHasSteamPermission] = useState<boolean | null>(null);
 	const [isRequestingPermission, setIsRequestingPermission] = useState(false);
 	const isMountedRef = useRef(true);
-	const initialCountry = useRef<string>();
 
 	useEffect(() => {
 		const loadInitialSettings = async () => {
 			try {
-				const [country, key, settings] = await Promise.all([
-					getRegion(),
-					loadApiKey(),
-					getRaritySettings(),
-				]);
+				const [key, settings] = await Promise.all([loadApiKey(), getRaritySettings()]);
 
 				if (!isMountedRef.current) {
 					return;
 				}
 
-				setSelectedCountry(country);
-				initialCountry.current = country;
 				if (key) {
 					setApiKey(key);
 				}
@@ -157,19 +149,6 @@ export default function Popup() {
 		}
 	};
 
-	const handleCountryChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-		const country = e.target.value;
-		setSelectedCountry(country);
-		try {
-			await browser.runtime.sendMessage({
-				action: 'updateCountryCode',
-				countryCode: country,
-			});
-		} catch (error) {
-			debug.error('Error updating country:', error);
-		}
-	};
-
 	const togglePlaytime = (checked: boolean) => {
 		setRaritySettings((prev) => ({ ...prev, includePlaytime: checked }));
 		updateRaritySettings({ includePlaytime: checked });
@@ -198,27 +177,7 @@ export default function Popup() {
 				) : hasSteamPermission ? (
 					<>
 						<div className="setting-item">
-							<label htmlFor="country-select" className="setting-label">
-								Change Country{' '}
-								{initialCountry.current && selectedCountry !== initialCountry.current && (
-									<>
-										{' '}
-										- <span className="reload-hint">reload page to update</span>
-									</>
-								)}
-							</label>
-							<select
-								id="country-select"
-								value={selectedCountry}
-								onChange={handleCountryChange}
-								className="country-select"
-							>
-								{Object.entries(regionMap).map(([code, info]) => (
-									<option key={code} value={code}>
-										{info.name} ({info.currency})
-									</option>
-								))}
-							</select>
+							<CountrySelect />
 						</div>
 
 						<div className="setting-item">
@@ -269,7 +228,7 @@ export default function Popup() {
 									onChange={(e) => setApiKey(e.target.value)}
 									placeholder="Enter your GG.deals API key"
 									disabled={isTestingKey}
-									className="api-key-input"
+									className="form-input api-key-input"
 								/>
 								<button onClick={testApiKey} disabled={isTestingKey} className="apply-button">
 									{isTestingKey ? 'Testing...' : 'Apply'}

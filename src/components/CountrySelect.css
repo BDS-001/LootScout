@@ -1,0 +1,22 @@
+.country-select-label {
+	display: block;
+	font-size: 14px;
+	font-weight: 600;
+	margin-bottom: 4px;
+	color: var(--text-accent-soft);
+}
+
+.country-select {
+	width: 100%;
+	cursor: pointer;
+}
+
+.country-select option {
+	background: var(--bg-elevated);
+	color: var(--text-primary);
+	padding: 8px;
+}
+
+.reload-hint {
+	color: var(--fantasy-amber-bright);
+}

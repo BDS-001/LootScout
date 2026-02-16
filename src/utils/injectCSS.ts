@@ -1,4 +1,4 @@
-import globalCss from '../styles/global.css?inline';
+import globalCss from '../styles/steam-content.css?inline';
 import raritiesCss from '../styles/rarities.css?inline';
 import rightcolCss from '../styles/rightcol.css?inline';
 import rarityTooltipCss from '../styles/rarity-tooltip.css?inline';
