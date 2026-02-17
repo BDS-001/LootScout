@@ -53,7 +53,7 @@ function calculatePlaytime(reviews: SimplifiedSteamReview[]): number {
 		`Average playtime: ${averageMinutes.toFixed(2)} minutes (${averageHours.toFixed(2)} hours)`
 	);
 
-	return averageHours;
+	return Math.round(averageHours * 10) / 10;
 }
 
 function processSteamReviews(response: SteamReviewsResponse): ProcessedSteamReviews {

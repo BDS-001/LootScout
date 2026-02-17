@@ -57,7 +57,7 @@ export function createGameTitleSection(
 
 	if (averagePlaytime && averagePlaytime > 0) {
 		const playtimeDiv = dom.createElement('div', 'game-playtime');
-		dom.setText(playtimeDiv, `Average playtime: ${averagePlaytime.toFixed(1)} hours`);
+		dom.setText(playtimeDiv, `Average playtime: ${averagePlaytime} hours`);
 
 		if (releaseDate && isRecentlyReleased(releaseDate)) {
 			dom.addChild(playtimeDiv, createPlaytimeAsterisk(includePlaytime));
