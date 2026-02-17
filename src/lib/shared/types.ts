@@ -81,11 +81,6 @@ export interface ProcessedGameData {
 export type GameDataResponse = ApiResponse<ProcessedGameData>;
 
 // Settings Types
-export interface RaritySettings {
-	includePlaytime: boolean;
-	includeReviewScore: boolean;
-}
-
 export interface ModifierCategory {
 	effect: number;
 	threshold: number;
@@ -93,6 +88,7 @@ export interface ModifierCategory {
 }
 
 export interface ModifierConfig {
+	active: boolean;
 	criticalBonus: ModifierCategory;
 	bonus: ModifierCategory;
 	penalty: ModifierCategory;
@@ -106,7 +102,6 @@ export interface ModifierSettings {
 
 export interface AppSettings {
 	region: RegionCode;
-	rarity: RaritySettings;
 	apiKey: string;
 	modifiers: ModifierSettings;
 }

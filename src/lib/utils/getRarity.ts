@@ -1,6 +1,6 @@
-import { getRaritySettings } from '../services/SettingsService';
+import { getSettings } from '../services/SettingsService';
 import { RARITY_CHART } from '../constants/rarityChart';
-import { PLAYTIME_THRESHOLDS, REVIEW_THRESHOLDS } from '../constants/modifiers';
+import { ModifierConfig } from '../shared/types';
 
 export interface RarityAnalysis {
 	name: string;
@@ -43,17 +43,13 @@ function getDiscountValue(percentage: number): number {
 	}
 }
 
-function getReviewScoreBonus(reviewScore: number): number {
-	if (reviewScore >= REVIEW_THRESHOLDS.BONUS) return 1;
-	if (reviewScore <= REVIEW_THRESHOLDS.CRITICAL_PENALTY) return -2;
-	if (reviewScore <= REVIEW_THRESHOLDS.PENALTY) return -1;
-	return 0;
-}
+function getModifierEffect(value: number, config: ModifierConfig): number {
+	const { criticalBonus, bonus, penalty, criticalPenalty } = config;
 
-function getPlaytimeBonus(playtime: number): number {
-	if (playtime >= PLAYTIME_THRESHOLDS.CRITICAL_BONUS) return 2;
-	if (playtime >= PLAYTIME_THRESHOLDS.BONUS) return 1;
-	if (playtime <= PLAYTIME_THRESHOLDS.PENALTY) return -1;
+	if (criticalBonus.active && value >= criticalBonus.threshold) return criticalBonus.effect;
+	if (bonus.active && value >= bonus.threshold) return bonus.effect;
+	if (criticalPenalty.active && value <= criticalPenalty.threshold) return criticalPenalty.effect;
+	if (penalty.active && value <= penalty.threshold) return penalty.effect;
 	return 0;
 }
 
@@ -92,13 +88,17 @@ export async function getRarityAnalysis(
 		return createIridescentAnalysis();
 	}
 
-	const { includeReviewScore, includePlaytime } = await getRaritySettings();
+	const { modifiers } = await getSettings();
 	const baseScore = getDiscountValue(percentage);
 
 	const reviewBonus =
-		includeReviewScore && reviewScore !== null ? getReviewScoreBonus(reviewScore) : 0;
+		modifiers.review.active && reviewScore !== null
+			? getModifierEffect(reviewScore, modifiers.review)
+			: 0;
 	const playtimeBonus =
-		includePlaytime && isValidPlaytime(playtime) ? getPlaytimeBonus(playtime!) : 0;
+		modifiers.playtime.active && isValidPlaytime(playtime)
+			? getModifierEffect(playtime!, modifiers.playtime)
+			: 0;
 
 	const finalScore = Math.max(
 		0,
@@ -113,8 +113,8 @@ export async function getRarityAnalysis(
 		finalScore,
 		reviewScore: reviewScore || undefined,
 		playtime: isValidPlaytime(playtime) ? playtime! : undefined,
-		reviewScoreUsed: includeReviewScore,
-		playtimeUsed: includePlaytime,
+		reviewScoreUsed: modifiers.review.active,
+		playtimeUsed: modifiers.playtime.active,
 		isRecentlyReleased,
 	};
 }

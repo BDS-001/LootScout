@@ -5,7 +5,7 @@ import {
 	createSuccessContent,
 } from './SecureContentBuilder';
 import { createGameTitleSection } from './GameTitleBuilder';
-import { getRegionInfo, getRaritySettings } from '../../lib/services/SettingsService';
+import { getRegionInfo, getSettings } from '../../lib/services/SettingsService';
 import * as dom from '../utils/DomBuilder';
 import { debug } from '../../lib/utils/debug';
 import browser from 'webextension-polyfill';
@@ -117,7 +117,7 @@ export async function updateContainerState(
 		case 'success':
 			if (state.gameData) {
 				const children: HTMLElement[] = [];
-				const raritySettings = await getRaritySettings();
+				const { modifiers } = await getSettings();
 
 				if (state.gameData.title) {
 					children.push(
@@ -125,7 +125,7 @@ export async function updateContainerState(
 							state.gameData.title,
 							state.gameData.steam.averagePlaytime,
 							state.gameData.releaseDate,
-							raritySettings.includePlaytime
+							modifiers.playtime.active
 						)
 					);
 				}

@@ -1,36 +1,14 @@
 import browser from 'webextension-polyfill';
 import { getStorageItem, setStorageItem, removeStorageItem } from './StorageService';
-import { RegionCode, AppSettings, RaritySettings } from '../shared/types';
+import { RegionCode, AppSettings, ModifierSettings } from '../shared/types';
 import regionMap, { DEFAULT_REGION } from '../constants/regionMap';
+import { DEFAULT_SETTINGS } from '../constants/defaultSettings';
 import {
 	parseSteamCountryCode,
 	getBrowserLanguageRegion,
 	isValidRegion,
 } from '../parsers/LanguageParser';
 import { debug } from '../utils/debug';
-
-const DEFAULT_SETTINGS: AppSettings = {
-	region: DEFAULT_REGION,
-	rarity: {
-		includePlaytime: true,
-		includeReviewScore: true,
-	},
-	apiKey: '',
-	modifiers: {
-		playtime: {
-			criticalBonus: { effect: 2, threshold: 60, active: true },
-			bonus: { effect: 1, threshold: 30, active: true },
-			penalty: { effect: -1, threshold: 5, active: true },
-			criticalPenalty: { effect: 0, threshold: 0, active: false },
-		},
-		review: {
-			criticalBonus: { effect: 0, threshold: 0, active: false },
-			bonus: { effect: 1, threshold: 9, active: true },
-			penalty: { effect: -1, threshold: 4, active: true },
-			criticalPenalty: { effect: -2, threshold: 1, active: true },
-		},
-	},
-};
 
 const REGION_MANUALLY_SET_KEY = 'region_manually_set';
 
@@ -39,9 +17,17 @@ const LEGACY_API_KEY = 'apiKey';
 
 let legacyApiKeyMigrated = false;
 
+const mergeModifiers = (stored?: ModifierSettings): ModifierSettings => {
+	return stored ?? DEFAULT_SETTINGS.modifiers;
+};
+
 export const getSettings = async (): Promise<AppSettings> => {
-	const settings = await getStorageItem<AppSettings>(SETTINGS_KEY);
-	const merged = { ...DEFAULT_SETTINGS, ...settings };
+	const settings = await getStorageItem<Partial<AppSettings>>(SETTINGS_KEY);
+	const merged: AppSettings = {
+		...DEFAULT_SETTINGS,
+		...settings,
+		modifiers: mergeModifiers(settings?.modifiers),
+	};
 
 	if (!legacyApiKeyMigrated && !merged.apiKey) {
 		legacyApiKeyMigrated = true;
@@ -59,22 +45,6 @@ export const getSettings = async (): Promise<AppSettings> => {
 export const updateSettings = async (newSettings: Partial<AppSettings>): Promise<void> => {
 	const currentSettings = await getSettings();
 	const updatedSettings = { ...currentSettings, ...newSettings };
-	await setStorageItem(SETTINGS_KEY, updatedSettings);
-};
-
-export const getRaritySettings = async (): Promise<RaritySettings> => {
-	const settings = await getSettings();
-	return settings.rarity;
-};
-
-export const updateRaritySettings = async (
-	raritySettings: Partial<RaritySettings>
-): Promise<void> => {
-	const currentSettings = await getSettings();
-	const updatedSettings = {
-		...currentSettings,
-		rarity: { ...currentSettings.rarity, ...raritySettings },
-	};
 	await setStorageItem(SETTINGS_KEY, updatedSettings);
 };
 

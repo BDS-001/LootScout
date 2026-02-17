@@ -1,7 +1,7 @@
 import './popup-view.css';
 import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react';
-import { getRaritySettings, updateRaritySettings } from '../lib/services/SettingsService';
-import { RaritySettings } from '../lib/shared/types';
+import { getSettings, updateSettings } from '../lib/services/SettingsService';
+import { ModifierSettings } from '../lib/shared/types';
 import browser from 'webextension-polyfill';
 import { debug } from '../lib/utils/debug';
 import { STEAM_ORIGINS } from '../lib/constants/steamOrigins';
@@ -16,10 +16,7 @@ const FALLBACK_PERMISSION_ERROR =
 	'Could not confirm Steam permissions. Grant access from the extension menu to enable enhancements.';
 
 export default function Popup() {
-	const [raritySettings, setRaritySettings] = useState<RaritySettings>({
-		includePlaytime: false,
-		includeReviewScore: false,
-	});
+	const [modifierSettings, setModifierSettings] = useState<ModifierSettings | null>(null);
 	const [permissionWarning, setPermissionWarning] = useState('');
 	const [hasSteamPermission, setHasSteamPermission] = useState<boolean | null>(null);
 	const [isRequestingPermission, setIsRequestingPermission] = useState(false);
@@ -28,13 +25,13 @@ export default function Popup() {
 	useEffect(() => {
 		const loadInitialSettings = async () => {
 			try {
-				const settings = await getRaritySettings();
+				const settings = await getSettings();
 
 				if (!isMountedRef.current) {
 					return;
 				}
 
-				setRaritySettings(settings);
+				setModifierSettings(settings.modifiers);
 			} catch (error) {
 				debug.error(error);
 			}
@@ -132,13 +129,21 @@ export default function Popup() {
 	}, []);
 
 	const togglePlaytime = (checked: boolean) => {
-		setRaritySettings((prev) => ({ ...prev, includePlaytime: checked }));
-		updateRaritySettings({ includePlaytime: checked });
+		setModifierSettings((prev) => {
+			if (!prev) return prev;
+			const updated = { ...prev, playtime: { ...prev.playtime, active: checked } };
+			updateSettings({ modifiers: updated });
+			return updated;
+		});
 	};
 
 	const toggleReviewScore = (checked: boolean) => {
-		setRaritySettings((prev) => ({ ...prev, includeReviewScore: checked }));
-		updateRaritySettings({ includeReviewScore: checked });
+		setModifierSettings((prev) => {
+			if (!prev) return prev;
+			const updated = { ...prev, review: { ...prev.review, active: checked } };
+			updateSettings({ modifiers: updated });
+			return updated;
+		});
 	};
 
 	return (
@@ -172,7 +177,7 @@ export default function Popup() {
 									<label className="toggle-label">
 										<input
 											type="checkbox"
-											checked={raritySettings.includePlaytime}
+											checked={modifierSettings?.playtime.active ?? true}
 											onChange={(e) => togglePlaytime(e.target.checked)}
 											className="toggle-checkbox"
 										/>
@@ -184,7 +189,7 @@ export default function Popup() {
 									<label className="toggle-label">
 										<input
 											type="checkbox"
-											checked={raritySettings.includeReviewScore}
+											checked={modifierSettings?.review.active ?? true}
 											onChange={(e) => toggleReviewScore(e.target.checked)}
 											className="toggle-checkbox"
 										/>

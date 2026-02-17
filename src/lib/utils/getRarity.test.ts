@@ -2,16 +2,18 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getRarity, getRarityAnalysis } from './getRarity';
 import * as SettingsService from '../services/SettingsService';
 import { RARITY_CHART } from '../constants/rarityChart';
-import { PLAYTIME_THRESHOLDS, REVIEW_THRESHOLDS } from '../constants/modifiers';
+import { DEFAULT_SETTINGS } from '../constants/defaultSettings';
+import { AppSettings } from '../shared/types';
 
 // Mock the settings service
 vi.mock('../services/SettingsService', () => ({
-	getRaritySettings: vi.fn(),
+	getSettings: vi.fn(),
 }));
 
-const mockGetRaritySettings = vi.mocked(SettingsService.getRaritySettings);
+const mockGetSettings = vi.mocked(SettingsService.getSettings);
 
-// Test constants - derive from actual constants to reduce brittleness
+const { playtime: playtimeDefaults, review: reviewDefaults } = DEFAULT_SETTINGS.modifiers;
+
 const TEST_SCENARIOS = {
 	discounts: {
 		minimal: 5,
@@ -24,26 +26,30 @@ const TEST_SCENARIOS = {
 		perfect: 100,
 	},
 	reviews: {
-		terrible: REVIEW_THRESHOLDS.CRITICAL_PENALTY,
-		poor: REVIEW_THRESHOLDS.PENALTY,
+		terrible: reviewDefaults.criticalPenalty.threshold,
+		poor: reviewDefaults.penalty.threshold,
 		neutral: 6,
-		excellent: REVIEW_THRESHOLDS.BONUS,
+		excellent: reviewDefaults.bonus.threshold,
 	},
 	playtime: {
-		minimal: PLAYTIME_THRESHOLDS.PENALTY,
+		minimal: playtimeDefaults.penalty.threshold,
 		normal: 15,
-		good: PLAYTIME_THRESHOLDS.BONUS,
-		exceptional: PLAYTIME_THRESHOLDS.CRITICAL_BONUS,
+		good: playtimeDefaults.bonus.threshold,
+		exceptional: playtimeDefaults.criticalBonus.threshold,
 	},
 };
+
+function mockSettings(overrides: Partial<AppSettings> = {}): void {
+	mockGetSettings.mockResolvedValue({
+		...DEFAULT_SETTINGS,
+		...overrides,
+	});
+}
 
 describe('getRarity', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
-		mockGetRaritySettings.mockResolvedValue({
-			includeReviewScore: true,
-			includePlaytime: true,
-		});
+		mockSettings();
 	});
 
 	describe('basic discount tiers', () => {
@@ -110,9 +116,11 @@ describe('getRarity', () => {
 		});
 
 		it('should ignore reviews when disabled', async () => {
-			mockGetRaritySettings.mockResolvedValue({
-				includeReviewScore: false,
-				includePlaytime: true,
+			mockSettings({
+				modifiers: {
+					...DEFAULT_SETTINGS.modifiers,
+					review: { ...DEFAULT_SETTINGS.modifiers.review, active: false },
+				},
 			});
 
 			const withoutReview = await getRarity(baseDiscount);
@@ -163,9 +171,11 @@ describe('getRarity', () => {
 		});
 
 		it('should ignore playtime when disabled', async () => {
-			mockGetRaritySettings.mockResolvedValue({
-				includeReviewScore: true,
-				includePlaytime: false,
+			mockSettings({
+				modifiers: {
+					...DEFAULT_SETTINGS.modifiers,
+					playtime: { ...DEFAULT_SETTINGS.modifiers.playtime, active: false },
+				},
 			});
 
 			const withoutPlaytime = await getRarity(baseDiscount);
@@ -250,10 +260,7 @@ describe('getRarity', () => {
 describe('getRarityAnalysis', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
-		mockGetRaritySettings.mockResolvedValue({
-			includeReviewScore: true,
-			includePlaytime: true,
-		});
+		mockSettings();
 	});
 
 	it('should provide detailed breakdown for basic discount', async () => {
@@ -268,9 +275,11 @@ describe('getRarityAnalysis', () => {
 	});
 
 	it('should track modifier usage based on settings', async () => {
-		mockGetRaritySettings.mockResolvedValue({
-			includeReviewScore: false,
-			includePlaytime: true,
+		mockSettings({
+			modifiers: {
+				...DEFAULT_SETTINGS.modifiers,
+				review: { ...DEFAULT_SETTINGS.modifiers.review, active: false },
+			},
 		});
 
 		const analysis = await getRarityAnalysis(

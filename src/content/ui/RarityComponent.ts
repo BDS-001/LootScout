@@ -1,6 +1,5 @@
 import { getRarityAnalysis, RarityAnalysis } from '../../lib/utils/getRarity';
 import { RARITY_CHART } from '../../lib/constants/rarityChart';
-import { PLAYTIME_THRESHOLDS } from '../../lib/constants/modifiers';
 import * as dom from '../utils/DomBuilder';
 
 function attachTooltipEvents(badge: HTMLElement, tooltip: HTMLElement) {
@@ -28,15 +27,8 @@ function formatModifier(bonus: number): string {
 	return `${bonus >= 0 ? '+' : ''}${bonus} tier${Math.abs(bonus) === 1 ? '' : 's'}`;
 }
 
-function getPlaytimeDesc(bonus: number): string {
-	const t = PLAYTIME_THRESHOLDS;
-	return bonus === 2
-		? `≥${t.CRITICAL_BONUS} hours`
-		: bonus === 1
-			? `≥${t.BONUS} hours`
-			: bonus === -1
-				? `≤${t.PENALTY} hours`
-				: 'standard';
+function getPlaytimeDesc(playtime: number): string {
+	return `${playtime} hours`;
 }
 
 function getColorClass(bonus: number): string {
@@ -95,7 +87,7 @@ function createTooltipContent(
 			' ',
 			dom.setText(
 				dom.createElement('span', 'detail-text'),
-				`(${getPlaytimeDesc(analysis.playtimeBonus)})`
+				`(${getPlaytimeDesc(analysis.playtime!)})`
 			)
 		);
 		dom.addChild(scoreBreakdown, playtimeDiv);

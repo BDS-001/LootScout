@@ -6,16 +6,13 @@ import {
 	REVIEW_CONSTRAINTS,
 } from '../constants/modifierConstraints';
 
-const MODIFIER_ORDER: (keyof ModifierConfig)[] = [
-	'criticalBonus',
-	'bonus',
-	'penalty',
-	'criticalPenalty',
-];
+type ModifierKey = 'criticalBonus' | 'bonus' | 'penalty' | 'criticalPenalty';
 
-const POSITIVE_EFFECT_KEYS: (keyof ModifierConfig)[] = ['criticalBonus', 'bonus'];
+const MODIFIER_ORDER: ModifierKey[] = ['criticalBonus', 'bonus', 'penalty', 'criticalPenalty'];
 
-function hasExpectedEffectDirection(key: keyof ModifierConfig, effect: number): boolean {
+const POSITIVE_EFFECT_KEYS: ModifierKey[] = ['criticalBonus', 'bonus'];
+
+function hasExpectedEffectDirection(key: ModifierKey, effect: number): boolean {
 	if (POSITIVE_EFFECT_KEYS.includes(key)) {
 		return effect > 0;
 	}
