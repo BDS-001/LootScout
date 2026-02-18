@@ -10,7 +10,7 @@ import { EXTENSION_PAGES } from '../lib/constants/extensionPages';
 import CountrySelect from '../lib/components/CountrySelect';
 import ApiKeyInput from '../lib/components/ApiKeyInput';
 
-const VERSION = '1.1.3';
+const VERSION = '1.2.0';
 const GITHUB_URL = 'https://github.com/BDS-001/LootScout';
 const FALLBACK_PERMISSION_ERROR =
 	'Could not confirm Steam permissions. Grant access from the extension menu to enable enhancements.';
