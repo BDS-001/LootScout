@@ -1,6 +1,7 @@
 import './Settings.css';
 import CountrySelect from '../../lib/components/CountrySelect';
 import ApiKeyInput from '../../lib/components/ApiKeyInput';
+import ModifierSettings from '../../lib/components/ModifierSettings';
 
 export default function Settings() {
 	return (
@@ -23,6 +24,7 @@ export default function Settings() {
 				<p className="settings-section-description">
 					Adjust how rarity is calculated by including additional factors.
 				</p>
+				<ModifierSettings />
 			</div>
 		</div>
 	);

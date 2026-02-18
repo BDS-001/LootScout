@@ -1,4 +1,5 @@
 @import '../lib/styles/lootscout-theme.css';
+@import '../lib/styles/toggle.css';
 
 .popup-container {
 	width: 100%;
@@ -162,57 +163,4 @@
 	font-size: 11px;
 	color: var(--text-muted);
 	font-weight: 500;
-}
-
-/* Toggle Switch Styles */
-.toggle-group {
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
-}
-
-.toggle-label {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	cursor: pointer;
-	font-size: 13px;
-	font-weight: 500;
-	color: var(--text-primary);
-	user-select: none;
-}
-
-.toggle-checkbox {
-	display: none;
-}
-
-.toggle-switch {
-	position: relative;
-	width: 38px;
-	height: 20px;
-	background: var(--border-subtle);
-	border-radius: 10px;
-	transition: var(--transition);
-	flex-shrink: 0;
-}
-
-.toggle-switch::before {
-	content: '';
-	position: absolute;
-	top: 2px;
-	left: 2px;
-	width: 16px;
-	height: 16px;
-	background: var(--bg-primary);
-	border-radius: 50%;
-	transition: var(--transition);
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-}
-
-.toggle-checkbox:checked + .toggle-switch {
-	background: var(--fantasy-amber);
-}
-
-.toggle-checkbox:checked + .toggle-switch::before {
-	transform: translateX(18px);
 }
