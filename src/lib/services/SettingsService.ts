@@ -17,9 +17,22 @@ const LEGACY_API_KEY = 'apiKey';
 
 let legacyApiKeyMigrated = false;
 
-const mergeModifiers = (stored?: ModifierSettings): ModifierSettings => {
-	return stored ?? DEFAULT_SETTINGS.modifiers;
-};
+const mergeModifierConfig = (
+	def: ModifierSettings['playtime'],
+	stored?: Partial<ModifierSettings['playtime']>
+): ModifierSettings['playtime'] => ({
+	...def,
+	...stored,
+	criticalBonus: { ...def.criticalBonus, ...stored?.criticalBonus },
+	bonus: { ...def.bonus, ...stored?.bonus },
+	penalty: { ...def.penalty, ...stored?.penalty },
+	criticalPenalty: { ...def.criticalPenalty, ...stored?.criticalPenalty },
+});
+
+const mergeModifiers = (stored?: ModifierSettings): ModifierSettings => ({
+	playtime: mergeModifierConfig(DEFAULT_SETTINGS.modifiers.playtime, stored?.playtime),
+	review: mergeModifierConfig(DEFAULT_SETTINGS.modifiers.review, stored?.review),
+});
 
 export const getSettings = async (): Promise<AppSettings> => {
 	const settings = await getStorageItem<Partial<AppSettings>>(SETTINGS_KEY);

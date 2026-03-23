@@ -8,7 +8,7 @@ import {
 	validatePlaytimeModifiers,
 	validateReviewModifiers,
 } from '../validators/modifierValidation';
-import { MAX_EFFECT_SHIFT } from '../constants/modifierConstraints';
+import { MAX_EFFECT_SHIFT, REVIEW_SCORE_LABELS } from '../constants/modifierConstraints';
 
 type ModifierKey = 'criticalBonus' | 'bonus' | 'penalty' | 'criticalPenalty';
 type ModifierType = 'playtime' | 'review';
@@ -24,7 +24,7 @@ const MODIFIER_LABELS: Record<ModifierKey, string> = {
 
 const BONUS_OPTIONS = Array.from({ length: MAX_EFFECT_SHIFT }, (_, i) => i + 1);
 const PENALTY_OPTIONS = Array.from({ length: MAX_EFFECT_SHIFT }, (_, i) => -(i + 1));
-const REVIEW_SCORE_OPTIONS = Array.from({ length: 9 }, (_, i) => i + 1);
+const REVIEW_SCORE_OPTIONS = Array.from({ length: 9 }, (_, i) => 9 - i);
 
 export default function ModifierSettings() {
 	const [modifierSettings, setModifierSettings] = useState<ModifierSettingsType | null>(null);
@@ -148,7 +148,11 @@ export default function ModifierSettings() {
 										className="modifier-tier-checkbox"
 									/>
 
-									<span className="modifier-tier-label">{MODIFIER_LABELS[key]}</span>
+									<span
+										className={`modifier-tier-label modifier-tier-label--${isBonus ? 'bonus' : 'penalty'}`}
+									>
+										{MODIFIER_LABELS[key]}
+									</span>
 
 									<div className="modifier-input-group">
 										<span className="modifier-comparator">{isBonus ? '≥' : '≤'}</span>
@@ -173,16 +177,16 @@ export default function ModifierSettings() {
 												onChange={(e) =>
 													updateModifierField(type, key, 'threshold', Number(e.target.value))
 												}
-												className="modifier-select"
+												className={`modifier-select ${mod.threshold >= 6 ? 'modifier-select--positive' : mod.threshold === 5 ? 'modifier-select--mixed' : mod.threshold >= 1 ? 'modifier-select--negative' : ''}`}
 											>
 												{REVIEW_SCORE_OPTIONS.map((n) => (
 													<option key={n} value={n}>
-														{n}
+														{REVIEW_SCORE_LABELS[n]}
 													</option>
 												))}
 											</select>
 										)}
-										<span className="modifier-input-unit">{isPlaytime ? 'hrs' : 'score'}</span>
+										{isPlaytime && <span className="modifier-input-unit">hrs</span>}
 									</div>
 
 									<div className="modifier-input-group">
@@ -192,7 +196,7 @@ export default function ModifierSettings() {
 											onChange={(e) =>
 												updateModifierField(type, key, 'effect', Number(e.target.value))
 											}
-											className="modifier-select"
+											className={`modifier-select modifier-select--${isBonus ? 'bonus' : 'penalty'}`}
 										>
 											{effectOptions.map((n) => (
 												<option key={n} value={n}>

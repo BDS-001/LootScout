@@ -58,7 +58,7 @@
 
 .modifier-tiers-header {
 	display: grid;
-	grid-template-columns: 24px 1fr 140px 120px;
+	grid-template-columns: 24px 1fr 1fr 100px;
 	align-items: center;
 	padding: 0 4px;
 }
@@ -73,7 +73,7 @@
 
 .modifier-row {
 	display: grid;
-	grid-template-columns: 24px 1fr 140px 120px;
+	grid-template-columns: 24px 1fr 1fr 100px;
 	align-items: center;
 	gap: 8px;
 	padding: 4px;
@@ -92,8 +92,15 @@
 
 .modifier-tier-label {
 	font-size: 12px;
-	color: var(--text-secondary);
 	font-weight: 500;
+}
+
+.modifier-tier-label--bonus {
+	color: #a3d006;
+}
+
+.modifier-tier-label--penalty {
+	color: #c84135;
 }
 
 .modifier-input-group {
@@ -142,6 +149,23 @@
 
 .modifier-select {
 	cursor: pointer;
+}
+
+.modifier-select--bonus {
+	color: #a3d006;
+}
+
+.modifier-select--positive {
+	color: var(--link-color);
+}
+
+.modifier-select--mixed {
+	color: #c6b65e;
+}
+
+.modifier-select--penalty,
+.modifier-select--negative {
+	color: #c84135;
 }
 
 .modifier-number-input:focus,
