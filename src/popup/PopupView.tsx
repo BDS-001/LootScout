@@ -151,6 +151,15 @@ export default function Popup() {
 	return (
 		<div className="popup-container">
 			<div className="header">
+				<a
+					href="https://store.steampowered.com/"
+					target="_blank"
+					rel="noopener noreferrer"
+					className="steam-shortcut-button"
+					title="Open Steam Store"
+				>
+					Steam
+				</a>
 				<img src="/icon/lootscout64.png" alt="LootScout" className="popup-icon" />
 				<div className="header-text">
 					<h1 className="popup-title">LootScout</h1>
