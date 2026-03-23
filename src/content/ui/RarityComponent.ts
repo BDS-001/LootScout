@@ -109,14 +109,9 @@ export async function createRarityComponent(
 	isRecentlyReleased: boolean = false
 ): Promise<HTMLElement> {
 	const analysis = await getRarityAnalysis(percentage, reviewScore, playtime, isRecentlyReleased);
-	const id = `rarity-${Math.random().toString(36).substring(2, 9)}`;
 	const rarity = analysis.name.toLowerCase();
 
-	const container = dom.setAttribute(
-		dom.createElement('div', 'deal_rarity deal_rarity_corner'),
-		'id',
-		id
-	);
+	const container = dom.createElement('div', 'deal_rarity deal_rarity_corner');
 
 	const badge = dom.setAttribute(
 		dom.setText(dom.createElement('span', `rarity-badge rarity-${rarity}`), analysis.name),

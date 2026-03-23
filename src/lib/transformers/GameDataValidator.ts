@@ -1,6 +1,8 @@
 import { ApiError } from '../shared/types';
 import { CombinedGameDataResponse } from '../api/CombinedGameData';
 import { SteamReviewsResponse } from './SteamReviewProcessor';
+import { SteamAppData } from '../api/SteamStoreApi';
+import { GgDealsGameData } from '../api/GgDealsApi';
 import { debug } from '../utils/debug';
 
 function validateSteamReviewData(steamReviewData: unknown): boolean {
@@ -42,8 +44,8 @@ function validateSteamReviewData(steamReviewData: unknown): boolean {
 
 interface ValidationResult {
 	isValid: boolean;
-	steamAppData?: unknown;
-	ggDealsData?: unknown;
+	steamAppData?: SteamAppData;
+	ggDealsData?: GgDealsGameData;
 	error?: ApiError;
 	isFree?: boolean;
 	isComingSoon?: boolean;
@@ -77,14 +79,8 @@ export function validateGameData(res: CombinedGameDataResponse): ValidationResul
 		};
 	}
 
-	const steamStoreResponse = res.data.steamStoreData.data as Record<string, unknown>;
-	const steamAppData = steamStoreResponse[res.data.appId] as {
-		data?: {
-			is_free?: boolean;
-			release_date?: { coming_soon?: boolean };
-			price_overview?: unknown;
-		};
-	};
+	const steamStoreResponse = res.data.steamStoreData.data as Record<string, SteamAppData>;
+	const steamAppData = steamStoreResponse[res.data.appId];
 	const isFree = steamAppData?.data?.is_free || false;
 	const isComingSoon = steamAppData?.data?.release_date?.coming_soon || false;
 	const hasValidReviews = validateSteamReviewData(res.data.steamReviewData);
@@ -106,7 +102,7 @@ export function validateGameData(res: CombinedGameDataResponse): ValidationResul
 		};
 	}
 
-	const ggDealsResponse = res.data.dealData.data as Record<string, unknown>;
+	const ggDealsResponse = res.data.dealData.data as Record<string, GgDealsGameData | null>;
 	const ggDealsData = ggDealsResponse[res.data.appId];
 
 	if (!steamAppData?.data?.price_overview || !ggDealsData) {

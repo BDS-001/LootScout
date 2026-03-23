@@ -10,7 +10,7 @@ import { EXTENSION_PAGES } from '../lib/constants/extensionPages';
 import CountrySelect from '../lib/components/CountrySelect';
 import ApiKeyInput from '../lib/components/ApiKeyInput';
 
-const VERSION = '1.2.0';
+const VERSION = browser.runtime.getManifest().version;
 const GITHUB_URL = 'https://github.com/BDS-001/LootScout';
 const FALLBACK_PERMISSION_ERROR =
 	'Could not confirm Steam permissions. Grant access from the extension menu to enable enhancements.';
@@ -129,21 +129,23 @@ export default function Popup() {
 	}, []);
 
 	const togglePlaytime = (checked: boolean) => {
-		setModifierSettings((prev) => {
-			if (!prev) return prev;
-			const updated = { ...prev, playtime: { ...prev.playtime, active: checked } };
-			updateSettings({ modifiers: updated });
-			return updated;
-		});
+		if (!modifierSettings) return;
+		const updated = {
+			...modifierSettings,
+			playtime: { ...modifierSettings.playtime, active: checked },
+		};
+		setModifierSettings(updated);
+		void updateSettings({ modifiers: updated });
 	};
 
 	const toggleReviewScore = (checked: boolean) => {
-		setModifierSettings((prev) => {
-			if (!prev) return prev;
-			const updated = { ...prev, review: { ...prev.review, active: checked } };
-			updateSettings({ modifiers: updated });
-			return updated;
-		});
+		if (!modifierSettings) return;
+		const updated = {
+			...modifierSettings,
+			review: { ...modifierSettings.review, active: checked },
+		};
+		setModifierSettings(updated);
+		void updateSettings({ modifiers: updated });
 	};
 
 	return (

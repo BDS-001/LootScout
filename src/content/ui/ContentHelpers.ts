@@ -10,7 +10,17 @@ export function createFooter(
 	addChild(footerInfo, 'Powered by\u00A0');
 
 	links.forEach((link, index) => {
-		addChild(footerInfo, setText(setAttribute(dom.a(link.url), 'target', '_blank'), link.text));
+		addChild(
+			footerInfo,
+			setText(
+				setAttribute(
+					setAttribute(dom.a(link.url), 'target', '_blank'),
+					'rel',
+					'noopener noreferrer'
+				),
+				link.text
+			)
+		);
 
 		if (index < links.length - 1) {
 			addChild(footerInfo, '\u00A0and\u00A0');

@@ -1,4 +1,5 @@
 import { getStorageItem, setStorageItem } from './StorageService';
+import { debug } from '../utils/debug';
 import browser from 'webextension-polyfill';
 
 const DEFAULT_CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
@@ -59,7 +60,7 @@ export const cleanupExpiredCache = async (): Promise<number> => {
 
 		return count;
 	} catch (error) {
-		console.error('Cache cleanup failed:', error);
+		debug.error('Cache cleanup failed:', error);
 		return 0;
 	}
 };

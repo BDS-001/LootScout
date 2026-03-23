@@ -4,6 +4,7 @@ import fetchGgDealsData from '../lib/api/GgDealsApi';
 import { normalizeResponse } from '../lib/transformers/ResponseFormatter';
 import { ProcessedSteamReviews } from '../lib/transformers/SteamReviewProcessor';
 import { CombinedGameDataResponse } from '../lib/api/CombinedGameData';
+import { GameDataResponse } from '../lib/shared/types';
 import { getRegion } from '../lib/services/SettingsService';
 import { getApiKeyWithFallback } from '../lib/api/ApiKeyService';
 import { getCacheItemWithExpiry, setCacheItem } from '../lib/services/CacheService';
@@ -42,14 +43,14 @@ export class DataCoordinator {
 		await setCacheItem(this.getReviewCacheKey(appId), processedReviews);
 	}
 
-	public async fetchGameData(appId: string): Promise<any> {
+	public async fetchGameData(appId: string): Promise<GameDataResponse> {
 		const region = await getRegion();
 		const cacheKey = `game_data_${appId}_${region}`;
 		const cachedData = await getCacheItemWithExpiry(cacheKey, DataCoordinator.CACHE_DURATION);
 
 		if (cachedData) {
 			debug.log('Using cached data');
-			return cachedData;
+			return cachedData as GameDataResponse;
 		}
 
 		const apiKey = await getApiKeyWithFallback();
@@ -105,7 +106,15 @@ export class DataCoordinator {
 
 			return normalizedRes;
 		} catch (error) {
-			return { success: false, data: error };
+			return {
+				success: false,
+				data: {
+					name: 'FetchError',
+					message: error instanceof Error ? error.message : 'Failed to fetch game data',
+					code: 0,
+					status: 0,
+				},
+			};
 		}
 	}
 }

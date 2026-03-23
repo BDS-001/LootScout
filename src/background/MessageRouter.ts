@@ -30,13 +30,13 @@ export class MessageRouter {
 
 	private async handleUpdateCountryCode(
 		countryCode: string
-	): Promise<{ success: boolean; error?: any }> {
+	): Promise<{ success: boolean; error?: string }> {
 		try {
 			await updateRegion(countryCode as RegionCode);
 			return { success: true };
 		} catch (error) {
 			debug.error('Error updating country code:', error);
-			return { success: false, error };
+			return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
 		}
 	}
 

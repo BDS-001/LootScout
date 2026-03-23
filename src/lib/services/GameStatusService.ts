@@ -1,6 +1,8 @@
+import { SteamAppData } from '../api/SteamStoreApi';
+
 export type GameStatus = 'not_released' | 'free' | 'paid';
 
-export function getGameStatus(steamAppData: any): GameStatus {
+export function getGameStatus(steamAppData: SteamAppData | null | undefined): GameStatus {
 	if (steamAppData?.data?.release_date?.coming_soon) {
 		return 'not_released';
 	}

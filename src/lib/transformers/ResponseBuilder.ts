@@ -1,34 +1,8 @@
 import { ProcessedGameData } from '../shared/types';
 import { ProcessedSteamReviews } from './SteamReviewProcessor';
 import { getSteamDealStatus } from './PriceCalculator';
-
-// Local interfaces for response building
-interface SteamAppData {
-	data: {
-		name: string;
-		is_free?: boolean;
-		release_date?: {
-			coming_soon: boolean;
-			date?: string;
-		};
-		price_overview?: {
-			currency: string;
-			initial?: number;
-			final: number;
-			discount_percent: number;
-		};
-	};
-}
-
-interface GgDealsGameData {
-	title: string;
-	url: string;
-	prices: {
-		currentRetail: number;
-		historicalRetail: number;
-		currency: string;
-	};
-}
+import { SteamAppData } from '../api/SteamStoreApi';
+import { GgDealsGameData } from '../api/GgDealsApi';
 
 interface PriceMetrics {
 	steamPrice: number;
@@ -52,7 +26,7 @@ export function buildFreeGameResponse(
 ): ProcessedGameData {
 	return {
 		success: true,
-		title: steamAppData.data.name,
+		title: steamAppData.data!.name,
 		appId,
 		steam: {
 			currency: 'USD',
@@ -83,10 +57,10 @@ export function buildComingSoonResponse(
 	steamAppData: SteamAppData,
 	processedReviews?: ProcessedSteamReviews | null
 ): ProcessedGameData {
-	const releaseDate = steamAppData.data.release_date?.date || 'TBA';
+	const releaseDate = steamAppData.data!.release_date?.date || 'TBA';
 	return {
 		success: true,
-		title: steamAppData.data.name,
+		title: steamAppData.data!.name,
 		appId,
 		steam: {
 			currency: 'USD',
@@ -121,7 +95,7 @@ export function buildGameDataResponse(
 	processedReviews?: ProcessedSteamReviews | null,
 	costPerHour?: { steam: number; currentBest: number; historicalBest: number } | null
 ): ProcessedGameData {
-	const steamPriceOverview = steamAppData.data.price_overview!;
+	const steamPriceOverview = steamAppData.data!.price_overview!;
 	const steamStatus = getSteamDealStatus(
 		priceMetrics.steamIsBestCurrent,
 		priceMetrics.steamIsBestHistorical
@@ -131,7 +105,7 @@ export function buildGameDataResponse(
 		success: true,
 		title: ggDealsData.title,
 		appId: appId,
-		releaseDate: steamAppData.data.release_date?.date,
+		releaseDate: steamAppData.data!.release_date?.date,
 		deal: {
 			currentBest: priceMetrics.currentRetail,
 			historicalBest: priceMetrics.historicalRetail,

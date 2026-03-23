@@ -1,22 +1,6 @@
 import { calculateDiscount, calculateSavings } from '../utils/PriceUtils';
-
-// Local interfaces for price calculation
-interface SteamPriceOverview {
-	initial?: number;
-	final: number;
-	currency: string;
-	discount_percent: number;
-}
-
-interface GgDealsGamePrices {
-	currentRetail: number;
-	historicalRetail: number;
-	currency: string;
-}
-
-interface GgDealsGameData {
-	prices: GgDealsGamePrices;
-}
+import { SteamPriceOverview } from '../api/SteamStoreApi';
+import { GgDealsGameData } from '../api/GgDealsApi';
 
 export function getSteamDealStatus(
 	steamIsBestCurrent: boolean,

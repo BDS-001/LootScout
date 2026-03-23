@@ -164,7 +164,7 @@ function createComparison(
 			dom.div('deal_button'),
 			addChild(
 				setAttribute(
-					setAttribute(dom.a(url), 'target', '_blank'),
+					setAttribute(setAttribute(dom.a(url), 'target', '_blank'), 'rel', 'noopener noreferrer'),
 					'class',
 					'btnv6_blue_hoverfade btn_medium'
 				),
@@ -189,7 +189,15 @@ function createResourcesSection(gameTitle: string, appId: string): HTMLElement {
 		addChild(
 			resourcesContainer,
 			addChild(
-				setAttribute(setAttribute(dom.a(link.url), 'target', '_blank'), 'class', 'linkbar'),
+				setAttribute(
+					setAttribute(
+						setAttribute(dom.a(link.url), 'target', '_blank'),
+						'rel',
+						'noopener noreferrer'
+					),
+					'class',
+					'linkbar'
+				),
 				setText(dom.span(), link.text)
 			)
 		);

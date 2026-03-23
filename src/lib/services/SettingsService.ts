@@ -14,8 +14,7 @@ const REGION_MANUALLY_SET_KEY = 'region_manually_set';
 
 const SETTINGS_KEY = 'lootscout_settings';
 const LEGACY_API_KEY = 'apiKey';
-
-let legacyApiKeyMigrated = false;
+const LEGACY_MIGRATION_DONE_KEY = 'legacy_migration_done';
 
 const mergeModifierConfig = (
 	def: ModifierSettings['playtime'],
@@ -42,14 +41,15 @@ export const getSettings = async (): Promise<AppSettings> => {
 		modifiers: mergeModifiers(settings?.modifiers),
 	};
 
-	if (!legacyApiKeyMigrated && !merged.apiKey) {
-		legacyApiKeyMigrated = true;
+	const migrationDone = await getStorageItem<boolean>(LEGACY_MIGRATION_DONE_KEY);
+	if (!migrationDone && !merged.apiKey) {
 		const legacyKey = await getStorageItem<string>(LEGACY_API_KEY);
 		if (legacyKey) {
 			merged.apiKey = legacyKey;
 			await setStorageItem(SETTINGS_KEY, merged);
 			await removeStorageItem(LEGACY_API_KEY);
 		}
+		await setStorageItem(LEGACY_MIGRATION_DONE_KEY, true);
 	}
 
 	return merged;
