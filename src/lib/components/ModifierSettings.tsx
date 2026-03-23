@@ -5,8 +5,8 @@ import { DEFAULT_SETTINGS } from '../constants/defaultSettings';
 import { debug } from '../utils/debug';
 import type { ModifierSettings as ModifierSettingsType, ModifierConfig } from '../shared/types';
 import {
-	validatePlaytimeModifiers,
-	validateReviewModifiers,
+	getPlaytimeValidationErrors,
+	getReviewValidationErrors,
 } from '../validators/modifierValidation';
 import { MAX_EFFECT_SHIFT, REVIEW_SCORE_LABELS } from '../constants/modifierConstraints';
 
@@ -31,10 +31,11 @@ export default function ModifierSettings() {
 	const [isDirty, setIsDirty] = useState(false);
 	const [savedFeedback, setSavedFeedback] = useState(false);
 
-	const validSettings = modifierSettings
-		? validatePlaytimeModifiers(modifierSettings.playtime) &&
-			validateReviewModifiers(modifierSettings.review)
-		: true;
+	const playtimeErrors = modifierSettings
+		? getPlaytimeValidationErrors(modifierSettings.playtime)
+		: [];
+	const reviewErrors = modifierSettings ? getReviewValidationErrors(modifierSettings.review) : [];
+	const validSettings = playtimeErrors.length === 0 && reviewErrors.length === 0;
 
 	useEffect(() => {
 		const loadInitialSettings = async () => {
@@ -223,11 +224,29 @@ export default function ModifierSettings() {
 			</div>
 
 			<div className="modifier-save-row">
-				{!validSettings && (
-					<p className="modifier-validation-error">
-						Invalid configuration — check that thresholds are ordered correctly and effects face the
-						right direction.
-					</p>
+				{(playtimeErrors.length > 0 || reviewErrors.length > 0) && (
+					<div className="modifier-validation-error">
+						{playtimeErrors.length > 0 && (
+							<div>
+								<span className="modifier-validation-section">Playtime</span>
+								<ul className="modifier-validation-list">
+									{playtimeErrors.map((e) => (
+										<li key={e}>{e}</li>
+									))}
+								</ul>
+							</div>
+						)}
+						{reviewErrors.length > 0 && (
+							<div>
+								<span className="modifier-validation-section">Review Score</span>
+								<ul className="modifier-validation-list">
+									{reviewErrors.map((e) => (
+										<li key={e}>{e}</li>
+									))}
+								</ul>
+							</div>
+						)}
+					</div>
 				)}
 				<button
 					className="modifier-save-btn"
