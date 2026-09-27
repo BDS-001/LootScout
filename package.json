@@ -9,8 +9,9 @@
 		"build": "tsc && vite build",
 		"format": "prettier --write .",
 		"test": "vitest",
-		"sync-version": "node scripts/sync-manifest-versions.mjs",
-		"version": "npm run sync-version && git add manifest-templates"
+		"build:chrome": "node scripts/build-release.mjs chrome",
+		"build:firefox": "node scripts/build-release.mjs firefox",
+		"build:release": "node scripts/build-release.mjs"
 	},
 	"dependencies": {
 		"dotenv": "^17.0.1",
