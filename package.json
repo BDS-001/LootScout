@@ -2,13 +2,15 @@
 	"name": "loot-scout",
 	"description": "Steam game deal finder with real-time price comparisons and rarity-based deal ratings",
 	"private": true,
-	"version": "1.2.1",
+	"version": "1.2.2",
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
 		"build": "tsc && vite build",
 		"format": "prettier --write .",
-		"test": "vitest"
+		"test": "vitest",
+		"sync-version": "node scripts/sync-manifest-versions.mjs",
+		"version": "npm run sync-version && git add manifest-templates"
 	},
 	"dependencies": {
 		"dotenv": "^17.0.1",
