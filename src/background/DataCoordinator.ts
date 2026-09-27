@@ -24,7 +24,7 @@ export class DataCoordinator {
 	}
 
 	private async getCachedProcessedReviews(appId: string): Promise<ProcessedSteamReviews | null> {
-		const cached = await getCacheItemWithExpiry(
+		const cached = await getCacheItemWithExpiry<ProcessedSteamReviews>(
 			this.getReviewCacheKey(appId),
 			DataCoordinator.CACHE_DURATION
 		);
@@ -33,7 +33,7 @@ export class DataCoordinator {
 			debug.log('Using cached processed reviews');
 		}
 
-		return cached as ProcessedSteamReviews | null;
+		return cached;
 	}
 
 	private async setCachedProcessedReviews(
@@ -46,11 +46,14 @@ export class DataCoordinator {
 	public async fetchGameData(appId: string): Promise<GameDataResponse> {
 		const region = await getRegion();
 		const cacheKey = `game_data_${appId}_${region}`;
-		const cachedData = await getCacheItemWithExpiry(cacheKey, DataCoordinator.CACHE_DURATION);
+		const cachedData = await getCacheItemWithExpiry<GameDataResponse>(
+			cacheKey,
+			DataCoordinator.CACHE_DURATION
+		);
 
 		if (cachedData) {
 			debug.log('Using cached data');
-			return cachedData as GameDataResponse;
+			return cachedData;
 		}
 
 		const apiKey = await getApiKeyWithFallback();

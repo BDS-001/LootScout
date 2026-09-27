@@ -1,49 +1,17 @@
 import { ApiError } from '../shared/types';
 import { CombinedGameDataResponse } from '../api/CombinedGameData';
-import { SteamReviewsResponse } from './SteamReviewProcessor';
 import { SteamAppData } from '../api/SteamStoreApi';
+import { SteamReviewApiResponse } from '../api/SteamReviewsApi';
 import { GgDealsGameData } from '../api/GgDealsApi';
 import { debug } from '../utils/debug';
 
-function validateSteamReviewData(steamReviewData: unknown): boolean {
-	if (!steamReviewData || typeof steamReviewData !== 'object') {
-		return false;
-	}
-
-	const apiResponse = steamReviewData as { success: boolean; data: unknown };
-	if (!apiResponse.success || !apiResponse.data) {
-		return false;
-	}
-
-	const reviewData = apiResponse.data as SteamReviewsResponse;
-	if (!reviewData) {
-		return false;
-	}
-
-	if (!reviewData.query_summary || !Array.isArray(reviewData.reviews)) {
-		return false;
-	}
-
-	const { query_summary } = reviewData;
-	const requiredFields = [
-		'num_reviews',
-		'review_score',
-		'review_score_desc',
-		'total_positive',
-		'total_negative',
-		'total_reviews',
-	] as const;
-	for (const field of requiredFields) {
-		if (!(field in query_summary)) {
-			return false;
-		}
-	}
-
-	return true;
+function validateSteamReviewData(steamReviewData: SteamReviewApiResponse | null): boolean {
+	return steamReviewData?.success === true;
 }
 
 interface ValidationResult {
 	isValid: boolean;
+	appId?: string;
 	steamAppData?: SteamAppData;
 	ggDealsData?: GgDealsGameData;
 	error?: ApiError;
@@ -62,7 +30,7 @@ export function validateGameData(res: CombinedGameDataResponse): ValidationResul
 				message: 'Combined API request failed',
 				code: 0,
 				status: 0,
-			} as ApiError,
+			},
 		};
 	}
 
@@ -75,18 +43,19 @@ export function validateGameData(res: CombinedGameDataResponse): ValidationResul
 				message: res.data.steamStoreData.data?.message || 'Steam API request failed',
 				code: res.data.steamStoreData.data?.code || 0,
 				status: res.data.steamStoreData.data?.status || 0,
-			} as ApiError,
+			},
 		};
 	}
 
-	const steamStoreResponse = res.data.steamStoreData.data as Record<string, SteamAppData>;
+	const { appId } = res.data;
+	const steamStoreResponse = res.data.steamStoreData.data;
 	const steamAppData = Object.values(steamStoreResponse)[0];
 	const isFree = steamAppData?.data?.is_free || false;
 	const isComingSoon = steamAppData?.data?.release_date?.coming_soon || false;
 	const hasValidReviews = validateSteamReviewData(res.data.steamReviewData);
 
 	if (isFree || isComingSoon) {
-		return { isValid: true, steamAppData, isFree, isComingSoon, hasValidReviews };
+		return { isValid: true, appId, steamAppData, isFree, isComingSoon, hasValidReviews };
 	}
 
 	if (!res.data.dealData.success) {
@@ -98,12 +67,12 @@ export function validateGameData(res: CombinedGameDataResponse): ValidationResul
 				message: res.data.dealData.data?.message || 'GG.deals API request failed',
 				code: res.data.dealData.data?.code || 0,
 				status: res.data.dealData.data?.status || 0,
-			} as ApiError,
+			},
 		};
 	}
 
-	const ggDealsResponse = res.data.dealData.data as Record<string, GgDealsGameData | null>;
-	const ggDealsData = ggDealsResponse[res.data.appId];
+	const ggDealsResponse = res.data.dealData.data;
+	const ggDealsData = ggDealsResponse[appId];
 
 	if (!steamAppData?.data?.price_overview || !ggDealsData) {
 		return {
@@ -113,9 +82,9 @@ export function validateGameData(res: CombinedGameDataResponse): ValidationResul
 				message: 'Required data not found in API responses',
 				code: 0,
 				status: 0,
-			} as ApiError,
+			},
 		};
 	}
 
-	return { isValid: true, steamAppData, ggDealsData, hasValidReviews };
+	return { isValid: true, appId, steamAppData, ggDealsData, hasValidReviews };
 }

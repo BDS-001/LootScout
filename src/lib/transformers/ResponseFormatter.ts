@@ -1,6 +1,6 @@
 import { GameDataResponse } from '../shared/types';
 import { ProcessedSteamReviews } from './SteamReviewProcessor';
-import { CombinedGameDataResponse, RawCombinedGameData } from '../api/CombinedGameData';
+import { CombinedGameDataResponse } from '../api/CombinedGameData';
 import { validateGameData } from './GameDataValidator';
 import { calculatePriceMetrics, calculateCostPerHour } from './PriceCalculator';
 import {
@@ -21,21 +21,19 @@ export function normalizeResponse(
 		};
 	}
 
-	const { steamAppData, ggDealsData, isFree, isComingSoon } = validation;
-	const combinedData = res.data as RawCombinedGameData;
-	const appId = combinedData.appId;
+	const { steamAppData, ggDealsData, isFree, isComingSoon, appId } = validation;
 
 	if (isComingSoon) {
 		return {
 			success: true,
-			data: buildComingSoonResponse(appId, steamAppData!, null),
+			data: buildComingSoonResponse(appId!, steamAppData!, null),
 		};
 	}
 
 	if (isFree) {
 		return {
 			success: true,
-			data: buildFreeGameResponse(appId, steamAppData!, processedReviews),
+			data: buildFreeGameResponse(appId!, steamAppData!, processedReviews),
 		};
 	}
 
@@ -59,7 +57,7 @@ export function normalizeResponse(
 	return {
 		success: true,
 		data: buildGameDataResponse(
-			appId,
+			appId!,
 			steamAppData!,
 			ggDealsData!,
 			priceMetrics,

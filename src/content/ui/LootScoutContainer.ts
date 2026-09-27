@@ -1,4 +1,4 @@
-import { ProcessedGameData, ApiError, RegionCode } from '../../lib/shared/types';
+import { ProcessedGameData, ApiError } from '../../lib/shared/types';
 import {
 	createLoadingContent,
 	createErrorContent,
@@ -6,6 +6,7 @@ import {
 } from './SecureContentBuilder';
 import { createGameTitleSection } from './GameTitleBuilder';
 import { getRegionInfo, getSettings } from '../../lib/services/SettingsService';
+import { isValidRegion } from '../../lib/parsers/LanguageParser';
 import * as dom from '../utils/DomBuilder';
 import { debug } from '../../lib/utils/debug';
 import browser from 'webextension-polyfill';
@@ -65,8 +66,8 @@ export function createLootScoutContainer(): HTMLElement {
 }
 
 function getContainerElements(container: HTMLElement): ContainerElements | null {
-	const header = container.querySelector(`#${ELEMENT_IDS.HEADER}`) as HTMLElement;
-	const content = container.querySelector(`#${ELEMENT_IDS.CONTENT}`) as HTMLElement;
+	const header = container.querySelector<HTMLElement>(`#${ELEMENT_IDS.HEADER}`);
+	const content = container.querySelector<HTMLElement>(`#${ELEMENT_IDS.CONTENT}`);
 
 	if (!header || !content) return null;
 
@@ -98,7 +99,9 @@ function updateHeader(header: HTMLElement, countryCode?: string): void {
 }
 
 function createRegionDisplay(countryCode: string): string {
-	const countryInfo = getRegionInfo(countryCode as RegionCode);
+	if (!isValidRegion(countryCode)) return countryCode.toUpperCase();
+
+	const countryInfo = getRegionInfo(countryCode);
 	return countryInfo ? `${countryInfo.name} (${countryInfo.currency})` : countryCode.toUpperCase();
 }
 
