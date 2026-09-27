@@ -1,6 +1,6 @@
 function slugify(title: string, separator: string): string {
 	return title
-		.replace(/[^A-Za-z0-9]+/g, ' ')
+		.replace(/[^\p{L}\p{N}]+/gu, ' ')
 		.trim()
 		.replace(/\s+/g, separator);
 }
