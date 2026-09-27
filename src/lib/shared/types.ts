@@ -80,6 +80,18 @@ export interface ProcessedGameData {
 
 export type GameDataResponse = ApiResponse<ProcessedGameData>;
 
+export function isGameDataResponse(value: unknown): value is GameDataResponse {
+	return (
+		typeof value === 'object' &&
+		value !== null &&
+		'success' in value &&
+		typeof value.success === 'boolean' &&
+		'data' in value &&
+		typeof value.data === 'object' &&
+		value.data !== null
+	);
+}
+
 // Settings Types
 export interface ModifierCategory {
 	effect: number;

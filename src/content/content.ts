@@ -1,7 +1,7 @@
 import browser from 'webextension-polyfill';
 import parseSteamPageUrl from './parsers/SteamParser';
 import { injectLootScoutContainer, updateContainerState } from './ui/LootScoutContainer';
-import { GameDataResponse, ApiError } from '../lib/shared/types';
+import { isGameDataResponse } from '../lib/shared/types';
 import injectCSS from './injectCSS';
 import { debug } from '../lib/utils/debug';
 
@@ -10,7 +10,7 @@ async function initializeContentScript(): Promise<void> {
 
 	injectCSS();
 
-	const { appId } = parseSteamPageUrl();
+	const { appId, appName } = parseSteamPageUrl();
 	if (!appId) {
 		debug.log('No appId detected, aborting');
 		return;
@@ -27,32 +27,39 @@ async function initializeContentScript(): Promise<void> {
 	try {
 		await updateContainerState(container, { status: 'loading' });
 
-		const response = (await browser.runtime.sendMessage({
+		const rawResponse = await browser.runtime.sendMessage({
 			action: 'getAppData',
 			appId,
-		})) as GameDataResponse;
+		});
 
-		debug.log('API Response:', response);
+		if (!isGameDataResponse(rawResponse)) {
+			throw new Error('Received malformed response from extension background');
+		}
 
-		if (response.success) {
+		debug.log('API Response:', rawResponse);
+
+		if (rawResponse.success) {
 			let currentCountry: string | undefined;
 			try {
-				currentCountry = await browser.runtime.sendMessage({
+				const countryResponse = await browser.runtime.sendMessage({
 					action: 'getCountryCode',
 				});
+				currentCountry = typeof countryResponse === 'string' ? countryResponse : undefined;
 			} catch (error) {
 				debug.warn('Failed to get country code:', error);
 			}
 
 			await updateContainerState(container, {
 				status: 'success',
-				gameData: response.data,
+				gameData: rawResponse.data,
 				countryCode: currentCountry,
 			});
 		} else {
 			await updateContainerState(container, {
 				status: 'error',
-				error: response.data as ApiError,
+				error: rawResponse.data,
+				appId,
+				gameTitle: appName || undefined,
 			});
 		}
 	} catch (error) {
@@ -64,6 +71,8 @@ async function initializeContentScript(): Promise<void> {
 				code: 0,
 				status: 0,
 			},
+			appId,
+			gameTitle: appName || undefined,
 		});
 
 		debug.error('Error communicating with background script:', error);

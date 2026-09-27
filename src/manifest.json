@@ -1,7 +1,6 @@
 {
 	"manifest_version": 3,
 	"name": "LootScout",
-	"version": "1.2.1",
 	"description": "Enhanced Steam game browsing with pricing data, rarity information, and game details from multiple sources",
 	"short_name": "LootScout",
 	"author": "BDS-001",
@@ -21,8 +20,10 @@
 		"open_in_tab": true
 	},
 	"background": {
-		"scripts": ["src/background/background.ts"],
-		"service_worker": "src/background/background.js"
+		"{{chrome}}.service_worker": "src/background/background.ts",
+		"{{firefox}}.scripts": ["src/background/background.ts"],
+		"{{dev}}.service_worker": "src/background/background.ts",
+		"{{dev}}.scripts": ["src/background/background.ts"]
 	},
 	"content_scripts": [
 		{
@@ -36,7 +37,12 @@
 	"content_security_policy": {
 		"extension_pages": "script-src 'self'; object-src 'self'"
 	},
-	"browser_specific_settings": {
+	"{{firefox}}.browser_specific_settings": {
+		"gecko": {
+			"id": "lootscout@bds-001.local"
+		}
+	},
+	"{{dev}}.browser_specific_settings": {
 		"gecko": {
 			"id": "lootscout@bds-001.local"
 		}

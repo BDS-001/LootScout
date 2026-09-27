@@ -84,7 +84,7 @@ export const getRegion = async (): Promise<RegionCode> => {
 	return settings.region;
 };
 
-export const updateRegion = async (region: RegionCode): Promise<void> => {
+export const updateRegion = async (region: string): Promise<void> => {
 	if (!isValidRegion(region)) {
 		throw new Error(`Invalid region code: ${region}`);
 	}

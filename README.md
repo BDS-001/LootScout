@@ -203,11 +203,15 @@ Currently requires manual installation:
 
 ### Production Build
 
+To build a store-ready package for a specific browser:
+
 ```bash
-npm run build
+npm run build:chrome    # -> releaseBuilds/lootscout_chrome_build_vX.X.X.zip
+npm run build:firefox   # -> releaseBuilds/lootscout_firefox_build_vX.X.X.zip
+npm run build:release   # builds both
 ```
 
-The built extension will be in the `dist` folder.
+`npm run build` alone (no browser target) produces a `dist` folder with a manifest that works when loaded unpacked in either browser — useful for local testing, not for store submission.
 
 ## API Integration
 
@@ -322,8 +326,12 @@ proxies/                  # Proxy server options for shared API access
 ## Scripts
 
 - `npm run dev` - Start development server
-- `npm run build` - Build for production
+- `npm run build` - Build for local testing (loadable unpacked in either browser)
+- `npm run build:chrome` - Build a store-ready Chrome zip in `releaseBuilds/`
+- `npm run build:firefox` - Build a store-ready Firefox zip in `releaseBuilds/`
+- `npm run build:release` - Build both Chrome and Firefox zips
 - `npm run format` - Format code with Prettier
+- `npm test` - Run the test suite
 
 ## Architecture
 

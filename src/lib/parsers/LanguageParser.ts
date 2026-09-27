@@ -15,15 +15,16 @@ export function parseSteamCountryCode(cookieValue: string | null | undefined): R
 export function getBrowserLanguageRegion(): RegionCode {
 	try {
 		const [languageCode, countryCode] = navigator.language.split('-');
+		const lowerCountryCode = countryCode?.toLowerCase();
 
-		if (countryCode && isValidRegion(countryCode.toLowerCase())) {
-			return countryCode.toLowerCase() as RegionCode;
+		if (lowerCountryCode && isValidRegion(lowerCountryCode)) {
+			return lowerCountryCode;
 		}
 
 		const override = languageOverrides[languageCode];
 		if (override) return override;
 
-		return isValidRegion(languageCode) ? (languageCode as RegionCode) : DEFAULT_REGION;
+		return isValidRegion(languageCode) ? languageCode : DEFAULT_REGION;
 	} catch {
 		return DEFAULT_REGION;
 	}

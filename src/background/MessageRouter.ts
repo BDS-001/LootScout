@@ -1,11 +1,11 @@
 import browser from 'webextension-polyfill';
 import { updateRegion, getRegion } from '../lib/services/SettingsService';
-import { RegionCode } from '../lib/shared/types';
 import { DataCoordinator } from './DataCoordinator';
 import { debug } from '../lib/utils/debug';
 import { STEAM_ORIGINS } from '../lib/constants/steamOrigins';
 import { STEAM_PERMISSION_INSTRUCTIONS } from '../lib/constants/messages';
 import { EXTENSION_PAGES } from '../lib/constants/extensionPages';
+import { isExtensionMessage } from '../lib/shared/messages';
 
 export class MessageRouter {
 	private dataCoordinator: DataCoordinator;
@@ -15,15 +15,21 @@ export class MessageRouter {
 	}
 
 	public setupEventListeners(): void {
-		browser.runtime.onMessage.addListener(async (msg, _sender, sendResponse) => {
-			if (msg.action === 'updateCountryCode') {
-				return this.handleUpdateCountryCode(msg.countryCode);
-			} else if (msg.action === 'getAppData') {
-				return this.handleGetAppData(msg.appId);
-			} else if (msg.action === 'getCountryCode') {
-				return this.handleGetCountryCode();
-			} else if (msg.action === 'openSettings') {
-				return this.handleOpenSettings();
+		browser.runtime.onMessage.addListener(async (msg: unknown) => {
+			if (!isExtensionMessage(msg)) {
+				debug.warn('Ignoring unrecognized runtime message:', msg);
+				return;
+			}
+
+			switch (msg.action) {
+				case 'updateCountryCode':
+					return this.handleUpdateCountryCode(msg.countryCode);
+				case 'getAppData':
+					return this.handleGetAppData(msg.appId);
+				case 'getCountryCode':
+					return this.handleGetCountryCode();
+				case 'openSettings':
+					return this.handleOpenSettings();
 			}
 		});
 	}
@@ -32,7 +38,7 @@ export class MessageRouter {
 		countryCode: string
 	): Promise<{ success: boolean; error?: string }> {
 		try {
-			await updateRegion(countryCode as RegionCode);
+			await updateRegion(countryCode);
 			return { success: true };
 		} catch (error) {
 			debug.error('Error updating country code:', error);
