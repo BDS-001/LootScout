@@ -2,6 +2,7 @@
 
 ### Added
 
+- Quick Steam store button in popup for fast navigation to the Steam store
 - SteamDB link to additional resources quick links
 - Reload page hint in popup when updating country
 - Dedicated settings page accessible from popup and Steam page

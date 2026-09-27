@@ -23,6 +23,8 @@ export interface ContainerState {
 	gameData?: ProcessedGameData;
 	error?: ApiError;
 	countryCode?: string;
+	appId?: string;
+	gameTitle?: string;
 }
 
 interface ContainerElements {
@@ -138,7 +140,10 @@ export async function updateContainerState(
 			break;
 
 		case 'error':
-			dom.replaceElementContent(elements.content, createErrorContent(state.error));
+			dom.replaceElementContent(
+				elements.content,
+				createErrorContent(state.error, state.gameTitle, state.appId)
+			);
 			break;
 	}
 }

@@ -80,7 +80,7 @@ export function validateGameData(res: CombinedGameDataResponse): ValidationResul
 	}
 
 	const steamStoreResponse = res.data.steamStoreData.data as Record<string, SteamAppData>;
-	const steamAppData = steamStoreResponse[res.data.appId];
+	const steamAppData = Object.values(steamStoreResponse)[0];
 	const isFree = steamAppData?.data?.is_free || false;
 	const isComingSoon = steamAppData?.data?.release_date?.coming_soon || false;
 	const hasValidReviews = validateSteamReviewData(res.data.steamReviewData);

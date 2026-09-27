@@ -30,7 +30,7 @@ function getUserFriendlyError(error?: ApiError): string {
 	return error.message || DEFAULT_ERROR_MESSAGE;
 }
 
-function createMissingPermissionContent(): HTMLElement {
+function createMissingPermissionContent(gameTitle?: string, appId?: string): HTMLElement {
 	const section = addChild(
 		dom.div('deal_section'),
 		setText(dom.div('deal_header'), 'Permission Required'),
@@ -41,6 +41,10 @@ function createMissingPermissionContent(): HTMLElement {
 			'Open the LootScout toolbar icon and choose Always allow on store.steampowered.com.'
 		)
 	);
+
+	if (gameTitle && appId) {
+		return addChild(dom.div(), section, createResourcesSection(gameTitle, appId));
+	}
 
 	return section;
 }
@@ -59,9 +63,9 @@ export function createLoadingContent(): HTMLElement {
 	);
 }
 
-export function createErrorContent(error?: ApiError): HTMLElement {
+export function createErrorContent(error?: ApiError, gameTitle?: string, appId?: string): HTMLElement {
 	if (error?.name === 'MissingSteamPermission') {
-		return createMissingPermissionContent();
+		return createMissingPermissionContent(gameTitle, appId);
 	}
 
 	const userFriendlyMessage = getUserFriendlyError(error);
@@ -84,7 +88,13 @@ export function createErrorContent(error?: ApiError): HTMLElement {
 		() => window.location.reload()
 	);
 
-	return addChild(section, addChild(dom.div('deal_button'), button));
+	addChild(section, addChild(dom.div('deal_button'), button));
+
+	if (gameTitle && appId) {
+		return addChild(dom.div(), section, createResourcesSection(gameTitle, appId));
+	}
+
+	return section;
 }
 
 function createDealSection(

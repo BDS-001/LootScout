@@ -10,7 +10,7 @@ async function initializeContentScript(): Promise<void> {
 
 	injectCSS();
 
-	const { appId } = parseSteamPageUrl();
+	const { appId, appName } = parseSteamPageUrl();
 	if (!appId) {
 		debug.log('No appId detected, aborting');
 		return;
@@ -53,6 +53,8 @@ async function initializeContentScript(): Promise<void> {
 			await updateContainerState(container, {
 				status: 'error',
 				error: response.data as ApiError,
+				appId,
+				gameTitle: appName || undefined,
 			});
 		}
 	} catch (error) {
@@ -64,6 +66,8 @@ async function initializeContentScript(): Promise<void> {
 				code: 0,
 				status: 0,
 			},
+			appId,
+			gameTitle: appName || undefined,
 		});
 
 		debug.error('Error communicating with background script:', error);
