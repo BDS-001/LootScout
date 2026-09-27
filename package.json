@@ -11,7 +11,8 @@
 		"test": "vitest",
 		"build:chrome": "node scripts/build-release.mjs chrome",
 		"build:firefox": "node scripts/build-release.mjs firefox",
-		"build:release": "node scripts/build-release.mjs"
+		"build:release": "node scripts/build-release.mjs",
+		"build:source": "node scripts/build-source-zip.mjs"
 	},
 	"dependencies": {
 		"dotenv": "^17.0.1",
