@@ -148,6 +148,76 @@ export default function Popup() {
 		void updateSettings({ modifiers: updated });
 	};
 
+	let settingsContent: JSX.Element;
+	if (hasSteamPermission === null) {
+		settingsContent = <div className="settings-loading">Checking permissions...</div>;
+	} else if (hasSteamPermission) {
+		settingsContent = (
+			<>
+				<div className="setting-item">
+					<CountrySelect />
+				</div>
+
+				<div className="setting-item">
+					<span className="setting-label">Rarity Modifiers</span>
+					<p className="setting-description">
+						Adjust how rarity is calculated by including additional factors
+					</p>
+					<div className="toggle-group">
+						<div className="toggle-item">
+							<label className="toggle-label">
+								<input
+									type="checkbox"
+									checked={modifierSettings?.playtime.active ?? true}
+									onChange={(e) => togglePlaytime(e.target.checked)}
+									className="toggle-checkbox"
+								/>
+								<span className="toggle-switch"></span>
+								<span className="toggle-text">Include Playtime</span>
+							</label>
+						</div>
+						<div className="toggle-item">
+							<label className="toggle-label">
+								<input
+									type="checkbox"
+									checked={modifierSettings?.review.active ?? true}
+									onChange={(e) => toggleReviewScore(e.target.checked)}
+									className="toggle-checkbox"
+								/>
+								<span className="toggle-switch"></span>
+								<span className="toggle-text">Include Review Score</span>
+							</label>
+						</div>
+					</div>
+				</div>
+
+				<div className="setting-item">
+					<ApiKeyInput />
+				</div>
+			</>
+		);
+	} else {
+		settingsContent = (
+			<div className="settings-locked">
+				<div className="permission-warning">{permissionWarning || STEAM_PERMISSION_INSTRUCTIONS}</div>
+				<p className="settings-locked-description">
+					Grant access to store.steampowered.com in the extension settings to unlock configuration
+					options.
+				</p>
+				<div className="permission-actions">
+					<button
+						type="button"
+						onClick={requestSteamPermission}
+						disabled={isRequestingPermission}
+						className="grant-permission-button"
+					>
+						{isRequestingPermission ? 'Requesting...' : 'Grant Steam Permission'}
+					</button>
+				</div>
+			</div>
+		);
+	}
+
 	return (
 		<div className="popup-container">
 			<div className="header">
@@ -169,104 +239,35 @@ export default function Popup() {
 				</div>
 			</div>
 
-			<div className="settings-section">
-				{hasSteamPermission === null ? (
-					<div className="settings-loading">Checking permissions...</div>
-				) : hasSteamPermission ? (
-					<>
-						<div className="setting-item">
-							<CountrySelect />
-						</div>
-
-						<div className="setting-item">
-							<label className="setting-label">Rarity Modifiers</label>
-							<p className="setting-description">
-								Adjust how rarity is calculated by including additional factors
-							</p>
-							<div className="toggle-group">
-								<div className="toggle-item">
-									<label className="toggle-label">
-										<input
-											type="checkbox"
-											checked={modifierSettings?.playtime.active ?? true}
-											onChange={(e) => togglePlaytime(e.target.checked)}
-											className="toggle-checkbox"
-										/>
-										<span className="toggle-switch"></span>
-										<span className="toggle-text">Include Playtime</span>
-									</label>
-								</div>
-								<div className="toggle-item">
-									<label className="toggle-label">
-										<input
-											type="checkbox"
-											checked={modifierSettings?.review.active ?? true}
-											onChange={(e) => toggleReviewScore(e.target.checked)}
-											className="toggle-checkbox"
-										/>
-										<span className="toggle-switch"></span>
-										<span className="toggle-text">Include Review Score</span>
-									</label>
-								</div>
-							</div>
-						</div>
-
-						<div className="setting-item">
-							<ApiKeyInput />
-						</div>
-					</>
-				) : (
-					<div className="settings-locked">
-						<div className="permission-warning">
-							{permissionWarning || STEAM_PERMISSION_INSTRUCTIONS}
-						</div>
-						<p className="settings-locked-description">
-							Grant access to store.steampowered.com in the extension settings to unlock
-							configuration options.
-						</p>
-						<div className="permission-actions">
-							<button
-								type="button"
-								onClick={requestSteamPermission}
-								disabled={isRequestingPermission}
-								className="grant-permission-button"
-							>
-								{isRequestingPermission ? 'Requesting...' : 'Grant Steam Permission'}
-							</button>
-						</div>
-					</div>
-				)}
-			</div>
+			<div className="settings-section">{settingsContent}</div>
 
 			<div className="footer">
 				<div className="footer-links">
 					<a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="github-link">
 						Source Code
 					</a>
-					<a
-						href="#"
-						onClick={(e) => {
-							e.preventDefault();
+					<button
+						type="button"
+						onClick={() => {
 							browser.tabs.create({
 								url: browser.runtime.getURL(EXTENSION_PAGES.settings),
 							});
 						}}
-						className="github-link"
+						className="github-link link-button"
 					>
 						Settings
-					</a>
-					<a
-						href="#"
-						onClick={(e) => {
-							e.preventDefault();
+					</button>
+					<button
+						type="button"
+						onClick={() => {
 							browser.tabs.create({
 								url: browser.runtime.getURL(EXTENSION_PAGES.about),
 							});
 						}}
-						className="github-link"
+						className="github-link link-button"
 					>
 						About
-					</a>
+					</button>
 					<span className="version">v{VERSION}</span>
 				</div>
 			</div>
