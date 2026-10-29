@@ -1,3 +1,6 @@
+/* v2 theme fonts (popup/settings/about only) */
+@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel:wght@500;700;900&family=IM+Fell+English:ital@0;1&display=swap');
+
 /* Cohesive Fantasy Theme - Based on App Icon */
 :root {
 	/* Core fantasy palette */
@@ -40,6 +43,135 @@
 	--transition: all 0.2s ease;
 	--border-radius: 8px;
 	--spacing: 16px;
+
+	/* ==========================================================================
+	   v2 theme (medieval / parchment) — popup, settings, and about pages only.
+	   Not yet applied anywhere; tokens defined here for the upcoming transition.
+	   ========================================================================== */
+
+	/* Fonts */
+	--v2-font-display: 'MedievalSharp', 'Palatino Linotype', Georgia, serif;
+	--v2-font-ui: 'Cinzel', Georgia, serif;
+	--v2-font-body: 'IM Fell English', Georgia, 'Times New Roman', serif;
+
+	/* Gold (frames, titles, bevel edges) */
+	--v2-gold-text: #ffd24a; /* main gold text */
+	--v2-gold-link-hover: #ffe08a; /* link hover */
+	--v2-gold-button-hover-text: #fff2b0; /* button hover text */
+	--v2-gold-bevel-highlight: #f3d27e; /* bevel highlight */
+	--v2-gold-bevel-top-edge: #f0cf7a; /* bevel top edge */
+	--v2-gold-scrollwork: #e8c265; /* scrollwork, secondary gold */
+	--v2-gold-1: #d9b35c;
+	--v2-gold-2: #d8b25a;
+	--v2-gold-frame: #c9a24a; /* main frame gold */
+	--v2-gold-rivets: #b8923f; /* rivets */
+	--v2-gold-3: #9a7a34;
+	--v2-gold-4: #8a6a2a;
+	--v2-gold-5: #7a5a1e;
+	--v2-gold-6: #6e4f16;
+	--v2-gold-outer-frame-edge: #5a4214; /* outer frame edge */
+	--v2-gold-7: #4a3616;
+	--v2-gold-8: #4a340c;
+	--v2-gold-darkest-bevel: #33240d; /* darkest bevel */
+
+	/* Parchment and ink */
+	--v2-parchment: #e6d3a6;
+	--v2-parchment-inner-hairline: #c4a66b;
+	--v2-parchment-icon-strokes: #f6ecd4; /* icon glyph strokes */
+	--v2-parchment-input-text: #f1e6c8; /* input text */
+	--v2-parchment-headings: #4a1208; /* parchment headings */
+	--v2-parchment-chapter-labels: #7a2a12; /* chapter labels */
+	--v2-parchment-small-labels: #6b4a1e; /* small parchment labels */
+	--v2-parchment-ink-1: #3b2a18;
+	--v2-parchment-body-text: #2e1f10; /* parchment body text */
+
+	/* Dark backgrounds */
+	--v2-bg-page: #0b0a09;
+	--v2-bg-section-bands: #13100d;
+	--v2-bg-stone-panels: #1a1613;
+	--v2-bg-widget-inputs: #1a1612;
+	--v2-bg-nav: #0d0b09;
+	--v2-bg-popup-shell: #0b0908;
+	--v2-bg-inset-boxes: #0e0c0a;
+	--v2-bg-footer: #070605;
+	--v2-bg-empty-ability-slots: #0e0d0c;
+	--v2-border-empty-slot: #1f1d1b; /* empty slot border */
+	--v2-bg-dark-1: #3a2a14;
+	--v2-bg-dark-2: #5a4424;
+	--v2-border-panel-hairline: #6b5530; /* panel hairlines */
+
+	/* Iron (secondary frames) */
+	--v2-iron-highlight: #8d8a84;
+	--v2-iron-1: #6f6c66;
+	--v2-iron-2: #3a3834;
+	--v2-iron-shadow-edge: #2a2825;
+
+	/* Text on dark */
+	--v2-text-tooltip-title: #ffffff;
+	--v2-text-body: #e8dcc0;
+	--v2-text-1: #d6c8a8;
+	--v2-text-2: #cdbf9f;
+	--v2-text-3: #b9ab8c;
+	--v2-text-muted: #9a8d72;
+
+	/* Red (primary buttons, banners) */
+	--v2-red-button: #8e1b12;
+	--v2-red-hover: #a8231a;
+	--v2-red-shield-field: #5a0c07; /* shield field, phone accents */
+	--v2-red-banner-icon-tile: #7a1a10;
+
+	/* Bronze (secondary buttons) */
+	--v2-bronze-button: #261e16;
+	--v2-bronze-hover: #352a1f;
+
+	/* Item-quality and status accents */
+	--v2-quality-rare: #5fa8ff; /* rare blue name */
+	--v2-quality-tooltip-category: #6fb6ff; /* tooltip category, frost accent option */
+	--v2-steam-tag-text: #9fc8ff;
+	--v2-quality-epic: #c28bff; /* epic purple name */
+	--v2-quality-epic-choice-text: #d9b8ff;
+	--v2-quality-purple-plaque: #2a1245;
+	--v2-progress-bar-purple: #8a4be0;
+	--v2-quality-legendary: #ff9a2e; /* legendary orange name */
+	--v2-tooltip-effect-line: #4cff5a;
+	--v2-progress-bar-green: #2e9e2e; /* party readiness bar */
+
+	/* Ability and portrait tiles */
+	--v2-tile-red: #7a1a10;
+	--v2-tile-blue: #1d3f7a;
+	--v2-tile-gold: #7a5a10;
+	--v2-tile-purple: #4a1a6e;
+	--v2-tile-green: #2a5a2a;
+	--v2-tile-brown: #6e3a12;
+	--v2-tile-steel: #3a3f4a;
+	--v2-tile-teal: #1d5a5a;
+	--v2-tile-amber: #7a3a10;
+	--v2-portrait-backing: #1b1d2a;
+	--v2-steam-tag-backing: #16202e;
+
+	/* LootScout pixel figure */
+	--v2-figure-cloak: #4a4460;
+	--v2-figure-robe: #5a5372;
+	--v2-figure-face-shadow: #0d0b12;
+	--v2-figure-eyes: #7fd4ff;
+	--v2-figure-lantern: #8a6a2a;
+	--v2-figure-flame: #ffb347;
+
+	/* Transparent overlays */
+	--v2-overlay-black-35: rgba(0, 0, 0, 0.35);
+	--v2-overlay-black-45: rgba(0, 0, 0, 0.45);
+	--v2-overlay-black-60: rgba(0, 0, 0, 0.6);
+	--v2-overlay-black-70: rgba(0, 0, 0, 0.7);
+	--v2-overlay-black-75: rgba(0, 0, 0, 0.75);
+	--v2-overlay-black-80: rgba(0, 0, 0, 0.8);
+	--v2-overlay-black-88: rgba(0, 0, 0, 0.88);
+	--v2-overlay-black-90: rgba(0, 0, 0, 0.9);
+	--v2-overlay-parchment-aging: rgba(120, 80, 25, 0.35);
+	--v2-overlay-gold-glow-35: rgba(232, 194, 101, 0.35);
+	--v2-overlay-gold-glow-40: rgba(232, 194, 101, 0.4);
+	--v2-overlay-button-top-highlight: rgba(255, 200, 150, 0.35);
+	--v2-overlay-quest-marker-glow: rgba(255, 200, 60, 0.8);
+	--v2-overlay-selected-ability-glow: rgba(255, 220, 120, 0.5);
 }
 
 /* Shared base styles */
