@@ -2,9 +2,12 @@ import fetchSteamStoreData from '../lib/api/SteamStoreApi';
 import fetchSteamReviewData from '../lib/api/SteamReviewsApi';
 import fetchGgDealsData from '../lib/api/GgDealsApi';
 import { normalizeResponse } from '../lib/transformers/ResponseFormatter';
-import { ProcessedSteamReviews } from '../lib/transformers/SteamReviewProcessor';
+import {
+	ProcessedSteamReviews,
+	isProcessedSteamReviews,
+} from '../lib/transformers/SteamReviewProcessor';
 import { CombinedGameDataResponse } from '../lib/api/CombinedGameData';
-import { GameDataResponse } from '../lib/shared/types';
+import { GameDataResponse, isGameDataResponse } from '../lib/shared/types';
 import { getRegion } from '../lib/services/SettingsService';
 import { getApiKeyWithFallback } from '../lib/api/ApiKeyService';
 import { getCacheItemWithExpiry, setCacheItem } from '../lib/services/CacheService';
@@ -24,8 +27,9 @@ export class DataCoordinator {
 	}
 
 	private async getCachedProcessedReviews(appId: string): Promise<ProcessedSteamReviews | null> {
-		const cached = await getCacheItemWithExpiry<ProcessedSteamReviews>(
+		const cached = await getCacheItemWithExpiry(
 			this.getReviewCacheKey(appId),
+			isProcessedSteamReviews,
 			DataCoordinator.CACHE_DURATION
 		);
 
@@ -46,8 +50,9 @@ export class DataCoordinator {
 	public async fetchGameData(appId: string): Promise<GameDataResponse> {
 		const region = await getRegion();
 		const cacheKey = `game_data_${appId}_${region}`;
-		const cachedData = await getCacheItemWithExpiry<GameDataResponse>(
+		const cachedData = await getCacheItemWithExpiry(
 			cacheKey,
+			isGameDataResponse,
 			DataCoordinator.CACHE_DURATION
 		);
 

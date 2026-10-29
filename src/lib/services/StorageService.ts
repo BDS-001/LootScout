@@ -1,10 +1,20 @@
 import browser from 'webextension-polyfill';
 import { debug } from '../utils/debug';
 
-export const getStorageItem = async <T>(key: string): Promise<T | null> => {
+export type TypeGuard<T> = (value: unknown) => value is T;
+
+export const isRecord = (value: unknown): value is Record<string, unknown> =>
+	typeof value === 'object' && value !== null && !Array.isArray(value);
+
+export const isString = (value: unknown): value is string => typeof value === 'string';
+
+export const isBoolean = (value: unknown): value is boolean => typeof value === 'boolean';
+
+export const getStorageItem = async <T>(key: string, guard: TypeGuard<T>): Promise<T | null> => {
 	try {
 		const result = await browser.storage.local.get(key);
-		return result[key] || null;
+		const value: unknown = result[key];
+		return guard(value) ? value : null;
 	} catch (error) {
 		debug.error(`Error getting storage item ${key}:`, error);
 		return null;
@@ -20,7 +30,7 @@ export const setStorageItem = async <T>(key: string, value: T): Promise<void> =>
 	}
 };
 
-export const getMultipleStorageItems = async (keys: string[]): Promise<Record<string, any>> => {
+export const getMultipleStorageItems = async (keys: string[]): Promise<Record<string, unknown>> => {
 	try {
 		return await browser.storage.local.get(keys);
 	} catch (error) {

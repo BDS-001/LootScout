@@ -1,19 +1,30 @@
-import { getStorageItem, setStorageItem } from './StorageService';
+import { getStorageItem, setStorageItem, isRecord, TypeGuard } from './StorageService';
 import { debug } from '../utils/debug';
 import browser from 'webextension-polyfill';
 
 const DEFAULT_CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
 
-export const getCacheItem = async <T>(key: string): Promise<T | null> => {
-	const cached = await getStorageItem<{ timestamp: number; data: T }>(key);
+interface CacheEntry<T> {
+	timestamp: number;
+	data: T;
+}
+
+const cacheEntryGuard =
+	<T>(dataGuard: TypeGuard<T>): TypeGuard<CacheEntry<T>> =>
+	(value: unknown): value is CacheEntry<T> =>
+		isRecord(value) && typeof value.timestamp === 'number' && dataGuard(value.data);
+
+export const getCacheItem = async <T>(key: string, guard: TypeGuard<T>): Promise<T | null> => {
+	const cached = await getStorageItem(key, cacheEntryGuard(guard));
 	return cached?.data || null;
 };
 
 export const getCacheItemWithExpiry = async <T>(
 	key: string,
+	guard: TypeGuard<T>,
 	maxAge: number = DEFAULT_CACHE_DURATION
 ): Promise<T | null> => {
-	const cached = await getStorageItem<{ timestamp: number; data: T }>(key);
+	const cached = await getStorageItem(key, cacheEntryGuard(guard));
 
 	if (!cached?.timestamp || !cached.data) {
 		return null;
@@ -43,7 +54,7 @@ export const cleanupExpiredCache = async (): Promise<number> => {
 		const keysToRemove: string[] = [];
 
 		for (const [key, value] of Object.entries(storage)) {
-			if (value && typeof value === 'object' && 'timestamp' in value) {
+			if (isRecord(value) && typeof value.timestamp === 'number') {
 				const { timestamp } = value;
 				const age = Date.now() - timestamp;
 

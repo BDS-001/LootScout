@@ -63,7 +63,11 @@ export function createLoadingContent(): HTMLElement {
 	);
 }
 
-export function createErrorContent(error?: ApiError, gameTitle?: string, appId?: string): HTMLElement {
+export function createErrorContent(
+	error?: ApiError,
+	gameTitle?: string,
+	appId?: string
+): HTMLElement {
 	if (error?.name === 'MissingSteamPermission') {
 		return createMissingPermissionContent(gameTitle, appId);
 	}
@@ -257,15 +261,17 @@ export function createComingSoonContent(gameData: ProcessedGameData): HTMLElemen
 }
 
 export async function createSuccessContent(gameData: ProcessedGameData): Promise<HTMLElement> {
-	const { lootScout } = gameData;
+	const { lootScout, deal } = gameData;
+	const { currentBest, historicalBest } = lootScout;
 
-	if (!gameData.deal || !lootScout.currentBest || !lootScout.historicalBest) {
+	if (!deal || !currentBest || !historicalBest) {
 		if (lootScout.steam.status.className === 'steam_free_game') {
 			return createFreeGameContent(gameData);
 		}
 		if (lootScout.steam.status.className === 'steam_coming_soon') {
 			return createComingSoonContent(gameData);
 		}
+		return createErrorContent(undefined, gameData.title, gameData.appId);
 	}
 
 	const isRecent = gameData.releaseDate ? isRecentlyReleased(gameData.releaseDate) : false;
@@ -279,14 +285,14 @@ export async function createSuccessContent(gameData: ProcessedGameData): Promise
 			isRecent
 		),
 		createRarityComponent(
-			lootScout.currentBest!.rawDiscount,
+			currentBest.rawDiscount,
 			gameData.steam.reviewScore,
 			gameData.steam.averagePlaytime,
 			gameData.steam.reviewSummary,
 			isRecent
 		),
 		createRarityComponent(
-			lootScout.historicalBest!.rawDiscount,
+			historicalBest.rawDiscount,
 			gameData.steam.reviewScore,
 			gameData.steam.averagePlaytime,
 			gameData.steam.reviewSummary,
@@ -311,33 +317,33 @@ export async function createSuccessContent(gameData: ProcessedGameData): Promise
 		),
 		createDealSection(
 			'Current Best Deal',
-			gameData.deal!.currentBest,
-			gameData.deal!.currency,
-			lootScout.currentBest!.rawDiscount,
+			deal.currentBest,
+			deal.currency,
+			currentBest.rawDiscount,
 			lootScout.costPerHour?.currentBest,
 			createComparison(
 				gameData.steam.final,
-				gameData.deal!.currentBest,
-				lootScout.currentBest!.savings,
-				gameData.deal!.currency,
-				lootScout.currentBest!.discount,
-				gameData.deal!.url
+				deal.currentBest,
+				currentBest.savings,
+				deal.currency,
+				currentBest.discount,
+				deal.url
 			),
 			rarities[1]
 		),
 		createDealSection(
 			'Historical Low',
-			gameData.deal!.historicalBest,
-			gameData.deal!.currency,
-			lootScout.historicalBest!.rawDiscount,
+			deal.historicalBest,
+			deal.currency,
+			historicalBest.rawDiscount,
 			lootScout.costPerHour?.historicalBest,
 			createComparison(
 				gameData.steam.final,
-				gameData.deal!.historicalBest,
-				lootScout.historicalBest!.savings,
-				gameData.deal!.currency,
-				lootScout.historicalBest!.discount,
-				gameData.deal!.url
+				deal.historicalBest,
+				historicalBest.savings,
+				deal.currency,
+				historicalBest.discount,
+				deal.url
 			),
 			rarities[2]
 		),

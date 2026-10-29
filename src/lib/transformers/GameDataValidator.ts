@@ -1,24 +1,31 @@
 import { ApiError } from '../shared/types';
 import { CombinedGameDataResponse } from '../api/CombinedGameData';
-import { SteamAppData } from '../api/SteamStoreApi';
-import { SteamReviewApiResponse } from '../api/SteamReviewsApi';
+import { SteamAppDetails, SteamPriceOverview } from '../api/SteamStoreApi';
 import { GgDealsGameData } from '../api/GgDealsApi';
 import { debug } from '../utils/debug';
 
-function validateSteamReviewData(steamReviewData: SteamReviewApiResponse | null): boolean {
-	return steamReviewData?.success === true;
+interface InvalidResult {
+	isValid: false;
+	error: ApiError;
 }
 
-interface ValidationResult {
-	isValid: boolean;
-	appId?: string;
-	steamAppData?: SteamAppData;
-	ggDealsData?: GgDealsGameData;
-	error?: ApiError;
-	isFree?: boolean;
-	isComingSoon?: boolean;
-	hasValidReviews?: boolean;
+interface FreeOrUpcomingResult {
+	isValid: true;
+	kind: 'free' | 'comingSoon';
+	appId: string;
+	steamDetails: SteamAppDetails;
 }
+
+interface PricedResult {
+	isValid: true;
+	kind: 'priced';
+	appId: string;
+	steamDetails: SteamAppDetails;
+	steamPriceOverview: SteamPriceOverview;
+	ggDealsData: GgDealsGameData;
+}
+
+export type ValidationResult = InvalidResult | FreeOrUpcomingResult | PricedResult;
 
 export function validateGameData(res: CombinedGameDataResponse): ValidationResult {
 	if (!res.success) {
@@ -50,12 +57,14 @@ export function validateGameData(res: CombinedGameDataResponse): ValidationResul
 	const { appId } = res.data;
 	const steamStoreResponse = res.data.steamStoreData.data;
 	const steamAppData = Object.values(steamStoreResponse)[0];
-	const isFree = steamAppData?.data?.is_free || false;
-	const isComingSoon = steamAppData?.data?.release_date?.coming_soon || false;
-	const hasValidReviews = validateSteamReviewData(res.data.steamReviewData);
+	const steamDetails = steamAppData?.data;
 
-	if (isFree || isComingSoon) {
-		return { isValid: true, appId, steamAppData, isFree, isComingSoon, hasValidReviews };
+	if (steamDetails?.release_date?.coming_soon) {
+		return { isValid: true, kind: 'comingSoon', appId, steamDetails };
+	}
+
+	if (steamDetails?.is_free) {
+		return { isValid: true, kind: 'free', appId, steamDetails };
 	}
 
 	if (!res.data.dealData.success) {
@@ -74,7 +83,9 @@ export function validateGameData(res: CombinedGameDataResponse): ValidationResul
 	const ggDealsResponse = res.data.dealData.data;
 	const ggDealsData = ggDealsResponse[appId];
 
-	if (!steamAppData?.data?.price_overview || !ggDealsData) {
+	const steamPriceOverview = steamDetails?.price_overview;
+
+	if (!steamDetails || !steamPriceOverview || !ggDealsData) {
 		return {
 			isValid: false,
 			error: {
@@ -86,5 +97,5 @@ export function validateGameData(res: CombinedGameDataResponse): ValidationResul
 		};
 	}
 
-	return { isValid: true, appId, steamAppData, ggDealsData, hasValidReviews };
+	return { isValid: true, kind: 'priced', appId, steamDetails, steamPriceOverview, ggDealsData };
 }

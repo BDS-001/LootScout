@@ -25,6 +25,8 @@ export interface SteamAppData {
 	};
 }
 
+export type SteamAppDetails = NonNullable<SteamAppData['data']>;
+
 export interface SteamApiParams {
 	appId: string;
 	region: RegionCode;

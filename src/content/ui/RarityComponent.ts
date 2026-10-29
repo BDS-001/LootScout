@@ -73,7 +73,8 @@ function createTooltipContent(
 	}
 
 	// Playtime line
-	if (analysis.playtimeUsed && analysis.playtime !== undefined) {
+	const { playtime } = analysis;
+	if (analysis.playtimeUsed && playtime !== undefined) {
 		const playtimeClass = analysis.isRecentlyReleased ? 'lootscout-disabled' : '';
 		const playtimeDiv = dom.createElement('div', playtimeClass);
 		dom.addChild(
@@ -85,10 +86,7 @@ function createTooltipContent(
 				formatModifier(analysis.playtimeBonus)
 			),
 			' ',
-			dom.setText(
-				dom.createElement('span', 'detail-text'),
-				`(${getPlaytimeDesc(analysis.playtime!)})`
-			)
+			dom.setText(dom.createElement('span', 'detail-text'), `(${getPlaytimeDesc(playtime)})`)
 		);
 		dom.addChild(scoreBreakdown, playtimeDiv);
 	}

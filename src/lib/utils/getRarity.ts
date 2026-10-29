@@ -18,7 +18,7 @@ export interface RarityAnalysis {
 const MAX_RARITY_INDEX = 7;
 const IRIDESCENT_RARITY_INDEX = 8;
 
-function isValidPlaytime(playtime: number | null): boolean {
+function isValidPlaytime(playtime: number | null): playtime is number {
 	return playtime !== null && playtime !== -1;
 }
 
@@ -97,7 +97,7 @@ export async function getRarityAnalysis(
 			: 0;
 	const playtimeBonus =
 		modifiers.playtime.active && isValidPlaytime(playtime)
-			? getModifierEffect(playtime!, modifiers.playtime)
+			? getModifierEffect(playtime, modifiers.playtime)
 			: 0;
 
 	const finalScore = Math.max(

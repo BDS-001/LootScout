@@ -22,12 +22,23 @@ interface RequestBody {
 const GG_DEALS_BASE_URL = 'https://api.gg.deals/v1/prices/by-steam-app-id/';
 const VALID_REGIONS = ['au', 'be', 'br', 'ca', 'ch', 'de', 'dk', 'es', 'eu', 'fi', 'fr', 'gb', 'ie', 'it', 'nl', 'no', 'pl', 'se', 'us'];
 
-function getCorsHeaders(origin: string): Record<string, string> {
+function getCorsHeaders(origin: string | null): Record<string, string> {
 	return {
-		'Access-Control-Allow-Origin': origin,
+		'Access-Control-Allow-Origin': origin ?? '',
 		'Access-Control-Allow-Methods': 'POST, OPTIONS',
 		'Access-Control-Allow-Headers': 'Content-Type',
 	};
+}
+
+function isRequestBody(value: unknown): value is RequestBody {
+	return (
+		typeof value === 'object' &&
+		value !== null &&
+		'appId' in value &&
+		typeof value.appId === 'string' &&
+		'region' in value &&
+		typeof value.region === 'string'
+	);
 }
 
 function isExtensionOrigin(origin: string | null): boolean {
@@ -48,7 +59,7 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
 	if (request.method === 'OPTIONS') {
 		return new Response(null, {
 			status: 200,
-			headers: getCorsHeaders(request.headers.get('origin')!),
+			headers: getCorsHeaders(request.headers.get('origin')),
 		});
 	}
 
@@ -60,7 +71,11 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
 }
 
 async function handlePostRequest(request: Request, env: Env): Promise<Response> {
-	const { appId, region } = (await request.json()) as RequestBody;
+	const body: unknown = await request.json();
+	if (!isRequestBody(body)) {
+		throw new Error('Missing required parameters');
+	}
+	const { appId, region } = body;
 
 	const apiKey = env.GG_DEALS_API_KEY;
 	if (!apiKey) {
@@ -75,12 +90,12 @@ async function handlePostRequest(request: Request, env: Env): Promise<Response> 
 		status: 200,
 		headers: {
 			'Content-Type': 'application/json',
-			...getCorsHeaders(request.headers.get('origin')!),
+			...getCorsHeaders(request.headers.get('origin')),
 		},
 	});
 }
 
-async function getApiResponse(appId: string, region: string, apiKey: string): Promise<any> {
+async function getApiResponse(appId: string, region: string, apiKey: string): Promise<unknown> {
 	const url = `${GG_DEALS_BASE_URL}?ids=${appId}&key=${apiKey}&region=${region}`;
 	const response = await fetch(url);
 
@@ -116,7 +131,7 @@ export default {
 				status,
 				headers: {
 					'Content-Type': 'application/json',
-					...getCorsHeaders(origin!),
+					...getCorsHeaders(origin),
 				},
 			});
 		}

@@ -1,5 +1,13 @@
 import browser from 'webextension-polyfill';
-import { getStorageItem, setStorageItem, removeStorageItem } from './StorageService';
+import {
+	getStorageItem,
+	setStorageItem,
+	removeStorageItem,
+	isRecord,
+	isString,
+	isBoolean,
+	TypeGuard,
+} from './StorageService';
 import { RegionCode, AppSettings, ModifierSettings } from '../shared/types';
 import regionMap, { DEFAULT_REGION } from '../constants/regionMap';
 import { DEFAULT_SETTINGS } from '../constants/defaultSettings';
@@ -15,6 +23,10 @@ const REGION_MANUALLY_SET_KEY = 'region_manually_set';
 const SETTINGS_KEY = 'lootscout_settings';
 const LEGACY_API_KEY = 'apiKey';
 const LEGACY_MIGRATION_DONE_KEY = 'legacy_migration_done';
+
+const isStoredSettings: TypeGuard<Partial<AppSettings>> = (
+	value: unknown
+): value is Partial<AppSettings> => isRecord(value);
 
 const mergeModifierConfig = (
 	def: ModifierSettings['playtime'],
@@ -34,16 +46,16 @@ const mergeModifiers = (stored?: ModifierSettings): ModifierSettings => ({
 });
 
 export const getSettings = async (): Promise<AppSettings> => {
-	const settings = await getStorageItem<Partial<AppSettings>>(SETTINGS_KEY);
+	const settings = await getStorageItem(SETTINGS_KEY, isStoredSettings);
 	const merged: AppSettings = {
 		...DEFAULT_SETTINGS,
 		...settings,
 		modifiers: mergeModifiers(settings?.modifiers),
 	};
 
-	const migrationDone = await getStorageItem<boolean>(LEGACY_MIGRATION_DONE_KEY);
+	const migrationDone = await getStorageItem(LEGACY_MIGRATION_DONE_KEY, isBoolean);
 	if (!migrationDone && !merged.apiKey) {
-		const legacyKey = await getStorageItem<string>(LEGACY_API_KEY);
+		const legacyKey = await getStorageItem(LEGACY_API_KEY, isString);
 		if (legacyKey) {
 			merged.apiKey = legacyKey;
 			await setStorageItem(SETTINGS_KEY, merged);
@@ -73,7 +85,7 @@ export const updateApiKey = async (apiKey: string): Promise<void> => {
 // Region-specific functions with auto-detection
 export const getRegion = async (): Promise<RegionCode> => {
 	const settings = await getSettings();
-	const isManuallySet = await getStorageItem<boolean>(REGION_MANUALLY_SET_KEY);
+	const isManuallySet = await getStorageItem(REGION_MANUALLY_SET_KEY, isBoolean);
 
 	if (!isManuallySet && settings.region === DEFAULT_REGION) {
 		const detectedRegion = await detectRegion();

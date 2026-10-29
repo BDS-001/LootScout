@@ -33,6 +33,23 @@ export interface ProcessedSteamReviews {
 	averagePlaytime: number;
 }
 
+export function isProcessedSteamReviews(value: unknown): value is ProcessedSteamReviews {
+	return (
+		typeof value === 'object' &&
+		value !== null &&
+		'totalReviews' in value &&
+		typeof value.totalReviews === 'number' &&
+		'positivePercentage' in value &&
+		typeof value.positivePercentage === 'number' &&
+		'reviewSummary' in value &&
+		typeof value.reviewSummary === 'string' &&
+		'reviewScore' in value &&
+		typeof value.reviewScore === 'number' &&
+		'averagePlaytime' in value &&
+		typeof value.averagePlaytime === 'number'
+	);
+}
+
 function calculatePlaytime(reviews: SimplifiedSteamReview[]): number {
 	if (reviews.length === 0) return -1;
 

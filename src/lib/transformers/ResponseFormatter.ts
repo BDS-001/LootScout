@@ -17,27 +17,22 @@ export function normalizeResponse(
 	if (!validation.isValid) {
 		return {
 			success: false,
-			data: validation.error!,
+			data: validation.error,
 		};
 	}
 
-	const { steamAppData, ggDealsData, isFree, isComingSoon, appId } = validation;
-
-	if (isComingSoon) {
+	if (validation.kind !== 'priced') {
 		return {
 			success: true,
-			data: buildComingSoonResponse(appId!, steamAppData!, null),
+			data:
+				validation.kind === 'comingSoon'
+					? buildComingSoonResponse(validation.appId, validation.steamDetails, null)
+					: buildFreeGameResponse(validation.appId, validation.steamDetails, processedReviews),
 		};
 	}
 
-	if (isFree) {
-		return {
-			success: true,
-			data: buildFreeGameResponse(appId!, steamAppData!, processedReviews),
-		};
-	}
-
-	const priceMetrics = calculatePriceMetrics(steamAppData!.data!.price_overview!, ggDealsData!);
+	const { appId, steamDetails, steamPriceOverview, ggDealsData } = validation;
+	const priceMetrics = calculatePriceMetrics(steamPriceOverview, ggDealsData);
 
 	const costPerHour =
 		processedReviews?.averagePlaytime && processedReviews.averagePlaytime > 0
@@ -57,9 +52,10 @@ export function normalizeResponse(
 	return {
 		success: true,
 		data: buildGameDataResponse(
-			appId!,
-			steamAppData!,
-			ggDealsData!,
+			appId,
+			steamDetails,
+			steamPriceOverview,
+			ggDealsData,
 			priceMetrics,
 			processedReviews,
 			costPerHour
