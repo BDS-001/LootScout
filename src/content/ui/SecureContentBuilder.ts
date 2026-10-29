@@ -52,7 +52,7 @@ function createMissingPermissionContent(gameTitle?: string, appId?: string): HTM
 export function createLoadingContent(): HTMLElement {
 	const loadingText = addChild(
 		dom.span(),
-		'🔍 Scouting for deals',
+		'Scouting for deals',
 		setText(dom.span('load'), '...')
 	);
 
@@ -78,7 +78,7 @@ export function createErrorContent(
 
 	const section = addChild(
 		dom.div('deal_section'),
-		setText(dom.div('deal_header'), '❌ Expedition Failed'),
+		setText(dom.div('deal_header'), 'Expedition Failed'),
 		setText(dom.div('deal_status error'), 'Unable to scout for deals'),
 		setText(dom.div('error_message'), userFriendlyMessage)
 	);
@@ -244,7 +244,7 @@ function createSpecialGameContent(
 
 export function createFreeGameContent(gameData: ProcessedGameData): HTMLElement {
 	return createSpecialGameContent(
-		'🎮 Free to Play',
+		'Free to Play',
 		'This game is free to play',
 		gameData.title,
 		gameData.appId
@@ -253,7 +253,7 @@ export function createFreeGameContent(gameData: ProcessedGameData): HTMLElement 
 
 export function createComingSoonContent(gameData: ProcessedGameData): HTMLElement {
 	return createSpecialGameContent(
-		'📅 Coming Soon',
+		'Coming Soon',
 		gameData.lootScout.steam.status.text,
 		gameData.title,
 		gameData.appId
