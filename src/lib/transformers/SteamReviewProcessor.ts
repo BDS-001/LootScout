@@ -19,7 +19,6 @@ export interface SteamReviewQuerySummary {
 }
 
 export interface SteamReviewsResponse {
-	success: number;
 	query_summary: SteamReviewQuerySummary;
 	reviews: SimplifiedSteamReview[];
 	cursor?: string;
