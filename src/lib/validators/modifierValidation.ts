@@ -10,7 +10,7 @@ type ModifierKey = 'criticalBonus' | 'bonus' | 'penalty' | 'criticalPenalty';
 
 const MODIFIER_ORDER: ModifierKey[] = ['criticalBonus', 'bonus', 'penalty', 'criticalPenalty'];
 
-const POSITIVE_EFFECT_KEYS: ModifierKey[] = ['criticalBonus', 'bonus'];
+const POSITIVE_EFFECT_KEYS: Set<ModifierKey> = new Set(['criticalBonus', 'bonus']);
 
 const MODIFIER_LABELS: Record<ModifierKey, string> = {
 	criticalBonus: 'Critical Bonus',
@@ -20,7 +20,7 @@ const MODIFIER_LABELS: Record<ModifierKey, string> = {
 };
 
 function hasExpectedEffectDirection(key: ModifierKey, effect: number): boolean {
-	if (POSITIVE_EFFECT_KEYS.includes(key)) {
+	if (POSITIVE_EFFECT_KEYS.has(key)) {
 		return effect > 0;
 	}
 
@@ -41,47 +41,61 @@ function validateModifiers(config: ModifierConfig, constraints: ModifierConstrai
 	return getValidationErrors(config, constraints).length === 0;
 }
 
-function getValidationErrors(config: ModifierConfig, constraints: ModifierConstraints): string[] {
+type ActiveModifier = ReturnType<typeof getActiveModifiersInOrder>[number];
+
+function getSingleModifierErrors(
+	{ key, modifier }: ActiveModifier,
+	constraints: ModifierConstraints
+): string[] {
+	const { threshold, effect } = modifier;
+	const label = MODIFIER_LABELS[key];
 	const errors: string[] = [];
-	const activeModifiers = getActiveModifiersInOrder(config);
 
-	for (let i = 0; i < activeModifiers.length; i++) {
-		const { key, modifier } = activeModifiers[i];
-		const { threshold, effect } = modifier;
-		const label = MODIFIER_LABELS[key];
+	if (threshold < constraints.threshold.min || threshold > constraints.threshold.max) {
+		errors.push(
+			`${label} threshold must be between ${constraints.threshold.min} and ${constraints.threshold.max}`
+		);
+	}
 
-		if (threshold < constraints.threshold.min || threshold > constraints.threshold.max) {
-			errors.push(
-				`${label} threshold must be between ${constraints.threshold.min} and ${constraints.threshold.max}`
-			);
-		}
+	if (!hasExpectedEffectDirection(key, effect)) {
+		const direction = POSITIVE_EFFECT_KEYS.has(key) ? 'positive' : 'negative';
+		errors.push(`${label} effect must be ${direction}`);
+	}
 
-		if (!hasExpectedEffectDirection(key, effect)) {
-			const direction = POSITIVE_EFFECT_KEYS.includes(key) ? 'positive' : 'negative';
-			errors.push(`${label} effect must be ${direction}`);
-		}
-
-		if (!isEffectWithinRange(effect)) {
-			errors.push(`${label} effect must be between -${MAX_EFFECT_SHIFT} and +${MAX_EFFECT_SHIFT}`);
-		}
-
-		if (i === 0) continue;
-
-		const prev = activeModifiers[i - 1];
-		const prevLabel = MODIFIER_LABELS[prev.key];
-		const thresholdDelta = prev.modifier.threshold - threshold;
-		const effectDelta = prev.modifier.effect - effect;
-
-		if (thresholdDelta < constraints.threshold.step) {
-			errors.push(`${prevLabel} threshold must be higher than ${label} threshold`);
-		}
-
-		if (effectDelta < constraints.effect.step) {
-			errors.push(`${prevLabel} effect must be greater than ${label} effect`);
-		}
+	if (!isEffectWithinRange(effect)) {
+		errors.push(`${label} effect must be between -${MAX_EFFECT_SHIFT} and +${MAX_EFFECT_SHIFT}`);
 	}
 
 	return errors;
+}
+
+function getOrderingErrors(
+	prev: ActiveModifier,
+	current: ActiveModifier,
+	constraints: ModifierConstraints
+): string[] {
+	const prevLabel = MODIFIER_LABELS[prev.key];
+	const label = MODIFIER_LABELS[current.key];
+	const errors: string[] = [];
+
+	if (prev.modifier.threshold - current.modifier.threshold < constraints.threshold.step) {
+		errors.push(`${prevLabel} threshold must be higher than ${label} threshold`);
+	}
+
+	if (prev.modifier.effect - current.modifier.effect < constraints.effect.step) {
+		errors.push(`${prevLabel} effect must be greater than ${label} effect`);
+	}
+
+	return errors;
+}
+
+function getValidationErrors(config: ModifierConfig, constraints: ModifierConstraints): string[] {
+	const activeModifiers = getActiveModifiersInOrder(config);
+
+	return activeModifiers.flatMap((current, i) => [
+		...getSingleModifierErrors(current, constraints),
+		...(i > 0 ? getOrderingErrors(activeModifiers[i - 1], current, constraints) : []),
+	]);
 }
 
 export function validatePlaytimeModifiers(config: ModifierConfig): boolean {
