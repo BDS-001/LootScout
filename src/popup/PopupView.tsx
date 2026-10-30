@@ -199,10 +199,11 @@ export default function Popup() {
 	} else {
 		settingsContent = (
 			<div className="settings-locked">
-				<div className="permission-warning">{permissionWarning || STEAM_PERMISSION_INSTRUCTIONS}</div>
+				<div className="permission-warning">
+					{permissionWarning || STEAM_PERMISSION_INSTRUCTIONS}
+				</div>
 				<p className="settings-locked-description">
-					Grant access to store.steampowered.com in the extension settings to unlock configuration
-					options.
+					Grant LootScout access to Steam to unlock configuration options.
 				</p>
 				<div className="permission-actions">
 					<button

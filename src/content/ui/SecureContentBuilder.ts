@@ -34,11 +34,11 @@ function createMissingPermissionContent(gameTitle?: string, appId?: string): HTM
 	const section = addChild(
 		dom.div('deal_section'),
 		setText(dom.div('deal_header'), 'Permission Required'),
-		setText(dom.div('deal_status'), 'LootScout needs access to store.steampowered.com.'),
+		setText(dom.div('deal_status'), 'LootScout needs access to Steam to load game data.'),
 		setText(dom.div('error_message'), STEAM_PERMISSION_INSTRUCTIONS),
 		setText(
 			dom.div('error_details'),
-			'Open the LootScout toolbar icon and choose Always allow on store.steampowered.com.'
+			'Open the LootScout toolbar icon, choose Grant Steam Permission, then reload this page.'
 		)
 	);
 
