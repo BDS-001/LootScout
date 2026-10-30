@@ -34,12 +34,6 @@
 	--border-accent: rgba(212, 175, 55, 0.3);
 	--border-muted: rgba(139, 148, 158, 0.15);
 
-	/* Legacy variables for compatibility */
-	--tavern-wood: var(--fantasy-charcoal);
-	--tavern-wood-dark: var(--bg-primary);
-	--tavern-wood-light: var(--fantasy-slate);
-	--tavern-leather: var(--bg-elevated);
-
 	--transition: all 0.2s ease;
 	--border-radius: 8px;
 	--spacing: 16px;

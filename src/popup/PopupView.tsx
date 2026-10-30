@@ -1,5 +1,5 @@
 import './popup-view.css';
-import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { getSettings, updateSettings } from '../lib/services/SettingsService';
 import { ModifierSettings } from '../lib/shared/types';
 import browser from 'webextension-polyfill';
@@ -100,33 +100,6 @@ export default function Popup() {
 			}
 		}
 	}, [isRequestingPermission]);
-
-	useLayoutEffect(() => {
-		const container = document.querySelector('.popup-container');
-
-		if (!container || typeof ResizeObserver === 'undefined') {
-			return;
-		}
-
-		const maxPopupHeight = 600;
-		const updateSize = () => {
-			const height = Math.min(container.scrollHeight, maxPopupHeight);
-			const width = Math.max(container.scrollWidth, 320);
-
-			if (typeof window.resizeTo === 'function') {
-				window.resizeTo(width, height);
-			}
-		};
-
-		updateSize();
-
-		const observer = new ResizeObserver(updateSize);
-		observer.observe(container);
-
-		return () => {
-			observer.disconnect();
-		};
-	}, []);
 
 	const togglePlaytime = (checked: boolean) => {
 		if (!modifierSettings) return;
@@ -244,32 +217,32 @@ export default function Popup() {
 
 			<div className="footer">
 				<div className="footer-links">
-					<a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="github-link">
+					<a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="footer-link">
 						Source Code
 					</a>
 					<button
 						type="button"
 						onClick={() => {
-							browser.tabs.create({
+							void browser.tabs.create({
 								url: browser.runtime.getURL(EXTENSION_PAGES.settings),
 							});
 						}}
-						className="github-link link-button"
+						className="footer-link"
 					>
 						Settings
 					</button>
 					<button
 						type="button"
 						onClick={() => {
-							browser.tabs.create({
+							void browser.tabs.create({
 								url: browser.runtime.getURL(EXTENSION_PAGES.about),
 							});
 						}}
-						className="github-link link-button"
+						className="footer-link"
 					>
 						About
 					</button>
-					<span className="version">v{VERSION}</span>
+					<span className="footer-version">v{VERSION}</span>
 				</div>
 			</div>
 		</div>
