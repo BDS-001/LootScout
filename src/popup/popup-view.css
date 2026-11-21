@@ -13,7 +13,7 @@
 .header {
 	background: var(--bg-elevated);
 	padding: 12px;
-	text-align: center;
+	text-align: left;
 	border-bottom: 1px solid var(--border-accent);
 	position: relative;
 }
@@ -42,8 +42,17 @@
 .popup-icon {
 	width: 48px;
 	height: 48px;
-	margin-bottom: 6px;
-	border-radius: var(--border-radius);
+	flex-shrink: 0;
+	border-radius: 99px;
+	border: 2px solid var(--text-accent);
+	background-color: var(--fantasy-slate);
+}
+
+.title-section {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	justify-content: center;
 }
 
 .popup-title {
@@ -157,7 +166,7 @@
 
 .footer {
 	background: var(--bg-primary);
-	padding: 14px var(--spacing) 18px;
+	padding: 1rem;
 	border-top: 1px solid var(--border-subtle);
 }
 

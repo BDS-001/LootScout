@@ -204,12 +204,14 @@ export default function Popup() {
 				>
 					Steam
 				</a>
+				<div className="title-section">
 				<img src="/icon/lootscout64.png" alt="LootScout" className="popup-icon" />
 				<div className="header-text">
 					<h1 className="popup-title">LootScout</h1>
 					<p className="popup-description">
 						Compares Steam prices with current & historical best deals - rated with 9 rarity levels
 					</p>
+				</div>
 				</div>
 			</div>
 
