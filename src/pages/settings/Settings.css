@@ -21,7 +21,9 @@
 .settings-icon {
 	width: 48px;
 	height: 48px;
-	border-radius: var(--border-radius);
+	border-radius: 50%;
+	border: 2px solid var(--text-accent);
+	background-color: var(--fantasy-slate);
 }
 
 .settings-title {

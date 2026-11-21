@@ -8,38 +8,68 @@
 		<link rel="stylesheet" href="../styles/about.css" />
 		<title>About LootScout</title>
 	</head>
-	<body>
+	<body id="top">
+		<header class="nav">
+			<div class="nav-inner">
+				<a class="nav-brand" href="#top">
+					<img src="/icon/lootscout64.png" alt="" class="nav-logo" />
+					<span>LootScout</span>
+				</a>
+				<nav class="nav-links">
+					<a href="#features">Features</a>
+					<a href="#rarity">Rarity</a>
+					<a href="#modifiers">Modifiers</a>
+					<a href="#faq">FAQ</a>
+				</nav>
+			</div>
+		</header>
+
 		<div class="page">
 			<div class="hero">
 				<img src="/icon/lootscout64.png" alt="LootScout" class="hero-logo" />
 				<h1 class="hero-title">LootScout</h1>
-				<p class="hero-subtitle">Steam Deal Finder & Price Comparison Extension</p>
+				<p class="hero-subtitle">Steam Deal Finder &amp; Price Comparison Extension</p>
 				<p class="hero-description">
 					Discover the best Steam deals with our intelligent price tracking and 9-tier rarity
 					system. Never miss another great game deal again.
 				</p>
+				<div class="rarity-bar" aria-hidden="true">
+					<span class="rarity-broken"></span>
+					<span class="rarity-common"></span>
+					<span class="rarity-uncommon"></span>
+					<span class="rarity-rare"></span>
+					<span class="rarity-epic"></span>
+					<span class="rarity-legendary"></span>
+					<span class="rarity-mythic"></span>
+					<span class="rarity-exotic"></span>
+					<span class="rarity-iridescent"></span>
+				</div>
 			</div>
 
-			<section class="section">
+			<section class="section" id="features">
 				<div class="container">
-					<h2>What LootScout Does</h2>
-					<div class="grid">
-						<div class="card">
+					<h2 class="centered">What LootScout Does</h2>
+					<div class="features">
+						<div class="feature">
+							<span class="feature-num">01</span>
 							<h3>Real-time Price Tracking</h3>
 							<p>
 								Compare Steam prices with historical data and current deals across multiple
 								platforms
 							</p>
 						</div>
-						<div class="card">
+						<div class="feature">
+							<span class="feature-num">02</span>
 							<h3>9-Tier Rarity System</h3>
 							<p>Instantly identify deal quality from broken deals to legendary bargains</p>
 						</div>
-						<div class="card">
+						<div class="feature">
+							<span class="feature-num">03</span>
 							<h3>Historical Analysis</h3>
 							<p>Track price trends over time to find the perfect moment to buy</p>
 						</div>
-						<div class="card">
+						<div class="feature">
+							<span class="feature-num">04</span>
 							<h3>Multi-Region Support</h3>
 							<p>Local currency display and regional pricing data for accurate comparisons</p>
 						</div>
@@ -47,89 +77,75 @@
 				</div>
 			</section>
 
-			<section class="section alt">
-				<div class="container">
-					<h2>Deal Rarity System</h2>
-					<p class="subtitle">
-						Our intelligent system classifies deals based on discount percentage, making it easy to
-						spot the best bargains at a glance.
-					</p>
-					<div class="rarity-grid">
-						<div class="rarity-item highlight-broken">
-							<div class="rarity-visual rarity-broken"></div>
-							<div>
-								<span class="rarity-name">Broken</span>
-								<span class="rarity-range">Poor deals</span>
-							</div>
-						</div>
-						<div class="rarity-item">
-							<div class="rarity-visual rarity-common"></div>
-							<div>
-								<span class="rarity-name">Common</span>
-								<span class="rarity-range">0–14% off</span>
-							</div>
-						</div>
-						<div class="rarity-item">
-							<div class="rarity-visual rarity-uncommon"></div>
-							<div>
-								<span class="rarity-name">Uncommon</span>
-								<span class="rarity-range">15–29% off</span>
-							</div>
-						</div>
-						<div class="rarity-item">
-							<div class="rarity-visual rarity-rare"></div>
-							<div>
-								<span class="rarity-name">Rare</span>
-								<span class="rarity-range">30–44% off</span>
-							</div>
-						</div>
-						<div class="rarity-item">
-							<div class="rarity-visual rarity-epic"></div>
-							<div>
-								<span class="rarity-name">Epic</span>
-								<span class="rarity-range">45–59% off</span>
-							</div>
-						</div>
-						<div class="rarity-item">
-							<div class="rarity-visual rarity-legendary"></div>
-							<div>
-								<span class="rarity-name">Legendary</span>
-								<span class="rarity-range">60–79% off</span>
-							</div>
-						</div>
-						<div class="rarity-item">
-							<div class="rarity-visual rarity-mythic"></div>
-							<div>
-								<span class="rarity-name">Mythic</span>
-								<span class="rarity-range">80–89% off</span>
-							</div>
-						</div>
-						<div class="rarity-item">
-							<div class="rarity-visual rarity-exotic"></div>
-							<div>
-								<span class="rarity-name">Exotic</span>
-								<span class="rarity-range">90–99% off</span>
-							</div>
-						</div>
-						<div class="rarity-item highlight">
-							<div class="rarity-visual rarity-iridescent"></div>
-							<div>
-								<span class="rarity-name">Iridescent</span>
-								<span class="rarity-range">100% FREE</span>
-							</div>
-						</div>
+			<section class="section alt" id="rarity">
+				<div class="container split">
+					<div class="split-intro">
+						<h2>Deal Rarity System</h2>
+						<p class="subtitle">
+							Our intelligent system classifies deals based on discount percentage, making it easy
+							to spot the best bargains at a glance.
+						</p>
 					</div>
+					<ol class="ladder">
+						<li class="rarity-item highlight-broken">
+							<span class="rarity-visual rarity-broken"></span>
+							<span class="rarity-name">Broken</span>
+							<span class="rarity-range">Poor deals</span>
+						</li>
+						<li class="rarity-item">
+							<span class="rarity-visual rarity-common"></span>
+							<span class="rarity-name">Common</span>
+							<span class="rarity-range">0–14% off</span>
+						</li>
+						<li class="rarity-item">
+							<span class="rarity-visual rarity-uncommon"></span>
+							<span class="rarity-name">Uncommon</span>
+							<span class="rarity-range">15–29% off</span>
+						</li>
+						<li class="rarity-item">
+							<span class="rarity-visual rarity-rare"></span>
+							<span class="rarity-name">Rare</span>
+							<span class="rarity-range">30–44% off</span>
+						</li>
+						<li class="rarity-item">
+							<span class="rarity-visual rarity-epic"></span>
+							<span class="rarity-name">Epic</span>
+							<span class="rarity-range">45–59% off</span>
+						</li>
+						<li class="rarity-item">
+							<span class="rarity-visual rarity-legendary"></span>
+							<span class="rarity-name">Legendary</span>
+							<span class="rarity-range">60–79% off</span>
+						</li>
+						<li class="rarity-item">
+							<span class="rarity-visual rarity-mythic"></span>
+							<span class="rarity-name">Mythic</span>
+							<span class="rarity-range">80–89% off</span>
+						</li>
+						<li class="rarity-item">
+							<span class="rarity-visual rarity-exotic"></span>
+							<span class="rarity-name">Exotic</span>
+							<span class="rarity-range">90–99% off</span>
+						</li>
+						<li class="rarity-item highlight">
+							<span class="rarity-visual rarity-iridescent"></span>
+							<span class="rarity-name">Iridescent</span>
+							<span class="rarity-range">100% FREE</span>
+						</li>
+					</ol>
 				</div>
 			</section>
 
-			<section class="section">
-				<div class="container">
-					<h2>Rarity Modifiers</h2>
-					<p class="subtitle">
-						Optional modifiers that can enhance or reduce rarity based on game quality and value.
-						Enable these in the extension popup for more intelligent deal ratings.
-					</p>
-					<div class="grid">
+			<section class="section" id="modifiers">
+				<div class="container split reverse">
+					<div class="split-intro">
+						<h2>Rarity Modifiers</h2>
+						<p class="subtitle">
+							Optional modifiers that can enhance or reduce rarity based on game quality and value.
+							Enable these in the extension popup for more intelligent deal ratings.
+						</p>
+					</div>
+					<div class="modifier-cards">
 						<div class="card">
 							<h3>Review Score Modifier</h3>
 							<p>Adjusts rarity based on Steam user review scores</p>
@@ -170,69 +186,69 @@
 				</div>
 			</section>
 
-			<section class="section alt">
-				<div class="container">
-					<h2>Frequently Asked Questions</h2>
-					<div class="grid">
-						<div class="card">
-							<h3>Why do you ask for an API key?</h3>
+			<section class="section alt" id="faq">
+				<div class="container narrow">
+					<h2 class="centered">Frequently Asked Questions</h2>
+					<div class="faq">
+						<details class="faq-item">
+							<summary>Why do you ask for an API key?</summary>
 							<p>
 								The GG.deals API key is completely optional. Adding your own key helps reduce rate
 								limits if they become an issue and provides more reliable access to pricing data.
 								Without a personal key, LootScout uses a shared proxy server.
 							</p>
-						</div>
-						<div class="card">
-							<h3>A game is not showing updated prices. Why?</h3>
+						</details>
+						<details class="faq-item">
+							<summary>A game is not showing updated prices. Why?</summary>
 							<p>
 								LootScout relies on GG.deals for pricing data, and sometimes deals are not instantly
 								updated when sales go live. Check back in a few minutes or hours for the latest
 								pricing information.
 							</p>
-						</div>
-						<div class="card">
-							<h3>How does the rarity system work?</h3>
+						</details>
+						<details class="faq-item">
+							<summary>How does the rarity system work?</summary>
 							<p>
 								The 9-tier rarity system rates deals based on discount percentage, from Broken (poor
 								deals with negative factors) to Iridescent (100% free). Optional modifiers can
 								adjust ratings based on review scores and average playtime.
 							</p>
-						</div>
-						<div class="card">
-							<h3>What data does LootScout collect?</h3>
+						</details>
+						<details class="faq-item">
+							<summary>What data does LootScout collect?</summary>
 							<p>
 								The only data sent out is the Steam game ID to retrieve pricing information. No
 								personal information is collected or transmitted to external servers. All processing
 								and analysis happens locally in your browser.
 							</p>
-						</div>
-						<div class="card">
-							<h3>How often is the data updated?</h3>
+						</details>
+						<details class="faq-item">
+							<summary>How often is the data updated?</summary>
 							<p>
 								LootScout uses a 30-minute cache system for optimal performance. When you visit a
 								game page, if cached data exists and is less than 30 minutes old, it will be
 								displayed. Otherwise, fresh data is fetched from the APIs.
 							</p>
-						</div>
-						<div class="card">
-							<h3>Why is my language/region not available?</h3>
+						</details>
+						<details class="faq-item">
+							<summary>Why is my language/region not available?</summary>
 							<p>
 								Available regions and languages are limited by the API that LootScout relies upon.
 								We support all regions and currencies provided by the GG.deals API. If your region
 								isn't listed, it may not be supported by the underlying data provider.
 							</p>
-						</div>
-						<div class="card">
-							<h3>Why don't some games show playtime data?</h3>
+						</details>
+						<details class="faq-item">
+							<summary>Why don't some games show playtime data?</summary>
 							<p>
 								Playtime data is calculated from Steam user reviews, but some games don't have
 								sufficient review data to calculate average playtime. This commonly affects
 								free-to-play games and DLC content, which often have limited or no playtime
 								information available from Steam reviews.
 							</p>
-						</div>
-						<div class="card">
-							<h3>Does the price history data include keyshops?</h3>
+						</details>
+						<details class="faq-item">
+							<summary>Does the price history data include keyshops?</summary>
 							<p>
 								No, we only use data from official game stores and not game key marketplaces. For
 								more information on keyshops, visit
@@ -244,7 +260,7 @@
 									this explanation </a
 								>.
 							</p>
-						</div>
+						</details>
 					</div>
 				</div>
 			</section>
